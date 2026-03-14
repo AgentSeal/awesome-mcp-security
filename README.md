@@ -1,10 +1,12 @@
-# 🛡️ MCP Server Security Registry
+# 🛡️ Awesome MCP Security [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
-> **800 MCP servers** scanned and analyzed for AI agent security risks.
+[![English](https://img.shields.io/badge/English-Click-yellow)](README.md) [![中文](https://img.shields.io/badge/中文-点击查看-red)](README.zh.md) [![日本語](https://img.shields.io/badge/日本語-クリック-purple)](README.ja.md) [![한국어](https://img.shields.io/badge/한국어-클릭-green)](README.ko.md)
+
+[![GitHub stars](https://img.shields.io/github/stars/AgentSeal/awesome-mcp-security?style=social)](https://github.com/AgentSeal/awesome-mcp-security) [![X](https://img.shields.io/twitter/follow/agentseal_org?style=social)](https://x.com/agentseal_org) [![Website](https://img.shields.io/badge/Registry-agentseal.org-blue)](https://agentseal.org/mcp)
+
+> **800+ MCP servers** scanned and analyzed for AI agent security risks.
 > Scores reflect how safely an AI agent can use each server, not the code quality of the server itself.
 > Updated daily. Powered by [AgentSeal](https://agentseal.org).
-
-**English** · [中文](README.zh.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
 
 ## Quick Stats
 
