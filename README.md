@@ -4,7 +4,7 @@
 > Scores reflect how safely an AI agent can use each server, not the code quality of the server itself.
 > Updated daily. Powered by [AgentSeal](https://agentseal.org).
 
-**English** · [中文](README.zh.md)
+**English** · [中文](README.zh.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
 
 ## Quick Stats
 
