@@ -829,7 +829,7 @@
 | [gloria-mcp](https://github.com/cryptobriefing/gloria-mcp) | Real-time crypto news aggregator from Gloria AI covering 18 categories with s... | 75 ⚠️ | - | [View](https://agentseal.org/mcp/https-githubcom-cryptobriefing-gloria-mcp) |
 | [bitcoin-mcp](https://github.com/Bortlesboat/bitcoin-mcp) | The most comprehensive Bitcoin MCP server. 43 tools for AI agents: fees, memp... | 75 ⚠️ | - | [View](https://agentseal.org/mcp/https-githubcom-bortlesboat-bitcoin-mcp) |
 
-### 🧠 <a name="data-science--ml"></a>Data Science & ML
+### 🧠 <a name="data-science--ml"></a>데이터 과학 및 ML
 
 | Server | Description | Score | Stars | Report |
 |--------|-------------|------:|------:|--------|
@@ -856,7 +856,7 @@
 | [fpl-mcp-server](https://github.com/nguyenanhducs/fpl-mcp-server) | MCP server providing AI assistants with tools and resources for Fantasy Premi... | 77 ⚠️ | - | [View](https://agentseal.org/mcp/https-githubcom-nguyenanhducs-fpl-mcp-server) |
 | [mcp-gemini](https://github.com/crunchtools/mcp-gemini) | Secure MCP server for Google Gemini AI with 39 tools for text, images, videos... | 71 ⚠️ | - | [View](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-gemini) |
 
-### 📡 <a name="iot--hardware"></a>IoT & Hardware
+### 📡 <a name="iot--hardware"></a>IoT 및 하드웨어
 
 | Server | Description | Score | Stars | Report |
 |--------|-------------|------:|------:|--------|
@@ -874,7 +874,7 @@
 | [nanoleaf-mcp-server](https://github.com/srnetadmin/nanoleaf-mcp-server) | MCP server for controlling Nanoleaf smart lights through Warp terminal | 92 ✅ | - | [View](https://agentseal.org/mcp/https-githubcom-srnetadmin-nanoleaf-mcp-server) |
 | [wemo-mcp-server](https://github.com/apiarya/wemo-mcp-server) | An MCP server for discovering, monitoring, and controlling Belkin WeMo smart ... | 83 ✅ | - | [View](https://agentseal.org/mcp/https-githubcom-apiarya-wemo-mcp-server) |
 
-## 🏆 Safest Servers (Score >= 95)
+## 🏆 가장 안전한 서버 (점수 >= 95)
 
 | Server | Score | Tools | Stars | Report |
 |--------|------:|------:|------:|--------|
@@ -899,9 +899,9 @@
 | [bilibili-mcp-js](https://github.com/34892002/bilibili-mcp-js) | 99 | 8 | 153 | [View](https://agentseal.org/mcp/https-githubcom-34892002-bilibili-mcp-js) |
 | [mcp-server-leetcode](https://github.com/doggybee/mcp-server-leetcode) | 99 | 7 | 40 | [View](https://agentseal.org/mcp/https-githubcom-doggybee-mcp-server-leetcode) |
 
-## ⚠️ Wider Attack Surface
+## ⚠️ 더 넓은 공격 표면
 
-These servers are NOT broken or malicious. They expose powerful capabilities (code execution, file system access, network requests) that give AI agents a wider attack surface. An adversary could exploit these through prompt injection. Use with sandboxing and human oversight.
+이 서버들은 고장이 나거나 악의적인 것이 아닙니다. 이들은 강력한 기능(코드 실행, 파일 시스템 접근, 네트워크 요청)을 노출하여 AI 에이전트에게 더 넓은 공격 표면을 제공합니다. 공격자가 프롬프트 인젝션을 통해 이를 악용할 수 있습니다. 샌드박싱과 사람의 감독 하에 사용하세요.
 
 | Server | Score | Findings | Tools | Stars | Report |
 |--------|------:|---------:|------:|------:|--------|
@@ -921,25 +921,25 @@ These servers are NOT broken or malicious. They expose powerful capabilities (co
 | [hdw-mcp-server](https://github.com/horizondatawave/hdw-mcp-server) | 67 | **31** | 69 | 59 | [View](https://agentseal.org/mcp/https-githubcom-horizondatawave-hdw-mcp-server) |
 | [hillnote-mcp-server](https://github.com/Rajathbail/hillnote-mcp-server) | 70 | **31** | 47 | 1 | [View](https://agentseal.org/mcp/https-githubcom-rajathbail-hillnote-mcp-server) |
 
-## 📛 Add a Security Badge
+## 📛 보안 배지 추가
 
-Show your server's trust score in your README:
+README에 서버의 신뢰 점수를 표시하세요:
 
 ```markdown
 [![AgentSeal MCP](https://agentseal.org/api/v1/mcp/YOUR-SLUG/badge)](https://agentseal.org/mcp/YOUR-SLUG)
 ```
 
-## 🔍 Submit Your Server
+## 🔍 서버 제출
 
-Get your MCP server scanned for free:
+무료로 MCP 서버 보안 스캔을 받으세요:
 -> [agentseal.org/mcp/submit](https://agentseal.org/mcp/submit)
 
-## Contributing
+## 기여
 
-This list is auto-generated from [AgentSeal's MCP Registry](https://agentseal.org/mcp).
-To add a server, [submit it for scanning](https://agentseal.org/mcp/submit).
-To report a false positive, [email us](mailto:hello@agentseal.org).
+이 목록은 [AgentSeal의 MCP 레지스트리](https://agentseal.org/mcp)에서 자동 생성됩니다.
+서버를 추가하려면 [스캔을 위해 제출](https://agentseal.org/mcp/submit)해주세요.
+오탐을 보고하려면 [이메일을 보내주세요](mailto:hello@agentseal.org).
 
-## License
+## 라이선스
 
-CC BY-SA 4.0 - free to share and adapt with attribution.
+CC BY-SA 4.0 - 저작자 표시 시 자유롭게 공유 및 수정 가능.
