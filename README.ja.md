@@ -1,6 +1,6 @@
 # 🛡️ MCP サーバーセキュリティレジストリ
 
-> **764 の MCP サーバー**をスキャンし、AIエージェントのセキュリティリスクを分析しました。
+> **800 の MCP サーバー**をスキャンし、AIエージェントのセキュリティリスクを分析しました。
 > スコアはAIエージェントが各サーバーを安全に使用できる度合いを反映しており、サーバー自体のコード品質を示すものではありません。
 > 毎日更新。[AgentSeal](https://agentseal.org) 提供。
 
@@ -10,11 +10,11 @@
 
 | 指標 | 件数 |
 |------|------|
-| スキャン済みサーバー総数 | **764** |
-| ✅ 安全 (スコア ≥ 80) | **598** |
-| ⚠️ 要確認 (スコア 50-79) | **166** |
-| セキュリティ検出事項の総数 | **6098** |
-| 最終更新日 | 2026年3月13日 |
+| スキャン済みサーバー総数 | **800** |
+| ✅ 安全 (スコア ≥ 80) | **631** |
+| ⚠️ 要確認 (スコア 50-79) | **169** |
+| セキュリティ検出事項の総数 | **6237** |
+| 最終更新日 | 2026年3月14日 |
 
 ## スコアリング方法
 
@@ -23,7 +23,7 @@
 - **スキーマ分析** - ツールパラメータの型と制約を検証
 - **静的パターン検出** - コマンドインジェクション、SSRF、パストラバーサルのパターンを検出
 - **プロンプトインジェクションスキャン** - ツール説明に隠された指示を検出
-- **有害フロー分析** - 危険なツールチェーンを特定（例: シークレットの読み取り -> 外部URLへの送信）
+- **有害フロー分析** - 危険なツールチェーンを特定
 - **Unicode検出** - 不可視文字による攻撃を捕捉
 - **ディープオートプシー** - 45以上のMCP固有の攻撃パターンによるアクティブな探査
 - **アノテーションと指示分析** - 動作を変更するメタデータを検査
@@ -31,7 +31,7 @@
 - **LLM分類** - Claudeによるツール意図のセマンティック分析
 
 **信頼スコア:** 0-100はAIエージェントがこのサーバーをどれだけ安全に使用できるかを測定します。
-低いスコアはサーバーにバグがある、または悪意があるという意味ではありません。AIエージェントがそのサーバーを使用する際の攻撃対象領域が大きい（例: コード実行、ファイルアクセス、ネットワークリクエスト）ことを意味し、攻撃者がプロンプトインジェクションやツールポイズニングを通じてこれを悪用する可能性があります。
+低いスコアはサーバーにバグがある、または悪意があるという意味ではありません。AIエージェントがそのサーバーを使用する際の攻撃対象領域が大きく、攻撃者がプロンプトインジェクションやツールポイズニングを通じてこれを悪用する可能性があることを意味します。
 
 - **安全 (>= 80):** 攻撃対象領域が小さい。エージェントは最小限のリスクで使用可能。
 - **要確認 (50-79):** 攻撃対象領域を拡大する重要な機能あり。適切なガードレールと共に使用。
@@ -49,743 +49,855 @@
 
 ## カテゴリ
 
-- [🛠️ 開発ツール](#developer-tools) (240)
-- [🔍 検索・ナレッジ](#search--knowledge) (59)
-- [💻 コード・IDE](#code--ide) (27)
-- [☁️ クラウド・インフラ](#cloud--infrastructure) (32)
-- [📝 コンテンツ・メディア](#content--media) (45)
-- [🔌 API開発](#api-development) (17)
-- [🗄️ データベース・SQL](#database--sql) (25)
-- [💬 コミュニケーション](#communication) (27)
-- [⚙️ システム管理](#system-administration) (11)
-- [🔒 セキュリティ・認証](#security--auth) (40)
-- [🕸️ Webスクレイピング・収集](#web-scraping--collection) (23)
-- [📁 ファイルシステム・ストレージ](#file-system--storage) (13)
-- [💰 金融・暗号資産](#finance--crypto) (35)
-- [🧠 データサイエンス・ML](#data-science--ml) (17)
-- [📡 IoT・ハードウェア](#iot--hardware) (11)
+- [🛠️ 開発ツール](#developer-tools) (290)
+- [🔍 検索・ナレッジ](#search--knowledge) (63)
+- [💻 コード・IDE](#code--ide) (31)
+- [☁️ クラウド・インフラ](#cloud--infrastructure) (35)
+- [📝 コンテンツ・メディア](#content--media) (51)
+- [🔌 API開発](#api-development) (22)
+- [🗄️ データベース・SQL](#database--sql) (29)
+- [💬 コミュニケーション](#communication) (34)
+- [⚙️ システム管理](#system-administration) (13)
+- [🔒 セキュリティ・認証](#security--auth) (48)
+- [🕸️ Webスクレイピング・収集](#web-scraping--collection) (27)
+- [📁 ファイルシステム・ストレージ](#file-system--storage) (16)
+- [💰 金融・暗号資産](#finance--crypto) (40)
+- [🧠 データサイエンス・ML](#data-science--ml) (22)
+- [📡 IoT・ハードウェア](#iot--hardware) (13)
 
 ### 🛠️ <a name="developer-tools"></a>開発ツール
 
 | サーバー | 説明 | スコア | Stars | レポート |
 |----------|------|-------:|------:|----------|
-| [markitdown](https://github.com/microsoft/markitdown) | ファイルやオフィス文書をMarkdownに変換するPythonツール。 | 88 ✅ | 90.7k | [表示](https://agentseal.org/mcp/https-githubcom-microsoft-markitdown) |
-| [chrome-devtools-mcp](https://github.com/chromedevtools/chrome-devtools-mcp) | コーディングエージェント向けChrome DevTools | 73 ⚠️ | 28.8k | [表示](https://agentseal.org/mcp/chrome-devtools-mcp) |
-| [Playwright](https://github.com/microsoft/playwright-mcp) | Playwrightを使用して大規模言語モデル（LLM）のブラウザ操作を自動化... | 62 ⚠️ | 28.7k | [表示](https://agentseal.org/mcp/https-githubcom-microsoft-playwright-mcp) |
-| [GitHub](https://github.com/github/github-mcp-server) | GitHub APIとの高度な自動化とインタラクション機能を提供... | 70 ⚠️ | 27.8k | [表示](https://agentseal.org/mcp/https-githubcom-github-github-mcp-server) |
-| [claude-flow](https://github.com/ruvnet/claude-flow) | セキュアなマルチエージェントスウォームのデプロイ向けエンタープライズAIオーケストレーションプラットフォーム... | 86 ✅ | 20.9k | [表示](https://agentseal.org/mcp/https-githubcom-ruvnet-claude-flow) |
-| [beads](https://github.com/steveyegge/beads) | Beads - コーディングエージェントのメモリアップグレード | 86 ✅ | 18.9k | [表示](https://agentseal.org/mcp/https-githubcom-steveyegge-beads) |
-| [archon](https://github.com/coleam00/archon) | Archon OSベータ版 - AIエージェントのナレッジ・タスク管理基盤... | 92 ✅ | 13.8k | [表示](https://agentseal.org/mcp/https-githubcom-coleam00-archon) |
-| [mcp-go](https://github.com/mark3labs/mcp-go) | Model Context Protocol (MCP)のGo実装。シームレスな統合を実現... | 89 ✅ | 8.3k | [表示](https://agentseal.org/mcp/https-githubcom-mark3labs-mcp-go) |
-| [git-mcp](https://github.com/idosal/git-mcp) | コードのハルシネーションを解消! GitMCPは無料でオープンソースのリモートMCP... | 78 ⚠️ | 7.8k | [表示](https://agentseal.org/mcp/git-mcp) |
-| [browser-tools-mcp](https://github.com/agentdeskai/browser-tools-mcp) | CursorやMCP互換IDEから直接ブラウザログを監視。 | 91 ✅ | 7.1k | [表示](https://agentseal.org/mcp/https-githubcom-agentdeskai-browser-tools-mcp) |
-| [cursor-talk-to-figma-mcp](https://github.com/sonnylazuardi/cursor-talk-to-figma-mcp) | CursorやClaude CodeなどのAIエージェントがFigmaデザインを読み取り・変更できるMCP統合... | 88 ✅ | 6.5k | [表示](https://agentseal.org/mcp/https-githubcom-sonnylazuardi-cursor-talk-to-figma-mcp) |
-| [cursor-talk-to-figma-mcp](https://github.com/grab/cursor-talk-to-figma-mcp) | TalkToFigma: AIエージェント（Cursor, Claude Code）とFigma間のMCP統合... | 88 ✅ | 6.5k | [表示](https://agentseal.org/mcp/https-githubcom-grab-cursor-talk-to-figma-mcp) |
-| [ida-pro-mcp](https://github.com/mrexodia/ida-pro-mcp) | IDA Proと言語モデルを橋渡しするAI搭載リバースエンジニアリングアシスタント... | 88 ✅ | 6.3k | [表示](https://agentseal.org/mcp/ida-pro-mcp) |
-| [mcp](https://github.com/browsermcp/mcp) | Browser MCPはAIアプリケーションがブラウザと対話できるModel Context Provider (MCP)サーバー... | 86 ✅ | 6.0k | [表示](https://agentseal.org/mcp/browsermcp-mcp) |
-| [desktopcommandermcp](https://github.com/wonderwhy-er/desktopcommandermcp) | Claudeにターミナル制御、ファイルシステム検索を提供するMCPサーバー... | 63 ⚠️ | 5.7k | [表示](https://agentseal.org/mcp/https-githubcom-wonderwhy-er-desktopcommandermcp) |
-| [klavis](https://github.com/klavis-ai/klavis) | Klavis AI (YC X25): AIエージェントがリモートでツールを使用できるMCP統合プラットフォーム... | 68 ⚠️ | 5.7k | [表示](https://agentseal.org/mcp/https-githubcom-klavis-ai-klavis) |
-| [praisonai](https://github.com/mervinpraison/praisonai) | PraisonAI 🦞 - 24時間365日稼働のAI従業員チーム。複雑な課題を自動化して解決... | 78 ⚠️ | 5.7k | [表示](https://agentseal.org/mcp/https-githubcom-mervinpraison-praisonai) |
-| [playwright-mcp-server](https://github.com/executeautomation/mcp-playwright) | Playwright Model Context Protocolサーバー - ブラウザとAPIの自動化ツール... | 73 ⚠️ | 5.3k | [表示](https://agentseal.org/mcp/executeautomation-playwright-mcp-server) |
-| [magic](https://github.com/21st-dev/magic-mcp) | Cursor/WindSurf/Cline内でv0のように使える。21st dev Magic MCPサーバー... | 82 ✅ | 4.4k | [表示](https://agentseal.org/mcp/21st-dev-magic) |
-| [osaurus](https://github.com/osaurus-ai/osaurus) | AIを自分のものに。AIエージェント向けネイティブmacOSハーネス - 任意のモデル、永続的... | 79 ⚠️ | 4.1k | [表示](https://agentseal.org/mcp/osaurus-ai-osaurus) |
-| [context-mode](https://github.com/mksglu/context-mode) | MCPはツールアクセスのプロトコル。コンテキストの仮想化レイヤーを提供。 | 78 ⚠️ | 3.7k | [表示](https://agentseal.org/mcp/https-githubcom-mksglu-context-mode) |
-| [mcp-feedback-enhanced](https://github.com/minidoracat/mcp-feedback-enhanced) | AI支援コーディングツールでのインタラクティブなユーザーフィードバックとコマンド実行のための拡張MCPサーバー... | 91 ✅ | 3.6k | [表示](https://agentseal.org/mcp/https-githubcom-minidoracat-mcp-feedback-enhanced) |
-| [archestra](https://github.com/archestra-ai/archestra) | ガードレール、MCPレジストリ、ゲートウェイ、オーケストレーター付きエンタープライズAIプラットフォーム | 92 ✅ | 3.5k | [表示](https://agentseal.org/mcp/https-githubcom-archestra-ai-archestra) |
-| [refact-chat-js](https://github.com/smallcloudai/refact) | エンジニアリングタスクをエンドツーエンドで処理するAIエージェント: 開発者ツールと統合... | 92 ✅ | 3.5k | [表示](https://agentseal.org/mcp/refact-chat-js) |
-| [shadcn-ui-mcp-server](https://github.com/jpisnice/shadcn-ui-mcp-server) | LLMがshadcn UIコンポーネントの構造やユースケースについてコンテキストを得るためのMCPサーバー... | 83 ✅ | 2.7k | [表示](https://agentseal.org/mcp/jpisnice-shadcn-ui-mcp-server) |
-| [mcp-cli](https://github.com/chrishayuk/mcp-cli) | Model Context Protocolサーバーと対話するためのコマンドラインインターフェース... | 92 ✅ | 1.9k | [表示](https://agentseal.org/mcp/https-githubcom-chrishayuk-mcp-cli) |
-| [ios-simulator-mcp](https://github.com/joshuayoes/ios-simulator-mcp) | iOSシミュレーターと対話するためのMCPサーバー | 91 ✅ | 1.7k | [表示](https://agentseal.org/mcp/https-githubcom-joshuayoes-ios-simulator-mcp) |
-| [mcp-installer](https://github.com/anaisbetts/mcp-installer) | 他のMCPサーバーをインストールするMCPサーバー | 89 ✅ | 1.5k | [表示](https://agentseal.org/mcp/anaisbetts-mcp-installer) |
-| [notebooklm-mcp](https://github.com/pleaseprompto/notebooklm-mcp) | NotebookLM用MCPサーバー - AIエージェント（Claude Code, Codex）がリサーチ... | 73 ⚠️ | 1.4k | [表示](https://agentseal.org/mcp/https-githubcom-pleaseprompto-notebooklm-mcp) |
-| [coderunner](https://github.com/instavm/coderunner) | AIエージェント用ローカルサンドボックス | 80 ⚠️ | 801 | [表示](https://agentseal.org/mcp/https-githubcom-instavm-coderunner) |
-| [vibetest-use](https://github.com/browser-use/vibetest-use) | Vibetest MCP - Browser-Useエージェントを使った自動QAテスト | 87 ✅ | 772 | [表示](https://agentseal.org/mcp/https-githubcom-browser-use-vibetest-use) |
-| [driftdetect-mcp](https://github.com/dadbodgeoff/drift) | AI向けコードベースインテリジェンス。パターンと規約を検出し、決定事項を記憶... | 85 ✅ | 760 | [表示](https://agentseal.org/mcp/driftdetect-mcp) |
-| [just-prompt](https://github.com/disler/just-prompt) | just-promptはトップLLMプロバイダーへの統合インターフェースを提供するMCPサーバー... | 89 ✅ | 719 | [表示](https://agentseal.org/mcp/https-githubcom-disler-just-prompt) |
-| [blueprint-mcp](https://github.com/arcadeai/blueprint-mcp) | コードベースとシステムアーキテクチャを理解するための図表生成... | 92 ✅ | 585 | [表示](https://agentseal.org/mcp/https-githubcom-arcadeai-blueprint-mcp) |
-| [n8n-workflow-builder](https://github.com/makafeli/n8n-workflow-builder) | Model Context Protocolを通じたn8nワークフロー自動化のAIアシスタント統合... | 87 ✅ | 501 | [表示](https://agentseal.org/mcp/https-githubcom-makafeli-n8n-workflow-builder) |
-| [web-agent-protocol](https://github.com/ota-tech-ai/web-agent-protocol) | 🌐Web Agent Protocol (WAP) - ブラウザでのユーザー操作を記録・再生... | 92 ✅ | 493 | [表示](https://agentseal.org/mcp/https-githubcom-ota-tech-ai-web-agent-protocol) |
-| [airtable-mcp-server](https://github.com/domdomegg/airtable-mcp-server) | 🗂️🤖 Airtable Model Context Protocolサーバー。AIシステムがAirtableと対話可能に... | 81 ✅ | 430 | [表示](https://agentseal.org/mcp/https-githubcom-domdomegg-airtable-mcp-server) |
-| [kicad-mcp](https://github.com/lamaalrajih/kicad-mcp) | Mac、Windows、Linux対応のKiCad用Model Context Protocolサーバー | 92 ✅ | 401 | [表示](https://agentseal.org/mcp/https-githubcom-lamaalrajih-kicad-mcp) |
-| [lingti-bot](https://github.com/ruilisi/lingti-bot) | 🐕⚡「極簡至上 効率為王 秒級接入 一鏈即用」的 AI Bot | 75 ⚠️ | 368 | [表示](https://agentseal.org/mcp/https-githubcom-ruilisi-lingti-bot) |
-| [MemoryMesh](https://github.com/CheMiguel23/MemoryMesh) | Model Context Protocol (MCP)を使用してナレッジグラフサーバーを提供... | 81 ✅ | 335 | [表示](https://agentseal.org/mcp/https-githubcom-chemiguel23-memorymesh) |
-| [paws-on-mcp](https://github.com/hemanth/paws-on-mcp) | 最新仕様を実装した包括的なModel Context Protocol (MCP)サーバー... | 86 ✅ | 331 | [表示](https://agentseal.org/mcp/https-githubcom-hemanth-paws-on-mcp) |
-| [moling](https://github.com/gojue/moling) | MoLingはコンピュータ操作とブラウザ操作ベースのMCPサーバー。ローカルにデプロイ... | 78 ⚠️ | 330 | [表示](https://agentseal.org/mcp/https-githubcom-gojue-moling) |
-| [consult7](https://github.com/szeider/consult7) | 大規模コンテキストサイズの言語モデルに相談するためのMCPサーバー | 85 ✅ | 291 | [表示](https://agentseal.org/mcp/https-githubcom-szeider-consult7) |
-| [chrome-devtools-mcp](https://github.com/benjaminr/chrome-devtools-mcp) | Chrome DevTools Protocol準拠のChrome DevTools用MCPサーバー... | 74 ⚠️ | 289 | [表示](https://agentseal.org/mcp/https-githubcom-benjaminr-chrome-devtools-mcp) |
-| [FileScopeMCP](https://github.com/admica/FileScopeMCP) | 依存関係に基づいてコードベースの重要なファイルを特定して分析... | 82 ✅ | 283 | [表示](https://agentseal.org/mcp/https-githubcom-admica-filescopemcp) |
-| [MCP-Server-Playwright](https://github.com/Automata-Labs-team/MCP-Server-Playwright) | 完全なリモート制御を提供するPlaywrightベースのブラウザ自動化MCPサーバー... | 74 ⚠️ | 283 | [表示](https://agentseal.org/mcp/https-githubcom-automata-labs-team-mcp-server-playwright) |
-| [mcp-reasoner](https://github.com/jacck/mcp-reasoner) | ビームサーチ付きClaude Desktop向け体系的推論MCPサーバー実装... | 92 ✅ | 277 | [表示](https://agentseal.org/mcp/https-githubcom-jacck-mcp-reasoner) |
-| [lucid](https://github.com/get-lucid/lucid) | 検証済みのリアルタイム知識で自律エージェントを基盤づけるインテリジェンスレイヤー... | 92 ✅ | 260 | [表示](https://agentseal.org/mcp/https-githubcom-get-lucid-lucid) |
-| [weather-mcp-server](https://github.com/tuankiri/weather-mcp-server) | AIアシスタントが任意の場所のリアルタイム気象データを取得できるMCPサーバー... | 92 ✅ | 239 | [表示](https://agentseal.org/mcp/https-githubcom-tuankiri-weather-mcp-server) |
-| [frida-mcp](https://github.com/dnakov/frida-mcp) | Frida用MCP stdioサーバー | 91 ✅ | 237 | [表示](https://agentseal.org/mcp/https-githubcom-dnakov-frida-mcp) |
-| [tmux-mcp](https://github.com/nickgnd/tmux-mcp) | ターミナルマルチプレクサtmux用のMCPサーバー。 | 83 ✅ | 235 | [表示](https://agentseal.org/mcp/https-githubcom-nickgnd-tmux-mcp) |
-| [tmux-mcp](https://github.com/nickgnd/tmux-mcp) | ターミナルマルチプレクサtmux用のMCPサーバー。 | 83 ✅ | 235 | [表示](https://agentseal.org/mcp/tmux-mcp) |
-| [overseer](https://github.com/dmmulroy/overseer) | エージェントタスク管理のためのCLI & Codemode MCPサーバー | 92 ✅ | 222 | [表示](https://agentseal.org/mcp/https-githubcom-dmmulroy-overseer) |
-| [mcp-taskmanager](https://github.com/kazuph/mcp-taskmanager) | Claudeがキューベースでタスクを管理・実行できるMCPサーバー... | 91 ✅ | 212 | [表示](https://agentseal.org/mcp/kazuph-mcp-taskmanager) |
-| [opik-mcp](https://github.com/comet-ml/opik-mcp) | Opik向けModel Context Protocol (MCP)実装。シームレスなIDE統合を実現... | 92 ✅ | 199 | [表示](https://agentseal.org/mcp/https-githubcom-comet-ml-opik-mcp) |
-| [@rocketshipai](https://github.com/rocketship-ai/rocketship) | コーディングエージェントがテストを記述・実行できるオープンソースQAテストフレームワーク... | 92 ✅ | 182 | [表示](https://agentseal.org/mcp/rocketshipai) |
-| [anki-mcp-server](https://github.com/scorzeth/anki-mcp-server) | ローカルのAnkiフラッシュカードアプリと統合するMCPサーバー... | 98 ✅ | 178 | [表示](https://agentseal.org/mcp/https-githubcom-scorzeth-anki-mcp-server) |
-| [mcp-doc](https://github.com/meterlong/mcp-doc) | FastMCPベースの強力なWord文書処理サービス。AIアシスタントが文書を操作可能... | 89 ✅ | 173 | [表示](https://agentseal.org/mcp/https-githubcom-meterlong-mcp-doc) |
-| [llmctx](https://github.com/khromov/llmctx) | AIコード補完向けにSvelte 5とSvelteKit開発者ドキュメントを提供するMCPエンドポイント... | 92 ✅ | 160 | [表示](https://agentseal.org/mcp/https-githubcom-khromov-llmctx) |
-| [mcp-server-langfuse](https://github.com/langfuse/mcp-server-langfuse) | Langfuseプロンプト管理用Model Context Protocol (MCP)サーバー... | 92 ✅ | 158 | [表示](https://agentseal.org/mcp/https-githubcom-langfuse-mcp-server-langfuse) |
-| [erickwendel-contributions-mcp](https://github.com/erickwendel/erickwendel-contributions-mcp) | Erick Wendelの貢献を問い合わせるツールを提供するModel Context Protocol (MCP)サーバー... | 92 ✅ | 136 | [表示](https://agentseal.org/mcp/https-githubcom-erickwendel-erickwendel-contributions-mcp) |
-| [mcp-server](https://github.com/browserstack/mcp-server) | BrowserStack公式MCPサーバー | 69 ⚠️ | 130 | [表示](https://agentseal.org/mcp/https-githubcom-browserstack-mcp-server) |
-| [mcp-server-atlassian-bitbucket](https://github.com/aashari/mcp-server-atlassian-bitbucket) | Atlassian Bitbucket用Node.js/TypeScript MCPサーバー。AIシステム（LLM）が利用可能... | 74 ⚠️ | 127 | [表示](https://agentseal.org/mcp/https-githubcom-aashari-mcp-server-atlassian-bitbucket) |
-| [pluggedin-mcp-proxy](https://github.com/VeriTeknik/pluggedin-mcp-proxy) | Plugged.in MCPサーバーは他の全MCPを一つのMCPで管理。 | 81 ✅ | 124 | [表示](https://agentseal.org/mcp/https-githubcom-veriteknik-pluggedin-mcp-proxy) |
-| [mcp-gdb](https://github.com/signal-slot/mcp-gdb) | AIアシスタントにGDBデバッグ機能を提供するMCPサーバー... | 86 ✅ | 110 | [表示](https://agentseal.org/mcp/https-githubcom-signal-slot-mcp-gdb) |
-| [sourcerer-mcp](https://github.com/st3v3nmw/sourcerer-mcp) | トークン消費を削減するセマンティックコード検索・ナビゲーション用MCP | 86 ✅ | 108 | [表示](https://agentseal.org/mcp/https-githubcom-st3v3nmw-sourcerer-mcp) |
-| [lapras-mcp-server](https://github.com/lapras-inc/lapras-mcp-server) | lapras.com 公式MCPサーバー | 89 ✅ | 100 | [表示](https://agentseal.org/mcp/https-githubcom-lapras-inc-lapras-mcp-server) |
-| [terminal-controller-mcp](https://github.com/gongrzhe/terminal-controller-mcp) | セキュアなターミナルコマンド実行を可能にするModel Context Protocol (MCP)サーバー... | 80 ⚠️ | 99 | [表示](https://agentseal.org/mcp/https-githubcom-gongrzhe-terminal-controller-mcp) |
-| [json-mcp-server](https://github.com/gongrzhe/json-mcp-server) | JSON処理用MCPサーバー | 88 ✅ | 89 | [表示](https://agentseal.org/mcp/https-githubcom-gongrzhe-json-mcp-server) |
-| [unreal-mcp](https://github.com/runreal/unreal-mcp) | Unreal Python Remote Executionを使用するUnreal Engine用MCPサーバー | 71 ⚠️ | 82 | [表示](https://agentseal.org/mcp/runreal-unreal-mcp) |
-| [mcp-server-circleci](https://github.com/CircleCI-Public/mcp-server-circleci) | Model Context Protocol (MCP)向けの特化型サーバー実装... | 80 ✅ | 80 | [表示](https://agentseal.org/mcp/https-githubcom-circleci-public-mcp-server-circleci) |
-| [mcp-server-openai](https://github.com/pierrebrunelle/mcp-server-openai) | MCPプロトコルを使用してClaudeから直接OpenAIモデルに問い合わせ。 | 92 ✅ | 79 | [表示](https://agentseal.org/mcp/mcp-server-openai) |
-| [multi-ai-advisor-mcp](https://github.com/yuchenssr/multi-ai-advisor-mcp) | 意思決定のためのモデル評議会 | 92 ✅ | 78 | [表示](https://agentseal.org/mcp/https-githubcom-yuchenssr-multi-ai-advisor-mcp) |
-| [roundtable](https://github.com/askbudi/roundtable) | 複数のAIコーディングアシスタント（Claude, Gemini等）を調整するローカルMCPサーバー... | 81 ✅ | 78 | [表示](https://agentseal.org/mcp/https-githubcom-askbudi-roundtable) |
-| [unifai-sdk-js](https://github.com/unifai-network/unifai-sdk-js) | UnifaiのJavascript/Typescript SDK。AIネイティブプラットフォーム... | 86 ✅ | 75 | [表示](https://agentseal.org/mcp/https-githubcom-unifai-network-unifai-sdk-js) |
-| [energyplus-mcp](https://github.com/lbnl-eta/energyplus-mcp) | AIアシスタントとエージェントにEnergyPlusを提供する初のオープンソースModel Context Protocolサーバー... | 90 ✅ | 69 | [表示](https://agentseal.org/mcp/https-githubcom-lbnl-eta-energyplus-mcp) |
-| [alibabacloud-devops-mcp-server](https://github.com/aliyun/alibabacloud-devops-mcp-server) | Yunxiao MCPサーバーはAIアシスタントにDevOpsプラットフォームとの対話機能を提供... | 87 ✅ | 69 | [表示](https://agentseal.org/mcp/https-githubcom-aliyun-alibabacloud-devops-mcp-server) |
-| [clarity-mcp-server](https://github.com/microsoft/clarity-mcp-server) | Microsoft Clarity用Model Context Protocol (MCP)サーバー | 84 ✅ | 68 | [表示](https://agentseal.org/mcp/microsoft-clarity-mcp-server) |
-| [deepseek-thinker-mcp](https://github.com/ruixingshi/deepseek-thinker-mcp) | OpenAI API互換でDeepseekの推論プロセスにアクセスできるMCPサーバー... | 92 ✅ | 67 | [表示](https://agentseal.org/mcp/https-githubcom-ruixingshi-deepseek-thinker-mcp) |
-| [xiaozhi-autoglm-mcp](https://github.com/xinnan-tech/xiaozhi-autoglm-mcp) | AIによるAndroidデバイス自動化・モバイルエージェント制御のMCPサーバー... | 92 ✅ | 64 | [表示](https://agentseal.org/mcp/https-githubcom-xinnan-tech-xiaozhi-autoglm-mcp) |
-| [mcp-miro](https://github.com/k-jarzyna/mcp-miro) | Model Context Protocol向けMiro統合 | 84 ✅ | 62 | [表示](https://agentseal.org/mcp/https-githubcom-k-jarzyna-mcp-miro) |
-| [mcp-server-atlassian-jira](https://github.com/aashari/mcp-server-atlassian-jira) | Atlassian Jira用Node.js/TypeScript MCPサーバー。AIシステム（LLM）に機能を提供... | 80 ⚠️ | 60 | [表示](https://agentseal.org/mcp/https-githubcom-aashari-mcp-server-atlassian-jira) |
-| [gdb-mcp](https://github.com/smadi0x86/gdb-mcp) | GDBとLLDB向けのデバッグ機能を提供するマルチデバッガーMCPサーバー... | 86 ✅ | 56 | [表示](https://agentseal.org/mcp/https-githubcom-smadi0x86-gdb-mcp) |
-| [whois-mcp](https://github.com/bharathvaj-ganesan/whois-mcp) | WHOIS検索用MCPサーバー。 | 92 ✅ | 52 | [表示](https://agentseal.org/mcp/https-githubcom-bharathvaj-ganesan-whois-mcp) |
-| [webpage-screenshot-mcp](https://github.com/ananddtyagi/webpage-screenshot-mcp) | Puppeteerを使用してWebページのスクリーンショットをキャプチャするMCPサーバー。AIが利用可能... | 87 ✅ | 52 | [表示](https://agentseal.org/mcp/https-githubcom-ananddtyagi-webpage-screenshot-mcp) |
-| [iphone-mcp](https://github.com/blitzdotdev/iphone-mcp) | AIがiPhoneを操作できるMCPサーバー | 86 ✅ | 50 | [表示](https://agentseal.org/mcp/blitzdev-iphone-mcp) |
-| [random-number-mcp](https://github.com/zazencodes/random-number-mcp) | LLMに必要なランダム生成機能を提供する本番環境対応MCPサーバー... | 90 ✅ | 47 | [表示](https://agentseal.org/mcp/https-githubcom-zazencodes-random-number-mcp) |
-| [shadowgit-mcp](https://github.com/blade47/shadowgit-mcp) | AIアシスタントにセキュアなGit操作を提供するModel Context Protocol (MCP)サーバー... | 85 ✅ | 46 | [表示](https://agentseal.org/mcp/https-githubcom-blade47-shadowgit-mcp) |
-| [xray](https://github.com/srijanshukla18/xray) | XRAY MCPはAIコーディングエージェント向けの段階的コードインテリジェンスとナビゲーション機能を提供... | 82 ✅ | 46 | [表示](https://agentseal.org/mcp/https-githubcom-srijanshukla18-xray) |
-| [frida-game-hacking-mcp](https://github.com/0xhackerfren/frida-game-hacking-mcp) | Cheat Engineの機能をエミュレートするFridaのMCP実装... | 71 ⚠️ | 46 | [表示](https://agentseal.org/mcp/https-githubcom-0xhackerfren-frida-game-hacking-mcp) |
-| [mcp_weather_server](https://github.com/isdaniel/mcp_weather_server) | 現在の天気予報、大気質データを提供する読み取り専用MCPサーバー... | 100 ✅ | 44 | [表示](https://agentseal.org/mcp/https-githubcom-isdaniel-mcpweatherserver) |
-| [mcp-server-taskwarrior](https://github.com/awwaiid/mcp-server-taskwarrior) | エージェントがタスクの一覧表示、追加、完了を行えるTaskwarrior MCPサーバー... | 91 ✅ | 44 | [表示](https://agentseal.org/mcp/https-githubcom-awwaiid-mcp-server-taskwarrior) |
-| [mobile-dev-mcp-server](https://github.com/jsuarezruiz/mobile-dev-mcp-server) | モバイルデバイスやシミュレーターの管理・操作用に設計されたMCP... | 83 ✅ | 42 | [表示](https://agentseal.org/mcp/https-githubcom-jsuarezruiz-mobile-dev-mcp-server) |
-| [powertools-mcp](https://github.com/aws-powertools/powertools-mcp) | Powertools for AWS公式MCPサーバー | 88 ✅ | 41 | [表示](https://agentseal.org/mcp/https-githubcom-aws-powertools-powertools-mcp) |
-| [dynamic-shell-server](https://github.com/codelion/dynamic-shell-server) | 動的シェルコマンドMCPサーバー | 86 ✅ | 41 | [表示](https://agentseal.org/mcp/https-githubcom-codelion-dynamic-shell-server) |
-| [unreal-api-mcp](https://github.com/Codeturion/unreal-api-mcp) | エージェントがUnreal Engineの公式ドキュメントを検索・取得できる読み取り専用リファレンスサーバー... | 93 ✅ | 40 | [表示](https://agentseal.org/mcp/https-githubcom-codeturion-unreal-api-mcp) |
-| [test-coverage-mcp](https://github.com/goldbergyoni/test-coverage-mcp) | コンテキストエンジニアリング: エージェントが🧪テストカバレッジに与える影響を認識... | 89 ✅ | 40 | [表示](https://agentseal.org/mcp/https-githubcom-goldbergyoni-test-coverage-mcp) |
-| [mcp-tasks](https://github.com/flesler/mcp-tasks) | マルチフォーマット対応の包括的で効率的なタスク管理MCPサーバー... | 91 ✅ | 39 | [表示](https://agentseal.org/mcp/https-githubcom-flesler-mcp-tasks) |
-| [anki-mcp](https://github.com/nietus/anki-mcp) | フラッシュカードの作成、更新、復習が可能なAnki管理サーバー... | 75 ⚠️ | 39 | [表示](https://agentseal.org/mcp/https-githubcom-nietus-anki-mcp) |
-| [mcp](https://github.com/screenshotone/mcp) | ScreenshotOne API向けMCPサーバーのシンプルな実装 | 88 ✅ | 35 | [表示](https://agentseal.org/mcp/https-githubcom-screenshotone-mcp) |
-| [package-registry-mcp](https://github.com/artmann/package-registry-mcp) | NPM、Cargo等のパッケージの最新情報を検索・取得するMCPサーバー... | 86 ✅ | 35 | [表示](https://agentseal.org/mcp/package-registry-mcp) |
-| [kilntainers](https://github.com/kiln-ai/kilntainers) | 各エージェントにシェルコマンド実行用のエフェメラルLinuxサンドボックスを提供するMCPサーバー... | 85 ✅ | 34 | [表示](https://agentseal.org/mcp/https-githubcom-kiln-ai-kilntainers) |
-| [actor-critic-thinking-mcp](https://github.com/aquarius-wing/actor-critic-thinking-mcp) | Model Context Protocol (MCP)ベースの二重視点思考分析サーバー... | 100 ✅ | 32 | [表示](https://agentseal.org/mcp/https-githubcom-aquarius-wing-actor-critic-thinking-mcp) |
-| [maven-mcp-server](https://github.com/Bigsy/maven-mcp-server) | Mavenの依存関係チェックツールを提供するMCP (Model Context Protocol)サーバー... | 92 ✅ | 31 | [表示](https://agentseal.org/mcp/https-githubcom-bigsy-maven-mcp-server) |
-| [PiloTY](https://github.com/yiwenlu66/PiloTY) | PiloTY: MCP経由のPTY操作用AIパイロット - AIエージェントがインタラクティブ端末を制御... | 74 ⚠️ | 30 | [表示](https://agentseal.org/mcp/https-githubcom-yiwenlu66-piloty) |
-| [splunk-mcp-server2](https://github.com/splunk/splunk-mcp-server2) | 非公式。Splunk MCPサーバー。PythonとTypeScript/JSで実装... | 86 ✅ | 29 | [表示](https://agentseal.org/mcp/https-githubcom-splunk-splunk-mcp-server2) |
-| [mcpcap](https://github.com/mcpcap/mcpcap) | 特化型アナライザーによるネットワークパケットキャプチャ分析用モジュラーPython MCPサーバー... | 75 ⚠️ | 28 | [表示](https://agentseal.org/mcp/https-githubcom-mcpcap-mcpcap) |
-| [mcp-simple-timeserver](https://github.com/andybrandt/mcp-simple-timeserver) | ローカル時間、NTP経由UTC、タイムゾーン変換を提供する時刻・日付ユーティリティMCPサーバー... | 92 ✅ | 27 | [表示](https://agentseal.org/mcp/https-githubcom-andybrandt-mcp-simple-timeserver) |
-| [gemini-cli-orchestrator](https://github.com/dnnyngyen/gemini-cli-orchestrator) | Claude CodeがGeminiを分析・コンテンツ生成にオーケストレートできるMCPサーバー... | 91 ✅ | 25 | [表示](https://agentseal.org/mcp/https-githubcom-dnnyngyen-gemini-cli-orchestrator) |
-| [ScreenshotMCP](https://github.com/upnorthmedia/ScreenshotMCP) | フル機能のWebサイトスクリーンショットキャプチャ用Model Context Protocol MCPサーバー... | 88 ✅ | 25 | [表示](https://agentseal.org/mcp/https-githubcom-upnorthmedia-screenshotmcp) |
-| [mcp-task-orchestrator](https://github.com/EchoingVesper/mcp-task-orchestrator) | タスクオーケストレーション機能を提供するModel Context Protocolサーバー... | 88 ✅ | 24 | [表示](https://agentseal.org/mcp/https-githubcom-echoingvesper-mcp-task-orchestrator) |
-| [code-memory](https://github.com/kapillamba4/code-memory) | ベクトル埋め込みによるコードベースのローカルセマンティック検索。テレメトリゼロ... | 72 ⚠️ | 24 | [表示](https://agentseal.org/mcp/https-githubcom-kapillamba4-code-memory) |
-| [anti-bullshit-mcp-server](https://github.com/bmorphism/anti-bullshit-mcp-server) | 主張の分析、情報源の検証、操作検出のためのMCPサーバー... | 92 ✅ | 23 | [表示](https://agentseal.org/mcp/https-githubcom-bmorphism-anti-bullshit-mcp-server) |
-| [blowback-context](https://github.com/esnark/blowback) | AIツールと統合するフロントエンド開発環境向けMCPサーバー... | 87 ✅ | 22 | [表示](https://agentseal.org/mcp/blowback-context) |
-| [create-mcp-ts](https://github.com/stephencme/create-mcp-ts) | TypeScriptで新しいMCPサーバーを作成。バッテリー付き。 | 91 ✅ | 21 | [表示](https://agentseal.org/mcp/https-githubcom-stephencme-create-mcp-ts) |
-| [mcpretentious](https://github.com/oetiker/mcpretentious) | iTerm2端末を操縦する強力なModel Context Protocol (MCP)サーバー。 | 88 ✅ | 21 | [表示](https://agentseal.org/mcp/https-githubcom-oetiker-mcpretentious) |
-| [securitycopilotmcpserver](https://github.com/jguimera/securitycopilotmcpserver) | Security Copilot、Sentinel等のツールと統合するMCPサーバー... | 82 ✅ | 20 | [表示](https://agentseal.org/mcp/https-githubcom-jguimera-securitycopilotmcpserver) |
-| [termlink](https://github.com/chu2bard/termlink) | シェルおよびターミナル操作用MCPサーバー | 91 ✅ | 19 | [表示](https://agentseal.org/mcp/https-githubcom-chu2bard-termlink) |
-| [hyperbolic-mcp](https://github.com/HyperbolicLabs/hyperbolic-mcp) | ClaudeがHyperbolicのGPUクラウドと対話し、GPU情報の表示等を行えるMCPサーバー... | 86 ✅ | 19 | [表示](https://agentseal.org/mcp/https-githubcom-hyperboliclabs-hyperbolic-mcp) |
-| [anki-connect-mcp](https://github.com/spacholski1225/anki-connect-mcp) | Anki Web向けカスタムModel Context Protocol (MCP)実装。シームレスな統合を実現... | 80 ⚠️ | 18 | [表示](https://agentseal.org/mcp/https-githubcom-spacholski1225-anki-connect-mcp) |
-| [alertmanager-mcp-server](https://github.com/ntk148v/alertmanager-mcp-server) | AIアシスタントがAlertmanagerと統合できるModel Context Protocol (MCP)サーバー... | 87 ✅ | 16 | [表示](https://agentseal.org/mcp/https-githubcom-ntk148v-alertmanager-mcp-server) |
-| [mcp_server_pcileech](https://github.com/evan7198/mcp_server_pcileech) | pcileechを使用して他のPCのメモリを読み書きするシンプルなMCPサーバー | 85 ✅ | 16 | [表示](https://agentseal.org/mcp/https-githubcom-evan7198-mcpserverpcileech) |
-| [Autogen_MCP](https://github.com/DynamicEndpoints/Autogen_MCP) | Microsoft AutoGenエージェントの作成・設定・実行を可能にするMCPサーバー... | 76 ⚠️ | 16 | [表示](https://agentseal.org/mcp/https-githubcom-dynamicendpoints-autogenmcp) |
-| [npm-search-mcp-server](https://github.com/btwiuse/npm-search-mcp-server) | npmパッケージ検索用MCPサーバー | 92 ✅ | 15 | [表示](https://agentseal.org/mcp/https-githubcom-btwiuse-npm-search-mcp-server) |
-| [android-mcp-server](https://github.com/jiantao88/android-mcp-server) | Android MCPサーバーの実装 | 87 ✅ | 15 | [表示](https://agentseal.org/mcp/https-githubcom-jiantao88-android-mcp-server) |
-| [networksdb-mcp](https://github.com/mordavid/networksdb-mcp) | NetworksDB APIの高速MCP統合 - IPアドレス、組織等の問い合わせ... | 86 ✅ | 15 | [表示](https://agentseal.org/mcp/https-githubcom-mordavid-networksdb-mcp) |
-| [context-crystallizer](https://github.com/hubertciebiada/context-crystallizer) | 大規模リポジトリをAI消費可能なナレッジベースに結晶化・変換... | 82 ✅ | 15 | [表示](https://agentseal.org/mcp/https-githubcom-hubertciebiada-context-crystallizer) |
-| [agentops-mcp](https://github.com/AgentOps-AI/agentops-mcp) | AgentOpsエージェントテレメトリを照会するMCPサーバー - APIキーで認可... | 96 ✅ | 14 | [表示](https://agentseal.org/mcp/https-githubcom-agentops-ai-agentops-mcp) |
-| [argus-mcp](https://github.com/lokafinnsw/argus-mcp) | ゼロトラストアプローチのAIコードレビューMCPサーバー。マルチモデル対応、キャッシュ... | 92 ✅ | 14 | [表示](https://agentseal.org/mcp/https-githubcom-lokafinnsw-argus-mcp) |
-| [mcp-time](https://github.com/TheoBrigitte/mcp-time) | 時刻の操作ユーティリティを提供するMCP (Model Context Protocol)サーバー... | 89 ✅ | 14 | [表示](https://agentseal.org/mcp/theofoobar-mcp-time) |
-| [currents-mcp](https://github.com/currents-dev/currents-mcp) | Currents MCPサーバー | 84 ✅ | 14 | [表示](https://agentseal.org/mcp/https-githubcom-currents-dev-currents-mcp) |
-| [domain-tools-mcp-server](https://github.com/deshabhishek007/domain-tools-mcp-server) | ドメインの包括的分析（WHOIS等）用Model Context Protocol (MCP)サーバー... | 92 ✅ | 13 | [表示](https://agentseal.org/mcp/https-githubcom-deshabhishek007-domain-tools-mcp-server) |
-| [riza-mcp](https://github.com/riza-io/riza-mcp) | Riza APIによるLLM生成コードの分離コードインタープリター。ツール管理付き... | 91 ✅ | 13 | [表示](https://agentseal.org/mcp/https-githubcom-riza-io-riza-mcp) |
-| [qrcode_mcp](https://github.com/2niuhe/qrcode_mcp) | QRコード生成用MCPツール | 91 ✅ | 12 | [表示](https://agentseal.org/mcp/https-githubcom-2niuhe-qrcodemcp) |
-| [d.i.e-mcp](https://github.com/lazy-importer/d.i.e-mcp) | DIE (Detect It Easy)用MCPサーバー | 92 ✅ | 11 | [表示](https://agentseal.org/mcp/https-githubcom-lazy-importer-die-mcp) |
-| [mcp-go-debugger](https://github.com/sunfmin/mcp-go-debugger) | MCPと統合されたGoデバッガー。起動、アタッチ、ブレークポイント設定が可能... | 88 ✅ | 11 | [表示](https://agentseal.org/mcp/https-githubcom-sunfmin-mcp-go-debugger) |
-| [teamcity-mcp](https://github.com/itcaat/teamcity-mcp) | TeamCity MCPサーバー | 86 ✅ | 11 | [表示](https://agentseal.org/mcp/https-githubcom-itcaat-teamcity-mcp) |
-| [kylas-crm-mcp-server](https://github.com/kylastech/kylas-crm-mcp-server) | Kylasの作成・更新・検索等を可能にするCRM統合サーバー... | 67 ⚠️ | 11 | [表示](https://agentseal.org/mcp/https-githubcom-kylastech-kylas-crm-mcp-server) |
-| [memory-mcp](https://github.com/chenxiaofie/memory-mcp) | メッセージのキャッシュ、タスクエピソード管理を行うローカル会話メモリシステム... | 91 ✅ | 10 | [表示](https://agentseal.org/mcp/https-githubcom-chenxiaofie-memory-mcp) |
-| [mcp-gitlab-jira](https://github.com/HainanZhao/mcp-gitlab-jira) | GitLabとJiraの統合MCPサーバー。AIエージェントがこれらのサービスと対話可能... | 92 ✅ | 9 | [表示](https://agentseal.org/mcp/mcp-gitlab-jira) |
-| [pyxel-mcp](https://github.com/kitao/pyxel-mcp) | Pyxelレトロゲームスクリプトを実行し、視覚・音声情報を提供するMCPサーバー... | 79 ⚠️ | 9 | [表示](https://agentseal.org/mcp/https-githubcom-kitao-pyxel-mcp) |
-| [mcp-agentic-framework](https://github.com/Piotr1215/mcp-agentic-framework) | AIエージェントの登録、発見、連携を可能にするマルチエージェント調整フレームワーク... | 78 ⚠️ | 9 | [表示](https://agentseal.org/mcp/https-githubcom-piotr1215-mcp-agentic-framework) |
-| [canvas-lms-mcp](https://github.com/ahnopologetic/canvas-lms-mcp) | AIシステムとCanvas LMSを橋渡しし、教育データへのアクセスを提供するMCPサーバー... | 89 ✅ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-ahnopologetic-canvas-lms-mcp) |
-| [mcp-project-manager](https://github.com/croffasia/mcp-project-manager) | 🚀 Model Context Protocol (MCP)による階層的タスク管理サーバー。作成... | 88 ✅ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-croffasia-mcp-project-manager) |
-| [mcp-server-adb](https://github.com/watabee/mcp-server-adb) | Android Debug Bridge (ADB)用MCPサーバー。ClaudeがAndroidデバイスと対話可能... | 87 ✅ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-watabee-mcp-server-adb) |
-| [piston-mcp](https://github.com/alvii147/piston-mcp) | Pistonリモートコード実行エンジンを使用して複数のプログラミング言語で任意のコードを実行... | 84 ✅ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-alvii147-piston-mcp) |
-| [sonatype-mcp](https://github.com/brianveltman/sonatype-mcp) | Sonatype Nexus Repository Manager用MCPサーバー | 84 ✅ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-brianveltman-sonatype-mcp) |
-| [skill-ninja-mcp-server](https://github.com/aktsmm/skill-ninja-mcp-server) | SKILL.mdファイルの検索・インストール・管理を行うエージェントスキルパッケージマネージャー... | 76 ⚠️ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-aktsmm-skill-ninja-mcp-server) |
-| [mcp-idb](https://github.com/noahlozevski/mcp-idb) | fb-idbブリッジ用MCPサーバー。 | 86 ✅ | 6 | [表示](https://agentseal.org/mcp/noahlozevski-mcp-idb) |
-| [spm-mcp](https://github.com/simpleswift/spm-mcp) | Swiftで書かれたSwift Package Manager MCPサーバー | 85 ✅ | 6 | [表示](https://agentseal.org/mcp/simpleswift-spm-mcp) |
-| [public-apis-mcp](https://github.com/zazencodes/public-apis-mcp) | MCPを使って無料APIを検索 | 85 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-zazencodes-public-apis-mcp) |
-| [reexpress_mcp_server](https://github.com/ReexpressAI/reexpress_mcp_server) | Reexpress Model-Context-Protocol (MCP)サーバー | 82 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-reexpressai-reexpressmcpserver) |
-| [mcpgex](https://github.com/patzedi/mcpgex) | 正規表現パターンの検索・テスト・改良用MCPサーバー | 92 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-patzedi-mcpgex) |
-| [mcp-sandbox](https://github.com/danstarns/mcp-sandbox) | 任意のJavaScriptモジュールを自動リフレクション付きサンドボックスMCPサーバーに変換... | 92 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-danstarns-mcp-sandbox) |
-| [mcp-grep](https://github.com/247arjun/mcp-grep) | grep CLIツールのMCPサーバーラッパー | 87 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-247arjun-mcp-grep) |
-| [log-analyzer-mcp](https://github.com/Fato07/log-analyzer-mcp) | 各種フォーマットのログファイルの解析・検索・デバッグ用MCPサーバー... | 81 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-fato07-log-analyzer-mcp) |
-| [time-mcp-pypi.git](https://github.com/domdomegg/time-mcp-pypi.git) | 現在のUTC日時を取得するツールを提供する最小限のPython MCPサーバー... | 92 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-domdomegg-time-mcp-pypigit) |
-| [sonarcloud-mcp](https://github.com/dozzman/sonarcloud-mcp) | 課題取得用sonarcloud/sonarqubeクラウドMCPサーバー | 92 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-dozzman-sonarcloud-mcp) |
-| [aria-validate-mcp-server](https://github.com/yamanoku/aria-validate-mcp-server) | ARIA（Accessible Rich Internet Applications）属性を検証するModel Context Protocolサーバー... | 92 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-yamanoku-aria-validate-mcp-server) |
-| [node-code-sandbox-mcp](https://github.com/mozicim/node-code-sandbox-mcp) | 🐢🚀 Node.jsサンドボックスMCPサーバー。MCPを実装するNode.jsサーバー... | 77 ⚠️ | 4 | [表示](https://agentseal.org/mcp/node-code-sandbox-mcp) |
-| [conan-mcp](https://github.com/conan-io/conan-mcp) | Conanパッケージマネージャー用Model Context Protocolサーバー。プロジェクト作成を実現... | 77 ⚠️ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-conan-io-conan-mcp) |
-| [mcp-refactoring.git](https://github.com/marshally/mcp-refactoring.git) | Fowlerスタイルのコードリファクタリングの一覧・プレビュー・適用が可能なMCPサーバー... | 92 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-marshally-mcp-refactoringgit) |
-| [mcp-postman](https://github.com/freebeiro/mcp-postman) | Postman統合用にCloudflare Workersで構築されたModel Context Protocol (MCP)サーバー... | 92 ✅ | 3 | [表示](https://agentseal.org/mcp/mcp-postman) |
-| [context-rot-detection](https://github.com/milos-product-maker/context-rot-detection) | AIエージェントに認知健全性のリアルタイム可視性を提供するMCPサービス... | 92 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-milos-product-maker-context-rot-detection) |
-| [cfr_mcp_server](https://github.com/mr-xn/cfr_mcp_server) | PythonベースのMCP (Model Context Protocol)サーバー実装。`cfr.jar`逆コンパイル機能をラップ... | 92 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-mr-xn-cfrmcpserver) |
-| [krs-poland-mcp-server](https://github.com/pkolawa/krs-poland-mcp-server) | ポーランドKRS公開API用MCPサーバー。 | 92 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-pkolawa-krs-poland-mcp-server) |
-| [mcp-ghidra5-windows](https://github.com/thestingr/mcp-ghidra5-windows) | 🏢 GPT-5搭載Ghidraリバースエンジニアリング用エンタープライズWindowsサービス... | 92 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-thestingr-mcp-ghidra5-windows) |
-| [math-mcp-learning-server](https://github.com/clouatre-labs/math-mcp-learning-server) | 算術、行列代数等17の数学ツールを備えた教育用MCPサーバー... | 84 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-clouatre-labs-math-mcp-learning-server) |
-| [mcp-relay](https://github.com/mhcoen/mcp-relay) | Claude DesktopとClaude Codeが不透明なメッセージを受け渡せるメッセージリレーバッファ... | 79 ⚠️ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-mhcoen-mcp-relay) |
-| [snowfakery-mcp](https://github.com/composable-delivery/snowfakery-mcp) | リアルなフェイクデータ生成ツールSnowfakeryをラップするMCPサーバー... | 76 ⚠️ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-composable-delivery-snowfakery-mcp) |
-| [memory-mcp](https://github.com/michael-denyer/memory-mcp) | 即時想起のためのホットキャッシュを備えたAIアシスタント向け永続メモリシステム... | 71 ⚠️ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-michael-denyer-memory-mcp) |
-| [selenium-selfhealing-mcp](https://github.com/aiqualitylab/selenium-selfhealing-mcp) | UI変更時に壊れたSeleniumテストロケーターを自動修正するMCPサーバー... | 92 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-aiqualitylab-selenium-selfhealing-mcp) |
-| [mcp-agile-luminary](https://github.com/AgileLuminary/mcp-agile-luminary) | Agile Luminaryプロジェクト管理アプリケーションと接続するMCPサーバー | 92 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-agileluminary-mcp-agile-luminary) |
-| [frida-mcp](https://github.com/rmorgans/frida-mcp) | AIシステムがアプリケーションを動的に計測・分析できるFrida用MCPサーバー... | 91 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-rmorgans-frida-mcp) |
-| [clix-mcp-server](https://github.com/clix-so/clix-mcp-server) | Clix MCPサーバーはAIエージェントにリアルタイムで信頼できるClixドキュメントを提供... | 89 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-clix-so-clix-mcp-server) |
-| [mcp-page-capture](https://github.com/chasesaurabh/mcp-page-capture) | Webページのスクリーンショットをキャプチャし、自動化用のMCP互換メタデータを返却... | 88 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-chasesaurabh-mcp-page-capture) |
-| [ctfd-mcp-server](https://github.com/mrjamescot/ctfd-mcp-server) | AIエージェントとCTFdインスタンスを接続するMCP設定。 | 88 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-mrjamescot-ctfd-mcp-server) |
-| [coderide-mcp](https://github.com/PixdataOrg/coderide-mcp) | AIコーディングエージェント向けプロジェクト・タスク管理MCPサーバー。取得を実現... | 85 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-pixdataorg-coderide-mcp) |
-| [github-projects-mcp](https://github.com/redducklabs/github-projects-mcp) | GitHub GraphQL APIをラップしたGitHub Projects v2管理サーバー... | 82 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-redducklabs-github-projects-mcp) |
-| [tools](https://github.com/the-basilisk-ai/squad-mcp) | ClaudeやCursorと統合するAI搭載プロダクト発見・戦略プラットフォーム... | 81 ✅ | 2 | [表示](https://agentseal.org/mcp/squadai-tools) |
-| [xctools-mcp-server](https://github.com/nzrsky/xctools-mcp-server) | 各種Xcode関連ツール用のModel Context Protocolサーバー | 81 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-nzrsky-xctools-mcp-server) |
-| [terminal-mcp](https://github.com/mkpvishnu/terminal-mcp) | インタラクティブなターミナルセッション用MCPサーバー: SSH、REPL、データベースCLI等... | 81 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-mkpvishnu-terminal-mcp) |
-| [agentic-store-mcp](https://github.com/agenticstore/agentic-store-mcp) | AgenticStoreの無料オープンソースMCPツールでAIエージェントに超能力を... | 75 ⚠️ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-agenticstore-agentic-store-mcp) |
-| [physbound](https://github.com/JonesRobM/physbound) | リンクバジェット、Shannon-Hartley容量等を計算するRF/物理検証MCPサーバー... | 100 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-jonesrobm-physbound) |
-| [char-index-mcp](https://github.com/agent-hanju/char-index-mcp) | 検索、分割、挿入等を提供する純粋な文字列/文字インデックス操作ライブラリ... | 97 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-agent-hanju-char-index-mcp) |
-| [M365-roadmap-mcp-server](https://github.com/jonnybottles/M365-roadmap-mcp-server) | AIエージェントがMicrosoft 365ロードマップをプログラムで照会できるPython MCPサーバー... | 87 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-jonnybottles-m365-roadmap-mcp-server) |
-| [meta-prompt-mcp](https://github.com/kapillamba4/meta-prompt-mcp) | GoogleとAnthropicの公式プロンプティングガイドを取得するリファレンスサーバー... | 84 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-kapillamba4-meta-prompt-mcp) |
-| [mcp-autogen-doc](https://github.com/sykuang/mcp-autogen-doc) | AIアシスタントにドキュメント自動生成機能を提供するModel Context Protocol (MCP)サーバー... | 84 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-sykuang-mcp-autogen-doc) |
-| [nativ-mcp](https://github.com/Nativ-Technologies/nativ-mcp) | ブランドボイスを尊重しながらコンテンツを翻訳するAI搭載ローカライゼーションMCPサーバー... | 84 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-nativ-technologies-nativ-mcp) |
-| [simctl-mcp-server](https://github.com/nzrsky/simctl-mcp-server) | iOS simctl MCPサーバー | 79 ⚠️ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-nzrsky-simctl-mcp-server) |
-| [cowork-history](https://github.com/egoughnour/cowork-history) | BM25検索でClaude会話履歴をインデックス・検索するローカルMCPサーバー... | 76 ⚠️ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-egoughnour-cowork-history) |
-| [dbgprobe-mcp-server.git](https://github.com/es617/dbgprobe-mcp-server.git) | ハードウェアデバッグプローブによるAI支援組み込みシステムデバッグ用MCPサーバー... | 75 ⚠️ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-es617-dbgprobe-mcp-servergit) |
-| [algora-mcp-server](https://github.com/idapixl/algora-mcp-server) | オープンソースバウンティの閲覧・検索・統計取得用読み取り専用MCPサーバー... | 100 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-idapixl-algora-mcp-server) |
-| [heatpump-mcp-server](https://github.com/jiweiqi/heatpump-mcp-server) | ヒートポンプシステムのサイジング、比較、評価を支援するMCPサーバー... | 100 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-jiweiqi-heatpump-mcp-server) |
-| [fabric-mcp-server](https://github.com/adapoet/fabric-mcp-server) | ユーザーの入力に最適なFabricパターンを推薦するFabric AIパターン推薦サーバー... | 100 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-adapoet-fabric-mcp-server) |
-| [time-node-mcp](https://github.com/davidan90/time-node-mcp) | タイムゾーン対応の日時ユーティリティを提供するNode.js MCPサーバー... | 100 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-davidan90-time-node-mcp) |
-| [chrono-mcp](https://github.com/JMoak/chrono-mcp) | 現在時刻の取得とタイムゾーン間の変換を行う時刻・タイムゾーンユーティリティMCPサーバー... | 100 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-jmoak-chrono-mcp) |
-| [crash-mcp](https://github.com/nikkoxgonzales/crash-mcp) | AIエージェントが複雑な問題を段階的に分解するための構造化推論ステップトラッカー... | 100 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-nikkoxgonzales-crash-mcp) |
-| [devops-practices](https://github.com/ai-4-devops/devops-practices) | DevOpsプラクティスドキュメントとフレームワークを提供する読み取り専用ナレッジベースサーバー... | 99 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-ai-4-devops-devops-practices) |
-| [mcp-domain-availability](https://github.com/imprvhub/mcp-domain-availability) | 単一のクエリツールでドメイン名の空き状況を確認するMCPサーバー。 | 99 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-imprvhub-mcp-domain-availability) |
-| [mcp_server_notify](https://github.com/Cactusinhand/mcp_server_notify) | オプションのサウンドと設定可能なタイムアウト付きでシステムデスクトップ通知を送信。 | 98 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-cactusinhand-mcpservernotify) |
-| [agent-domain-service-mcp](https://github.com/gregm711/agent-domain-service-mcp) | ドメイン名の空き状況確認、TLDバリエーションの探索等を行うMCPサーバー... | 98 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-gregm711-agent-domain-service-mcp) |
-| [Clojars-MCP-Server](https://github.com/Bigsy/Clojars-MCP-Server) | Clojars Maven/Clojureパッケージレジストリから依存関係バージョンを取得... | 98 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-bigsy-clojars-mcp-server) |
-| [zoho-crm-mcp-server](https://github.com/asklokesh/zoho-crm-mcp-server) | リード、連絡先等の読み書きアクセスを提供するZoho CRM MCPサーバー... | 98 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-asklokesh-zoho-crm-mcp-server) |
-| [code-context-provider-mcp](https://github.com/AB498/code-context-provider-mcp) | ファイルツリーを含むローカルプロジェクトディレクトリの構造概要を提供... | 97 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-ab498-code-context-provider-mcp) |
-| [gotohuman-mcp-server](https://github.com/gotohuman/gotohuman-mcp-server) | レビューフォームの一覧表示、詳細取得等によりAIから人間へのレビュー引き継ぎを促進... | 96 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-gotohuman-gotohuman-mcp-server) |
-| [guidance-lark-mcp](https://github.com/guidance-ai/guidance-lark-mcp) | llguidance/Lark文法の検証、バッチパーステストの実行等を行うMCPサーバー... | 96 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-guidance-ai-guidance-lark-mcp) |
-| [mcp-server-calculator](https://github.com/githejie/mcp-server-calculator) | 数式評価用の単一ツールを公開する最小限のMCPサーバー... | 95 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-githejie-mcp-server-calculator) |
-| [stella-mcp](https://github.com/bradleylab/stella-mcp) | Stella XMILEシステムダイナミクスシミュレーションの構築・実行用MCPサーバー... | 93 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-bradleylab-stella-mcp) |
-| [mcp-server-r-counter](https://github.com/guanqun-yang/mcp-server-r-counter) | 入力文字列中の'R'または'r'の出現回数をカウント。 | 93 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-guanqun-yang-mcp-server-r-counter) |
-| [excel-to-json-mcp](https://github.com/he-yang/excel-to-json-mcp) | Excel (.xlsx)ファイルとCSV/タブ区切りデータを2つのツールでJSONに変換... | 92 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-he-yang-excel-to-json-mcp) |
-| [mcp-files](https://github.com/flesler/mcp-files) | コードシンボル抽出、精密な行編集等を提供する開発者向けMCPサーバー... | 92 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-flesler-mcp-files) |
-| [excalidraw-architect-mcp](https://github.com/BV-Venky/excalidraw-architect-mcp) | Excalidraw (.excalidraw)図面ファイルの生成・編集を行うMCPサーバー... | 92 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-bv-venky-excalidraw-architect-mcp) |
-| [drand-mcp-server](https://github.com/randa-mu/drand-mcp-server) | AIアプリ向けにdrandネットワークから検証可能なランダム性を提供するMCPサーバー... | 92 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-randa-mu-drand-mcp-server) |
-| [time-mcp-server](https://github.com/lchinglen/time-mcp-server) | IANAタイムゾーン対応の時刻・タイムゾーン変換機能を提供するMCPサーバー... | 92 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-lchinglen-time-mcp-server) |
-| [mcp-enhance-prompt](https://github.com/FelixFoster/mcp-enhance-prompt) | 最小限のユーザー入力を豊かで構造化されたプロンプトに書き換えるMCPサーバー... | 91 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-felixfoster-mcp-enhance-prompt) |
-| [mcp-server-spira](https://github.com/Inflectra/mcp-server-spira) | Inflectra SpiraTeam/SpiraPlanのALMデータへの読み取りアクセスを提供するMCPサーバー... | 90 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-inflectra-mcp-server-spira) |
-| [mcp-EDA](https://github.com/NellyW8/mcp-EDA) | Verilog合成（Yosys）、シミュレーション等を可能にするEDAツールチェーンMCPサーバー... | 87 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-nellyw8-mcp-eda) |
-| [godot-mcp](https://github.com/Coding-Solo/godot-mcp) | エディタの起動、プロジェクトの実行等を行えるGodotゲームエンジン統合サーバー... | 86 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-coding-solo-godot-mcp) |
-| [bruno-mcp](https://github.com/hungthai1401/bruno-mcp) | Bruno CLIを介してBruno APIコレクションを実行し、HTTP APIテストを実現... | 86 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-hungthai1401-bruno-mcp) |
-| [callout](https://github.com/fantasieleven-code/callout) | ソロ/初期段階のビルダー向けAI共同創業者アシスタント。マルチ視点を提供... | 86 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-fantasieleven-code-callout) |
-| [comet-mcp](https://github.com/hanzili/comet-mcp) | Comet/Perplexityブラウザインスタンスを制御してエージェントWebブラウジングを実行... | 85 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-hanzili-comet-mcp) |
-| [mcp-google-search-console](https://github.com/crunchtools/mcp-google-search-console) | Google Search Console APIをラップして検索分析を照会するMCPサーバー... | 84 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-google-search-console) |
-| [jupytercad-mcp](https://github.com/asmith26/jupytercad-mcp) | AI駆動の3D CADモデル作成・編集を可能にするJupyterCAD MCPサーバー... | 83 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-asmith26-jupytercad-mcp) |
-| [frontend-design-loop-mcp](https://github.com/alexalexalex222/frontend-design-loop-mcp) | フロントエンドデザインの生成・評価・最適化を行うAI駆動自動化ツール... | 83 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-alexalexalex222-frontend-design-loop-mcp) |
-| [mcp-azure-devops](https://github.com/Vortiago/mcp-azure-devops) | Azure DevOpsのワークアイテム、チーム等への完全CRUDアクセスを提供するMCPサーバー... | 83 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-vortiago-mcp-azure-devops) |
-| [mcp-server](https://github.com/lilo-property/mcp-server) | AIエージェント向けバケーションレンタルの予約・保護 | 83 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-lilo-property-mcp-server) |
-| [mcp-devcontainers](https://github.com/AI-QL/mcp-devcontainers) | 開始、停止等を含むVS Code devcontainerのライフサイクル操作を管理... | 82 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-ai-ql-mcp-devcontainers) |
-| [postmancer](https://github.com/hijaz/postmancer) | 任意のHTTPリクエストを送信できるHTTP APIテストクライアント（Postmanスタイル）... | 80 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-hijaz-postmancer) |
-| [code-screenshot-mcp](https://github.com/MoussaabBadla/code-screenshot-mcp) | コードからシンタックスハイライト付きスクリーンショット画像を生成するMCPサーバー... | 80 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-moussaabbadla-code-screenshot-mcp) |
-| [mcp-internet-speed-test](https://github.com/inventer-dev/mcp-internet-speed-test) | ネットワークパフォーマンス指標（ダウンロード/アップロード速度）を測定するMCPサーバー... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-inventer-dev-mcp-internet-speed-test) |
-| [MCP](https://github.com/akshaykylas94/MCP) | 営業リードの作成・検索・フィルタリングツールを提供するKylas CRM MCPサーバー... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-akshaykylas94-mcp) |
-| [mathematica-mcp](https://github.com/lars20070/mathematica-mcp) | 任意のWolfram Language式を評価するMathematica/Wolfram Engine MCPサーバー... | 76 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-lars20070-mathematica-mcp) |
-| [gemini-bridge](https://github.com/eLyiN/gemini-bridge) | エージェントのクエリと任意のローカルファイル内容をGeminiに転送するブリッジMCPサーバー... | 74 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-elyin-gemini-bridge) |
-| [blender-mcp](https://github.com/pranav-deshmukh/blender-mcp) | エージェントがPython経由で3DソフトウェアBlenderを制御できる自動化サーバー... | 74 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-pranav-deshmukh-blender-mcp) |
-| [curate-ipsum](https://github.com/egoughnour/curate-ipsum) | ミューテーションテスト・プログラム合成プラットフォーム。ユニット/統合テストを実行... | 73 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-egoughnour-curate-ipsum) |
-| [mcp-python-exec-sandbox](https://github.com/lu-zhengda/mcp-python-exec-sandbox) | PEP 723による自動依存管理付きPythonコード実行サーバー... | 72 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-lu-zhengda-mcp-python-exec-sandbox) |
-| [firefox-devtools-mcp](https://github.com/freema/firefox-devtools-mcp) | タブ管理、DOM操作等を提供するFirefoxブラウザ自動化MCPサーバー... | 70 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-freema-firefox-devtools-mcp) |
-| [massive-context-mcp](https://github.com/egoughnour/massive-context-mcp) | 大規模コンテキストの読み込み、チャンク化、フィルタリング、処理を行う再帰的サーバー... | 69 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-egoughnour-massive-context-mcp) |
-| [mcp-gitlab](https://github.com/crunchtools/mcp-gitlab) | プロジェクト、リポジトリ等への完全APIアクセスを提供する包括的GitLab MCPサーバー... | 68 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-gitlab) |
+| [markitdown](https://github.com/microsoft/markitdown) | Python tool for converting files and office documents to Markdown. | 88 ✅ | 90.7k | [表示](https://agentseal.org/mcp/https-githubcom-microsoft-markitdown) |
+| [chrome-devtools-mcp](https://github.com/chromedevtools/chrome-devtools-mcp) | Chrome DevTools for coding agents | 73 ⚠️ | 28.8k | [表示](https://agentseal.org/mcp/chrome-devtools-mcp) |
+| [Playwright](https://github.com/microsoft/playwright-mcp) | Automates browser interactions for Large Language Models (LLMs) using Playwri... | 62 ⚠️ | 28.7k | [表示](https://agentseal.org/mcp/https-githubcom-microsoft-playwright-mcp) |
+| [GitHub](https://github.com/github/github-mcp-server) | Enables advanced automation and interaction capabilities with GitHub APIs for... | 70 ⚠️ | 27.8k | [表示](https://agentseal.org/mcp/https-githubcom-github-github-mcp-server) |
+| [claude-flow](https://github.com/ruvnet/claude-flow) | Enterprise AI orchestration platform for deploying multi-agent swarms with se... | 86 ✅ | 20.9k | [表示](https://agentseal.org/mcp/https-githubcom-ruvnet-claude-flow) |
+| [beads](https://github.com/steveyegge/beads) | Beads - A memory upgrade for your coding agent | 86 ✅ | 18.9k | [表示](https://agentseal.org/mcp/https-githubcom-steveyegge-beads) |
+| [n8n-mcp](https://github.com/czlonkowski/n8n-mcp) | MCP server providing AI assistants comprehensive access to n8n's 1,084+ workf... | 92 ✅ | 15.1k | [表示](https://agentseal.org/mcp/n8n-mcp) |
+| [archon](https://github.com/coleam00/archon) | Beta release of Archon OS - the knowledge and task management backbone for AI... | 92 ✅ | 13.8k | [表示](https://agentseal.org/mcp/https-githubcom-coleam00-archon) |
+| [mcp-go](https://github.com/mark3labs/mcp-go) | A Go implementation of the Model Context Protocol (MCP), enabling seamless in... | 89 ✅ | 8.3k | [表示](https://agentseal.org/mcp/https-githubcom-mark3labs-mcp-go) |
+| [git-mcp](https://github.com/idosal/git-mcp) | Put an end to code hallucinations! GitMCP is a free, open-source, remote MCP ... | 78 ⚠️ | 7.8k | [表示](https://agentseal.org/mcp/git-mcp) |
+| [browser-tools-mcp](https://github.com/agentdeskai/browser-tools-mcp) | Monitor browser logs directly from Cursor and other MCP compatible IDEs. | 91 ✅ | 7.1k | [表示](https://agentseal.org/mcp/https-githubcom-agentdeskai-browser-tools-mcp) |
+| [cursor-talk-to-figma-mcp](https://github.com/sonnylazuardi/cursor-talk-to-figma-mcp) | MCP integration enabling AI agents like Cursor and Claude Code to read and mo... | 88 ✅ | 6.5k | [表示](https://agentseal.org/mcp/https-githubcom-sonnylazuardi-cursor-talk-to-figma-mcp) |
+| [cursor-talk-to-figma-mcp](https://github.com/grab/cursor-talk-to-figma-mcp) | TalkToFigma: MCP integration between AI Agent (Cursor, Claude Code) and Figma... | 88 ✅ | 6.5k | [表示](https://agentseal.org/mcp/https-githubcom-grab-cursor-talk-to-figma-mcp) |
+| [ida-pro-mcp](https://github.com/mrexodia/ida-pro-mcp) | AI-powered reverse engineering assistant that bridges IDA Pro with language m... | 88 ✅ | 6.3k | [表示](https://agentseal.org/mcp/ida-pro-mcp) |
+| [mcp](https://github.com/browsermcp/mcp) | Browser MCP is a Model Context Provider (MCP) server that allows AI applicati... | 86 ✅ | 6.0k | [表示](https://agentseal.org/mcp/browsermcp-mcp) |
+| [desktopcommandermcp](https://github.com/wonderwhy-er/desktopcommandermcp) | This is MCP server for Claude that gives it terminal control, file system sea... | 63 ⚠️ | 5.7k | [表示](https://agentseal.org/mcp/https-githubcom-wonderwhy-er-desktopcommandermcp) |
+| [klavis](https://github.com/klavis-ai/klavis) | Klavis AI (YC X25):  MCP integration platforms that let AI agents use tools r... | 68 ⚠️ | 5.7k | [表示](https://agentseal.org/mcp/https-githubcom-klavis-ai-klavis) |
+| [praisonai](https://github.com/mervinpraison/praisonai) | PraisonAI 🦞 - Your 24/7 AI employee team. Automate and solve complex challeng... | 78 ⚠️ | 5.7k | [表示](https://agentseal.org/mcp/https-githubcom-mervinpraison-praisonai) |
+| [playwright-mcp-server](https://github.com/executeautomation/mcp-playwright) | Playwright Model Context Protocol Server - Tool to automate Browsers and APIs... | 73 ⚠️ | 5.3k | [表示](https://agentseal.org/mcp/executeautomation-playwright-mcp-server) |
+| [magic](https://github.com/21st-dev/magic-mcp) | It's like v0 but in your Cursor/WindSurf/Cline. 21st dev Magic MCP server for... | 82 ✅ | 4.4k | [表示](https://agentseal.org/mcp/21st-dev-magic) |
+| [osaurus](https://github.com/osaurus-ai/osaurus) | Own your AI. The native macOS harness for AI agents -- any model, persistent ... | 79 ⚠️ | 4.1k | [表示](https://agentseal.org/mcp/osaurus-ai-osaurus) |
+| [context-mode](https://github.com/mksglu/context-mode) | MCP is the protocol for tool access. We're the virtualization layer for context. | 78 ⚠️ | 3.7k | [表示](https://agentseal.org/mcp/https-githubcom-mksglu-context-mode) |
+| [mcp-feedback-enhanced](https://github.com/minidoracat/mcp-feedback-enhanced) | Enhanced MCP server for interactive user feedback and command execution in AI... | 91 ✅ | 3.6k | [表示](https://agentseal.org/mcp/https-githubcom-minidoracat-mcp-feedback-enhanced) |
+| [archestra](https://github.com/archestra-ai/archestra) | Enterprise AI Platform with guardrails, MCP registry, gateway & orchestrator | 92 ✅ | 3.5k | [表示](https://agentseal.org/mcp/https-githubcom-archestra-ai-archestra) |
+| [refact-chat-js](https://github.com/smallcloudai/refact) | AI Agent that handles engineering tasks end-to-end: integrates with developer... | 92 ✅ | 3.5k | [表示](https://agentseal.org/mcp/refact-chat-js) |
+| [apple-mcp](https://github.com/dhravya/apple-mcp) | Apple-native MCP server integrating Mac apps like Messages, Notes, Contacts, ... | 81 ✅ | 3.0k | [表示](https://agentseal.org/mcp/apple-mcp) |
+| [shadcn-ui-mcp-server](https://github.com/jpisnice/shadcn-ui-mcp-server) | A mcp server to allow LLMS gain context about shadcn ui component structure,u... | 83 ✅ | 2.7k | [表示](https://agentseal.org/mcp/jpisnice-shadcn-ui-mcp-server) |
+| [godot-mcp](https://github.com/Coding-Solo/godot-mcp) | A Godot game engine integration server that allows launching the editor, runn... | 86 ✅ | 2.3k | [表示](https://agentseal.org/mcp/https-githubcom-coding-solo-godot-mcp) |
+| [mcp-cli](https://github.com/chrishayuk/mcp-cli) | Command-line interface for interacting with Model Context Protocol servers, e... | 92 ✅ | 1.9k | [表示](https://agentseal.org/mcp/https-githubcom-chrishayuk-mcp-cli) |
+| [ios-simulator-mcp](https://github.com/joshuayoes/ios-simulator-mcp) | MCP server for interacting with the iOS simulator | 91 ✅ | 1.7k | [表示](https://agentseal.org/mcp/https-githubcom-joshuayoes-ios-simulator-mcp) |
+| [codemcp](https://github.com/ezyang/codemcp) | MCP server enabling Claude Desktop to function as a pair programming assistan... | 72 ⚠️ | 1.6k | [表示](https://agentseal.org/mcp/https-githubcom-ezyang-codemcp) |
+| [mcptools](https://github.com/f/mcptools) | A command-line interface for discovering, calling, and managing MCP servers w... | 92 ✅ | 1.5k | [表示](https://agentseal.org/mcp/https-githubcom-f-mcptools) |
+| [mcp-installer](https://github.com/anaisbetts/mcp-installer) | An MCP server that installs other MCP servers for you | 89 ✅ | 1.5k | [表示](https://agentseal.org/mcp/anaisbetts-mcp-installer) |
+| [notebooklm-mcp](https://github.com/pleaseprompto/notebooklm-mcp) | MCP server for NotebookLM - Let your AI agents (Claude Code, Codex) research ... | 73 ⚠️ | 1.4k | [表示](https://agentseal.org/mcp/https-githubcom-pleaseprompto-notebooklm-mcp) |
+| [agent-toolkit](https://github.com/stripe/agent-toolkit) | Stripe Agent Toolkit integrates Stripe APIs with LLMs and agent frameworks th... | 92 ✅ | 1.4k | [表示](https://agentseal.org/mcp/https-githubcom-stripe-agent-toolkit) |
+| [chunkhound](https://github.com/ofriw/chunkhound) | An MCP server providing semantic code search and analysis. ChunkHound researc... | 83 ✅ | 1.1k | [表示](https://agentseal.org/mcp/https-githubcom-ofriw-chunkhound) |
+| [coderunner](https://github.com/instavm/coderunner) | A local sandbox for your AI agents | 80 ⚠️ | 801 | [表示](https://agentseal.org/mcp/https-githubcom-instavm-coderunner) |
+| [vibetest-use](https://github.com/browser-use/vibetest-use) | Vibetest MCP - automated QA testing using Browser-Use agents | 87 ✅ | 772 | [表示](https://agentseal.org/mcp/https-githubcom-browser-use-vibetest-use) |
+| [driftdetect-mcp](https://github.com/dadbodgeoff/drift) | Codebase intelligence for AI. Detects patterns & conventions + remembers deci... | 85 ✅ | 760 | [表示](https://agentseal.org/mcp/driftdetect-mcp) |
+| [just-prompt](https://github.com/disler/just-prompt) | just-prompt is an MCP server that provides a unified interface to top LLM pro... | 89 ✅ | 719 | [表示](https://agentseal.org/mcp/https-githubcom-disler-just-prompt) |
+| [blueprint-mcp](https://github.com/arcadeai/blueprint-mcp) | Diagram generation for understanding codebases and system architecture using ... | 92 ✅ | 585 | [表示](https://agentseal.org/mcp/https-githubcom-arcadeai-blueprint-mcp) |
+| [dbt-mcp](https://github.com/dbt-labs/dbt-mcp) | An MCP server providing tools for AI agents to interact with dbt projects, in... | 85 ✅ | 507 | [表示](https://agentseal.org/mcp/https-githubcom-dbt-labs-dbt-mcp) |
+| [n8n-workflow-builder](https://github.com/makafeli/n8n-workflow-builder) | AI assistant integration for n8n workflow automation through Model Context Pr... | 87 ✅ | 501 | [表示](https://agentseal.org/mcp/https-githubcom-makafeli-n8n-workflow-builder) |
+| [web-agent-protocol](https://github.com/ota-tech-ai/web-agent-protocol) | 🌐Web Agent Protocol (WAP) - Record and replay user interactions in the browse... | 92 ✅ | 493 | [表示](https://agentseal.org/mcp/https-githubcom-ota-tech-ai-web-agent-protocol) |
+| [airtable-mcp-server](https://github.com/domdomegg/airtable-mcp-server) | 🗂️🤖 Airtable Model Context Protocol Server, for allowing AI systems to intera... | 81 ✅ | 430 | [表示](https://agentseal.org/mcp/https-githubcom-domdomegg-airtable-mcp-server) |
+| [kicad-mcp](https://github.com/lamaalrajih/kicad-mcp) | Model Context Protocol server for KiCad on Mac, Windows, and Linux | 92 ✅ | 401 | [表示](https://agentseal.org/mcp/https-githubcom-lamaalrajih-kicad-mcp) |
+| [lingti-bot](https://github.com/ruilisi/lingti-bot) | 🐕⚡「极简至上 效率为王 秒级接入 一链即用」的 AI Bot | 75 ⚠️ | 368 | [表示](https://agentseal.org/mcp/https-githubcom-ruilisi-lingti-bot) |
+| [revit-mcp](https://github.com/revit-mcp/revit-mcp) | AI-powered MCP server enabling Claude and other AI clients to interact with R... | 78 ⚠️ | 362 | [表示](https://agentseal.org/mcp/https-githubcom-revit-mcp-revit-mcp) |
+| [chat](https://github.com/deco-cx/chat) | Open-source control plane for AI agents. Connect tools, hire agents, organize... | 77 ⚠️ | 350 | [表示](https://agentseal.org/mcp/https-githubcom-deco-cx-chat) |
+| [MemoryMesh](https://github.com/CheMiguel23/MemoryMesh) | A knowledge graph server that uses the Model Context Protocol (MCP) to provid... | 81 ✅ | 335 | [表示](https://agentseal.org/mcp/https-githubcom-chemiguel23-memorymesh) |
+| [paws-on-mcp](https://github.com/hemanth/paws-on-mcp) | A comprehensive Model Context Protocol (MCP) server implementing the latest s... | 86 ✅ | 331 | [表示](https://agentseal.org/mcp/https-githubcom-hemanth-paws-on-mcp) |
+| [moling](https://github.com/gojue/moling) | MoLing is a computer-use and browser-use based MCP server. It is a locally de... | 78 ⚠️ | 330 | [表示](https://agentseal.org/mcp/https-githubcom-gojue-moling) |
+| [mcp-claude-code](https://github.com/sdglbl/mcp-claude-code) | MCP server implementing Claude Code capabilities for code analysis, file modi... | 63 ⚠️ | 298 | [表示](https://agentseal.org/mcp/https-githubcom-sdglbl-mcp-claude-code) |
+| [consult7](https://github.com/szeider/consult7) | MCP server to consult a language model with large context size | 85 ✅ | 291 | [表示](https://agentseal.org/mcp/https-githubcom-szeider-consult7) |
+| [chrome-devtools-mcp](https://github.com/benjaminr/chrome-devtools-mcp) | An MCP Server for Chrome DevTools, following the Chrome DevTools Protocol. In... | 74 ⚠️ | 289 | [表示](https://agentseal.org/mcp/https-githubcom-benjaminr-chrome-devtools-mcp) |
+| [FileScopeMCP](https://github.com/admica/FileScopeMCP) | Analyzes your codebase identifying important files based on dependency relati... | 82 ✅ | 283 | [表示](https://agentseal.org/mcp/https-githubcom-admica-filescopemcp) |
+| [MCP-Server-Playwright](https://github.com/Automata-Labs-team/MCP-Server-Playwright) | A Playwright-based browser automation MCP server that provides full remote co... | 74 ⚠️ | 283 | [表示](https://agentseal.org/mcp/https-githubcom-automata-labs-team-mcp-server-playwright) |
+| [mcp-reasoner](https://github.com/jacck/mcp-reasoner) | A systematic reasoning MCP server implementation for Claude Desktop with beam... | 92 ✅ | 277 | [表示](https://agentseal.org/mcp/https-githubcom-jacck-mcp-reasoner) |
+| [lucid](https://github.com/get-lucid/lucid) | An intelligence layer grounding autonomous agents in verified, real-time know... | 92 ✅ | 260 | [表示](https://agentseal.org/mcp/https-githubcom-get-lucid-lucid) |
+| [weather-mcp-server](https://github.com/tuankiri/weather-mcp-server) | An MCP server enabling AI assistants to retrieve real-time weather data for a... | 92 ✅ | 239 | [表示](https://agentseal.org/mcp/https-githubcom-tuankiri-weather-mcp-server) |
+| [claude_code-gemini-mcp](https://github.com/raiansar/claude_code-gemini-mcp) | Connect Claude Code with Google's Gemini AI for code reviews, questions, and ... | 86 ✅ | 239 | [表示](https://agentseal.org/mcp/https-githubcom-raiansar-claudecode-gemini-mcp) |
+| [frida-mcp](https://github.com/dnakov/frida-mcp) | MCP stdio server for frida | 91 ✅ | 237 | [表示](https://agentseal.org/mcp/https-githubcom-dnakov-frida-mcp) |
+| [tmux-mcp](https://github.com/nickgnd/tmux-mcp) | A MCP server for our beloved terminal multiplexer tmux. | 83 ✅ | 235 | [表示](https://agentseal.org/mcp/tmux-mcp) |
+| [tmux-mcp](https://github.com/nickgnd/tmux-mcp) | A MCP server for our beloved terminal multiplexer tmux. | 83 ✅ | 235 | [表示](https://agentseal.org/mcp/https-githubcom-nickgnd-tmux-mcp) |
+| [mcp_omni_connect](https://github.com/abiorh001/mcp_omni_connect) | Production-ready Python framework for building autonomous AI agents with plug... | 77 ⚠️ | 232 | [表示](https://agentseal.org/mcp/https-githubcom-abiorh001-mcpomniconnect) |
+| [overseer](https://github.com/dmmulroy/overseer) | CLI & Codemode MCP server for agent task management | 92 ✅ | 222 | [表示](https://agentseal.org/mcp/https-githubcom-dmmulroy-overseer) |
+| [image-gen-server](https://github.com/fengin/image-gen-server) | MCP server for Cursor IDE that generates images from text descriptions using ... | 92 ✅ | 219 | [表示](https://agentseal.org/mcp/https-githubcom-fengin-image-gen-server) |
+| [mcp-taskmanager](https://github.com/kazuph/mcp-taskmanager) | An MCP server that enables Claude to manage and execute tasks in a queue-base... | 91 ✅ | 212 | [表示](https://agentseal.org/mcp/kazuph-mcp-taskmanager) |
+| [opik-mcp](https://github.com/comet-ml/opik-mcp) | Model Context Protocol (MCP) implementation for Opik enabling seamless IDE in... | 92 ✅ | 199 | [表示](https://agentseal.org/mcp/https-githubcom-comet-ml-opik-mcp) |
+| [mcp](https://github.com/sveltejs/mcp) | Official Svelte MCP server enabling AI agents to interact with Svelte project... | 89 ✅ | 193 | [表示](https://agentseal.org/mcp/https-githubcom-sveltejs-mcp) |
+| [facebook-ads-library-mcp](https://github.com/trypeggy/facebook-ads-library-mcp) | MCP server for searching and analyzing Facebook's public ads library. Get ins... | 90 ✅ | 192 | [表示](https://agentseal.org/mcp/https-githubcom-trypeggy-facebook-ads-library-mcp) |
+| [@rocketshipai](https://github.com/rocketship-ai/rocketship) | Open-source QA testing framework that enables coding agents to write and run ... | 92 ✅ | 182 | [表示](https://agentseal.org/mcp/rocketshipai) |
+| [anki-mcp-server](https://github.com/scorzeth/anki-mcp-server) | An MCP server that integrates with the local Anki flashcard application, enab... | 98 ✅ | 178 | [表示](https://agentseal.org/mcp/https-githubcom-scorzeth-anki-mcp-server) |
+| [playwright-plus-python-mcp](https://github.com/blackwhite084/playwright-plus-python-mcp) | MCP server for Playwright browser automation. Navigate websites, interact wit... | 82 ✅ | 174 | [表示](https://agentseal.org/mcp/https-githubcom-blackwhite084-playwright-plus-python-mcp) |
+| [mcp-doc](https://github.com/meterlong/mcp-doc) | A powerful Word document processing service based on FastMCP, enabling AI ass... | 89 ✅ | 173 | [表示](https://agentseal.org/mcp/https-githubcom-meterlong-mcp-doc) |
+| [your-memory](https://github.com/jonathan-politzki/your-memory) | Persistent AI memory layer that adds intelligent context to applications with... | 74 ⚠️ | 170 | [表示](https://agentseal.org/mcp/https-githubcom-jonathan-politzki-your-memory) |
+| [llmctx](https://github.com/khromov/llmctx) | MCP endpoint providing Svelte 5 and SvelteKit developer documentation for AI ... | 92 ✅ | 160 | [表示](https://agentseal.org/mcp/https-githubcom-khromov-llmctx) |
+| [mcp-server-langfuse](https://github.com/langfuse/mcp-server-langfuse) | Model Context Protocol (MCP) Server for Langfuse Prompt Management. This serv... | 92 ✅ | 158 | [表示](https://agentseal.org/mcp/https-githubcom-langfuse-mcp-server-langfuse) |
+| [mcp-server-calculator](https://github.com/githejie/mcp-server-calculator) | A minimal MCP server that exposes one tool for evaluating mathematical expres... | 95 ✅ | 147 | [表示](https://agentseal.org/mcp/https-githubcom-githejie-mcp-server-calculator) |
+| [seline](https://github.com/tercumantanumut/seline) | Desktop app that runs AI agents on your machine, connecting them to messaging... | 91 ✅ | 146 | [表示](https://agentseal.org/mcp/https-githubcom-tercumantanumut-seline) |
+| [claude-prompts-mcp](https://github.com/minipuft/claude-prompts-mcp) | MCP workflow server for composable prompt templates with validation, reasonin... | 92 ✅ | 141 | [表示](https://agentseal.org/mcp/https-githubcom-minipuft-claude-prompts-mcp) |
+| [erickwendel-contributions-mcp](https://github.com/erickwendel/erickwendel-contributions-mcp) | A Model Context Protocol (MCP) server that provides tools to query Erick Wend... | 92 ✅ | 136 | [表示](https://agentseal.org/mcp/https-githubcom-erickwendel-erickwendel-contributions-mcp) |
+| [comet-mcp](https://github.com/hanzili/comet-mcp) | Controls a Comet/Perplexity browser instance to perform agentic web browsing,... | 85 ✅ | 131 | [表示](https://agentseal.org/mcp/https-githubcom-hanzili-comet-mcp) |
+| [mcp-server](https://github.com/browserstack/mcp-server) | BrowserStack's Official MCP Server | 69 ⚠️ | 130 | [表示](https://agentseal.org/mcp/https-githubcom-browserstack-mcp-server) |
+| [mcp-server-atlassian-bitbucket](https://github.com/aashari/mcp-server-atlassian-bitbucket) | Node.js/TypeScript MCP server for Atlassian Bitbucket. Enables AI systems (LL... | 74 ⚠️ | 127 | [表示](https://agentseal.org/mcp/https-githubcom-aashari-mcp-server-atlassian-bitbucket) |
+| [pluggedin-mcp-proxy](https://github.com/VeriTeknik/pluggedin-mcp-proxy) | Plugged.in MCP Server manages all your other MCPs in one MCP. | 81 ✅ | 124 | [表示](https://agentseal.org/mcp/https-githubcom-veriteknik-pluggedin-mcp-proxy) |
+| [mcp-gdb](https://github.com/signal-slot/mcp-gdb) | An MCP server providing GDB debugging functionality for AI assistants, enabli... | 86 ✅ | 110 | [表示](https://agentseal.org/mcp/https-githubcom-signal-slot-mcp-gdb) |
+| [sourcerer-mcp](https://github.com/st3v3nmw/sourcerer-mcp) | MCP for semantic code search & navigation that reduces token waste | 86 ✅ | 108 | [表示](https://agentseal.org/mcp/https-githubcom-st3v3nmw-sourcerer-mcp) |
+| [lapras-mcp-server](https://github.com/lapras-inc/lapras-mcp-server) | lapras.com 公式MCP Server | 89 ✅ | 100 | [表示](https://agentseal.org/mcp/https-githubcom-lapras-inc-lapras-mcp-server) |
+| [terminal-controller-mcp](https://github.com/gongrzhe/terminal-controller-mcp) | A Model Context Protocol (MCP) server that enables secure terminal command ex... | 80 ⚠️ | 99 | [表示](https://agentseal.org/mcp/https-githubcom-gongrzhe-terminal-controller-mcp) |
+| [agentup](https://github.com/reddotrocket/agentup) | Configuration-driven framework for building portable, scalable, and secure AI... | 92 ✅ | 97 | [表示](https://agentseal.org/mcp/https-githubcom-reddotrocket-agentup) |
+| [fabric-rti-mcp](https://github.com/Microsoft/fabric-rti-mcp) | MCP server for Microsoft Fabric Real-Time Intelligence enabling AI agents to ... | 75 ⚠️ | 97 | [表示](https://agentseal.org/mcp/https-githubcom-microsoft-fabric-rti-mcp) |
+| [json-mcp-server](https://github.com/gongrzhe/json-mcp-server) | JSON handling and processing mcp server | 88 ✅ | 89 | [表示](https://agentseal.org/mcp/https-githubcom-gongrzhe-json-mcp-server) |
+| [blender-mcp](https://github.com/pranav-deshmukh/blender-mcp) | A Blender automation server that lets agents control the 3D software via Pyth... | 74 ⚠️ | 89 | [表示](https://agentseal.org/mcp/https-githubcom-pranav-deshmukh-blender-mcp) |
+| [mcp-excel-server](https://github.com/yzfly/mcp-excel-server) | MCP server for comprehensive Excel file management, data analysis, and visual... | 80 ⚠️ | 84 | [表示](https://agentseal.org/mcp/https-githubcom-yzfly-mcp-excel-server) |
+| [gemini-bridge](https://github.com/eLyiN/gemini-bridge) | A bridge MCP server that forwards agent queries and arbitrary local file cont... | 74 ⚠️ | 84 | [表示](https://agentseal.org/mcp/https-githubcom-elyin-gemini-bridge) |
+| [unreal-mcp](https://github.com/runreal/unreal-mcp) | MCP server for Unreal Engine that uses Unreal Python Remote Execution | 71 ⚠️ | 82 | [表示](https://agentseal.org/mcp/runreal-unreal-mcp) |
+| [mcp-azure-devops](https://github.com/Vortiago/mcp-azure-devops) | An MCP server that provides full CRUD access to Azure DevOps work items, team... | 83 ✅ | 80 | [表示](https://agentseal.org/mcp/https-githubcom-vortiago-mcp-azure-devops) |
+| [mcp-server-circleci](https://github.com/CircleCI-Public/mcp-server-circleci) | A specialized server implementation for the Model Context Protocol (MCP) desi... | 80 ✅ | 80 | [表示](https://agentseal.org/mcp/https-githubcom-circleci-public-mcp-server-circleci) |
+| [mcp-server-openai](https://github.com/pierrebrunelle/mcp-server-openai) | Query OpenAI models directly from Claude using MCP protocol. | 92 ✅ | 79 | [表示](https://agentseal.org/mcp/mcp-server-openai) |
+| [multi-ai-advisor-mcp](https://github.com/yuchenssr/multi-ai-advisor-mcp) | council of models for decision | 92 ✅ | 78 | [表示](https://agentseal.org/mcp/https-githubcom-yuchenssr-multi-ai-advisor-mcp) |
+| [roundtable](https://github.com/askbudi/roundtable) | Local MCP server that coordinates multiple AI coding assistants (Claude, Gemi... | 81 ✅ | 78 | [表示](https://agentseal.org/mcp/https-githubcom-askbudi-roundtable) |
+| [unifai-sdk-js](https://github.com/unifai-network/unifai-sdk-js) | unifai-sdk-js is the Javascript/Typescript SDK for Unifai, an AI native platf... | 86 ✅ | 75 | [表示](https://agentseal.org/mcp/https-githubcom-unifai-network-unifai-sdk-js) |
+| [excalidraw-architect-mcp](https://github.com/BV-Venky/excalidraw-architect-mcp) | An MCP server that generates and edits Excalidraw (.excalidraw) diagram files... | 92 ✅ | 71 | [表示](https://agentseal.org/mcp/https-githubcom-bv-venky-excalidraw-architect-mcp) |
+| [energyplus-mcp](https://github.com/lbnl-eta/energyplus-mcp) | The first open-source Model Context Protocol server enabling AI assistants an... | 90 ✅ | 69 | [表示](https://agentseal.org/mcp/https-githubcom-lbnl-eta-energyplus-mcp) |
+| [alibabacloud-devops-mcp-server](https://github.com/aliyun/alibabacloud-devops-mcp-server) | Yunxiao MCP Server provides AI assistants with the ability to interact with t... | 87 ✅ | 69 | [表示](https://agentseal.org/mcp/https-githubcom-aliyun-alibabacloud-devops-mcp-server) |
+| [clarity-mcp-server](https://github.com/microsoft/clarity-mcp-server) | A Model Context Protocol (MCP) server for Microsoft Clarity | 84 ✅ | 68 | [表示](https://agentseal.org/mcp/microsoft-clarity-mcp-server) |
+| [firefox-devtools-mcp](https://github.com/freema/firefox-devtools-mcp) | A Firefox browser automation MCP server providing tab management, DOM interac... | 70 ⚠️ | 68 | [表示](https://agentseal.org/mcp/https-githubcom-freema-firefox-devtools-mcp) |
+| [crash-mcp](https://github.com/nikkoxgonzales/crash-mcp) | A structured reasoning-step tracker that helps AI agents break down complex p... | 100 ✅ | 67 | [表示](https://agentseal.org/mcp/https-githubcom-nikkoxgonzales-crash-mcp) |
+| [deepseek-thinker-mcp](https://github.com/ruixingshi/deepseek-thinker-mcp) | A MCP server providing access to Deepseek's reasoning process via OpenAI API ... | 92 ✅ | 67 | [表示](https://agentseal.org/mcp/https-githubcom-ruixingshi-deepseek-thinker-mcp) |
+| [mcp-EDA](https://github.com/NellyW8/mcp-EDA) | An EDA toolchain MCP server that enables Verilog synthesis (Yosys), simulatio... | 87 ✅ | 67 | [表示](https://agentseal.org/mcp/https-githubcom-nellyw8-mcp-eda) |
+| [xiaozhi-autoglm-mcp](https://github.com/xinnan-tech/xiaozhi-autoglm-mcp) | MCP server for Android device automation and mobile agent control via AI, int... | 92 ✅ | 64 | [表示](https://agentseal.org/mcp/https-githubcom-xinnan-tech-xiaozhi-autoglm-mcp) |
+| [mcp-miro](https://github.com/k-jarzyna/mcp-miro) | Miro integration for Model Context Protocol | 84 ✅ | 62 | [表示](https://agentseal.org/mcp/https-githubcom-k-jarzyna-mcp-miro) |
+| [mcp-server-atlassian-jira](https://github.com/aashari/mcp-server-atlassian-jira) | Node.js/TypeScript MCP server for Atlassian Jira. Equips AI systems (LLMs) wi... | 80 ⚠️ | 60 | [表示](https://agentseal.org/mcp/https-githubcom-aashari-mcp-server-atlassian-jira) |
+| [sugar](https://github.com/cdnsteve/sugar) | Autonomous task execution layer for AI coding agents. Manages queues, runs 24... | 90 ✅ | 59 | [表示](https://agentseal.org/mcp/https-githubcom-cdnsteve-sugar) |
+| [mcp-design-system-extractor](https://github.com/freema/mcp-design-system-extractor) | MCP server that extracts component information from Storybook design systems,... | 84 ✅ | 57 | [表示](https://agentseal.org/mcp/https-githubcom-freema-mcp-design-system-extractor) |
+| [gdb-mcp](https://github.com/smadi0x86/gdb-mcp) | Multi-debugger MCP server providing debugging functionality for GDB and LLDB ... | 86 ✅ | 56 | [表示](https://agentseal.org/mcp/https-githubcom-smadi0x86-gdb-mcp) |
+| [a2a_adk_mcp](https://github.com/rubenszimbres/a2a_adk_mcp) | Security-focused multi-agent data processing pipeline using Google's Agent De... | 86 ✅ | 55 | [表示](https://agentseal.org/mcp/https-githubcom-rubenszimbres-a2aadkmcp) |
+| [mcp-server-apple-reminders](https://github.com/fradser/mcp-server-apple-reminders) | MCP server providing native macOS integration with Apple Reminders and Calend... | 91 ✅ | 53 | [表示](https://agentseal.org/mcp/mcp-server-apple-reminders) |
+| [gotohuman-mcp-server](https://github.com/gotohuman/gotohuman-mcp-server) | Facilitates AI-to-human review handoffs by listing review forms, fetching the... | 96 ✅ | 52 | [表示](https://agentseal.org/mcp/https-githubcom-gotohuman-gotohuman-mcp-server) |
+| [whois-mcp](https://github.com/bharathvaj-ganesan/whois-mcp) | MCP Server for whois lookups. | 92 ✅ | 52 | [表示](https://agentseal.org/mcp/https-githubcom-bharathvaj-ganesan-whois-mcp) |
+| [webpage-screenshot-mcp](https://github.com/ananddtyagi/webpage-screenshot-mcp) | MCP server that captures screenshots of webpages using Puppeteer, enabling AI... | 87 ✅ | 52 | [表示](https://agentseal.org/mcp/https-githubcom-ananddtyagi-webpage-screenshot-mcp) |
+| [mcp_server_notify](https://github.com/Cactusinhand/mcp_server_notify) | Sends system desktop notifications with optional sound and configurable timeout. | 98 ✅ | 50 | [表示](https://agentseal.org/mcp/https-githubcom-cactusinhand-mcpservernotify) |
+| [iphone-mcp](https://github.com/blitzdotdev/iphone-mcp) | The MCP Server the lets AI use an iPhone | 86 ✅ | 50 | [表示](https://agentseal.org/mcp/blitzdev-iphone-mcp) |
+| [random-number-mcp](https://github.com/zazencodes/random-number-mcp) | Production-ready MCP server that provides LLMs with essential random generati... | 90 ✅ | 47 | [表示](https://agentseal.org/mcp/https-githubcom-zazencodes-random-number-mcp) |
+| [shadowgit-mcp](https://github.com/blade47/shadowgit-mcp) | A Model Context Protocol (MCP) server that provides AI assistants with secure... | 85 ✅ | 46 | [表示](https://agentseal.org/mcp/https-githubcom-blade47-shadowgit-mcp) |
+| [xray](https://github.com/srijanshukla18/xray) | XRAY MCP provides progressive code intelligence and navigation capabilities f... | 82 ✅ | 46 | [表示](https://agentseal.org/mcp/https-githubcom-srijanshukla18-xray) |
+| [frida-game-hacking-mcp](https://github.com/0xhackerfren/frida-game-hacking-mcp) | A MCP implementation of Frida that seeks to emulate Cheat Engine functionally... | 71 ⚠️ | 46 | [表示](https://agentseal.org/mcp/https-githubcom-0xhackerfren-frida-game-hacking-mcp) |
+| [mcp_weather_server](https://github.com/isdaniel/mcp_weather_server) | A read-only MCP server providing current and forecast weather, air quality da... | 100 ✅ | 44 | [表示](https://agentseal.org/mcp/https-githubcom-isdaniel-mcpweatherserver) |
+| [mcp-server-taskwarrior](https://github.com/awwaiid/mcp-server-taskwarrior) | A Taskwarrior MCP server that allows agents to list, add, and complete tasks ... | 91 ✅ | 44 | [表示](https://agentseal.org/mcp/https-githubcom-awwaiid-mcp-server-taskwarrior) |
+| [code-screenshot-mcp](https://github.com/MoussaabBadla/code-screenshot-mcp) | An MCP server that generates syntax-highlighted screenshot images of code fro... | 80 ✅ | 44 | [表示](https://agentseal.org/mcp/https-githubcom-moussaabbadla-code-screenshot-mcp) |
+| [mcp-server-ipinfo](https://github.com/briandconnelly/mcp-server-ipinfo) | MCP server providing IP geolocation and network information via ipinfo.io API... | 90 ✅ | 42 | [表示](https://agentseal.org/mcp/https-githubcom-briandconnelly-mcp-server-ipinfo) |
+| [mobile-dev-mcp-server](https://github.com/jsuarezruiz/mobile-dev-mcp-server) | This is a MCP designed to manage and interact with mobile devices and simulat... | 83 ✅ | 42 | [表示](https://agentseal.org/mcp/https-githubcom-jsuarezruiz-mobile-dev-mcp-server) |
+| [powertools-mcp](https://github.com/aws-powertools/powertools-mcp) | Powertools for AWS's official MCP Server | 88 ✅ | 41 | [表示](https://agentseal.org/mcp/https-githubcom-aws-powertools-powertools-mcp) |
+| [dynamic-shell-server](https://github.com/codelion/dynamic-shell-server) | Dynamic Shell Command MCP Server | 86 ✅ | 41 | [表示](https://agentseal.org/mcp/https-githubcom-codelion-dynamic-shell-server) |
+| [unreal-api-mcp](https://github.com/Codeturion/unreal-api-mcp) | A read-only reference server that lets agents search and retrieve Unreal Engi... | 93 ✅ | 40 | [表示](https://agentseal.org/mcp/https-githubcom-codeturion-unreal-api-mcp) |
+| [test-coverage-mcp](https://github.com/goldbergyoni/test-coverage-mcp) | Context engineering: Make your agents aware of how they affect 🧪 test coverag... | 89 ✅ | 40 | [表示](https://agentseal.org/mcp/https-githubcom-goldbergyoni-test-coverage-mcp) |
+| [unity-api-mcp](https://github.com/Codeturion/unity-api-mcp) | MCP server providing instant, accurate Unity API lookups to prevent AI halluc... | 83 ✅ | 40 | [表示](https://agentseal.org/mcp/https-githubcom-codeturion-unity-api-mcp) |
+| [mcp-domain-availability](https://github.com/imprvhub/mcp-domain-availability) | An MCP server that checks domain name availability using a single query tool. | 99 ✅ | 39 | [表示](https://agentseal.org/mcp/https-githubcom-imprvhub-mcp-domain-availability) |
+| [mcp-tasks](https://github.com/flesler/mcp-tasks) | A comprehensive and efficient MCP server for task management with multi-forma... | 91 ✅ | 39 | [表示](https://agentseal.org/mcp/https-githubcom-flesler-mcp-tasks) |
+| [anki-mcp](https://github.com/nietus/anki-mcp) | An Anki flashcard management server that allows creating, updating, and revie... | 75 ⚠️ | 39 | [表示](https://agentseal.org/mcp/https-githubcom-nietus-anki-mcp) |
+| [bruno-mcp](https://github.com/hungthai1401/bruno-mcp) | Executes Bruno API collections via the Bruno CLI, allowing HTTP API testing w... | 86 ✅ | 37 | [表示](https://agentseal.org/mcp/https-githubcom-hungthai1401-bruno-mcp) |
+| [mcp](https://github.com/screenshotone/mcp) | A simple implementation of an MCP server for the ScreenshotOne API | 88 ✅ | 35 | [表示](https://agentseal.org/mcp/https-githubcom-screenshotone-mcp) |
+| [package-registry-mcp](https://github.com/artmann/package-registry-mcp) | MCP server for searching and getting up-to-date information about NPM, Cargo,... | 86 ✅ | 35 | [表示](https://agentseal.org/mcp/package-registry-mcp) |
+| [kilntainers](https://github.com/kiln-ai/kilntainers) | MCP server to give every agent an ephemeral Linux sandboxes for executing she... | 85 ✅ | 34 | [表示](https://agentseal.org/mcp/https-githubcom-kiln-ai-kilntainers) |
+| [actor-critic-thinking-mcp](https://github.com/aquarius-wing/actor-critic-thinking-mcp) | A dual-perspective thinking analysis server based on Model Context Protocol (... | 100 ✅ | 32 | [表示](https://agentseal.org/mcp/https-githubcom-aquarius-wing-actor-critic-thinking-mcp) |
+| [maven-mcp-server](https://github.com/Bigsy/maven-mcp-server) | An MCP (Model Context Protocol) server that provides tools for checking Maven... | 92 ✅ | 31 | [表示](https://agentseal.org/mcp/https-githubcom-bigsy-maven-mcp-server) |
+| [postmancer](https://github.com/hijaz/postmancer) | An HTTP API testing client (Postman-style) that can send arbitrary HTTP reque... | 80 ✅ | 30 | [表示](https://agentseal.org/mcp/https-githubcom-hijaz-postmancer) |
+| [PiloTY](https://github.com/yiwenlu66/PiloTY) | PiloTY: AI pilot for PTY operations via MCP - enables AI agents to control in... | 74 ⚠️ | 30 | [表示](https://agentseal.org/mcp/https-githubcom-yiwenlu66-piloty) |
+| [splunk-mcp-server2](https://github.com/splunk/splunk-mcp-server2) | Unofficial. Splunk MCP server. Implemented in Python and TypeScript/JS. Runs ... | 86 ✅ | 29 | [表示](https://agentseal.org/mcp/https-githubcom-splunk-splunk-mcp-server2) |
+| [playwright-mcp](https://github.com/ashish-bansal/playwright-mcp) | MCP server that gives AI assistants visual access to a Playwright-controlled ... | 82 ✅ | 29 | [表示](https://agentseal.org/mcp/https-githubcom-ashish-bansal-playwright-mcp) |
+| [flyonui-mcp](https://github.com/themeselection/flyonui-mcp) | MCP server for building production-ready UI blocks, components, and landing p... | 87 ✅ | 28 | [表示](https://agentseal.org/mcp/https-githubcom-themeselection-flyonui-mcp) |
+| [mcpcap](https://github.com/mcpcap/mcpcap) | Modular Python MCP server for analyzing network packet captures with speciali... | 75 ⚠️ | 28 | [表示](https://agentseal.org/mcp/https-githubcom-mcpcap-mcpcap) |
+| [mcp-simple-timeserver](https://github.com/andybrandt/mcp-simple-timeserver) | A time and date utility MCP server providing local time, UTC via NTP, timezon... | 92 ✅ | 27 | [表示](https://agentseal.org/mcp/https-githubcom-andybrandt-mcp-simple-timeserver) |
+| [gemini-cli-orchestrator](https://github.com/dnnyngyen/gemini-cli-orchestrator) | An MCP server that allows Claude Code orchestrate Gemini for analysis and con... | 91 ✅ | 25 | [表示](https://agentseal.org/mcp/https-githubcom-dnnyngyen-gemini-cli-orchestrator) |
+| [ScreenshotMCP](https://github.com/upnorthmedia/ScreenshotMCP) | A Model Context Protocol MCP server for capturing website screenshots with fu... | 88 ✅ | 25 | [表示](https://agentseal.org/mcp/https-githubcom-upnorthmedia-screenshotmcp) |
+| [mcp-task-orchestrator](https://github.com/EchoingVesper/mcp-task-orchestrator) | A Model Context Protocol server that provides task orchestration capabilities... | 88 ✅ | 24 | [表示](https://agentseal.org/mcp/https-githubcom-echoingvesper-mcp-task-orchestrator) |
+| [code-memory](https://github.com/kapillamba4/code-memory) | Local semantic code search for your codebase with vector embeddings. Zero tel... | 72 ⚠️ | 24 | [表示](https://agentseal.org/mcp/https-githubcom-kapillamba4-code-memory) |
+| [anti-bullshit-mcp-server](https://github.com/bmorphism/anti-bullshit-mcp-server) | MCP server for analyzing claims, validating sources, and detecting manipulati... | 92 ✅ | 23 | [表示](https://agentseal.org/mcp/https-githubcom-bmorphism-anti-bullshit-mcp-server) |
+| [mcp-enhance-prompt](https://github.com/FelixFoster/mcp-enhance-prompt) | An MCP server that rewrites minimal user input into enriched, structured prom... | 91 ✅ | 23 | [表示](https://agentseal.org/mcp/https-githubcom-felixfoster-mcp-enhance-prompt) |
+| [blowback-context](https://github.com/esnark/blowback) | MCP server for frontend development environments that integrates with AI tool... | 87 ✅ | 22 | [表示](https://agentseal.org/mcp/blowback-context) |
+| [code-context-provider-mcp](https://github.com/AB498/code-context-provider-mcp) | Provides a structural overview of a local project directory, including file t... | 97 ✅ | 21 | [表示](https://agentseal.org/mcp/https-githubcom-ab498-code-context-provider-mcp) |
+| [stealth-browser-mcp](https://github.com/newbeb/stealth-browser-mcp) | MCP Server that enables stealth browser access through Playwright, bypassing ... | 92 ✅ | 21 | [表示](https://agentseal.org/mcp/https-githubcom-newbeb-stealth-browser-mcp) |
+| [create-mcp-ts](https://github.com/stephencme/create-mcp-ts) | Create a new MCP server in TypeScript, batteries included. | 91 ✅ | 21 | [表示](https://agentseal.org/mcp/https-githubcom-stephencme-create-mcp-ts) |
+| [mcpretentious](https://github.com/oetiker/mcpretentious) | A powerful Model Context Protocol (MCP) server that puppeteers iTerm2 terminals. | 88 ✅ | 21 | [表示](https://agentseal.org/mcp/https-githubcom-oetiker-mcpretentious) |
+| [securitycopilotmcpserver](https://github.com/jguimera/securitycopilotmcpserver) | MCP Server that integrates with Security Copilot, Sentinel and other tools (i... | 82 ✅ | 20 | [表示](https://agentseal.org/mcp/https-githubcom-jguimera-securitycopilotmcpserver) |
+| [fabric-mcp-server](https://github.com/adapoet/fabric-mcp-server) | A Fabric AI pattern recommendation server that suggests the best Fabric patte... | 100 ✅ | 19 | [表示](https://agentseal.org/mcp/https-githubcom-adapoet-fabric-mcp-server) |
+| [termlink](https://github.com/chu2bard/termlink) | MCP server for shell and terminal operations | 91 ✅ | 19 | [表示](https://agentseal.org/mcp/https-githubcom-chu2bard-termlink) |
+| [hyperbolic-mcp](https://github.com/HyperbolicLabs/hyperbolic-mcp) | MCP server enabling Claude to interact with Hyperbolic's GPU cloud for viewin... | 86 ✅ | 19 | [表示](https://agentseal.org/mcp/https-githubcom-hyperboliclabs-hyperbolic-mcp) |
+| [sleep-mcp](https://github.com/garoth/sleep-mcp) | An MCP server providing a sleep/wait tool for adding delays between operation... | 92 ✅ | 18 | [表示](https://agentseal.org/mcp/https-githubcom-garoth-sleep-mcp) |
+| [anki-connect-mcp](https://github.com/spacholski1225/anki-connect-mcp) | A custom Model Context Protocol (MCP) implementation for Anki Web, enabling s... | 80 ⚠️ | 18 | [表示](https://agentseal.org/mcp/https-githubcom-spacholski1225-anki-connect-mcp) |
+| [jupytercad-mcp](https://github.com/asmith26/jupytercad-mcp) | A JupyterCAD MCP server that enables AI-driven creation and editing of 3D CAD... | 83 ✅ | 17 | [表示](https://agentseal.org/mcp/https-githubcom-asmith26-jupytercad-mcp) |
+| [alertmanager-mcp-server](https://github.com/ntk148v/alertmanager-mcp-server) | A Model Context Protocol (MCP) server that enables AI assistants to integreat... | 87 ✅ | 16 | [表示](https://agentseal.org/mcp/https-githubcom-ntk148v-alertmanager-mcp-server) |
+| [mcp_server_pcileech](https://github.com/evan7198/mcp_server_pcileech) | A simple MCP server for using pcileech to read or write another pc's memory | 85 ✅ | 16 | [表示](https://agentseal.org/mcp/https-githubcom-evan7198-mcpserverpcileech) |
+| [Autogen_MCP](https://github.com/DynamicEndpoints/Autogen_MCP) | An MCP server that enables creation, configuration, and execution of Microsof... | 76 ⚠️ | 16 | [表示](https://agentseal.org/mcp/https-githubcom-dynamicendpoints-autogenmcp) |
+| [npm-search-mcp-server](https://github.com/btwiuse/npm-search-mcp-server) | MCP server for searching npm packages | 92 ✅ | 15 | [表示](https://agentseal.org/mcp/https-githubcom-btwiuse-npm-search-mcp-server) |
+| [android-mcp-server](https://github.com/jiantao88/android-mcp-server) | Android MCP Server implementation | 87 ✅ | 15 | [表示](https://agentseal.org/mcp/https-githubcom-jiantao88-android-mcp-server) |
+| [networksdb-mcp](https://github.com/mordavid/networksdb-mcp) | Fast MCP integration for NetworksDB API - Query IP addresses, organizations, ... | 86 ✅ | 15 | [表示](https://agentseal.org/mcp/https-githubcom-mordavid-networksdb-mcp) |
+| [context-crystallizer](https://github.com/hubertciebiada/context-crystallizer) | Transform large repositories into crystallized, AI-consumable knowledge bases... | 82 ✅ | 15 | [表示](https://agentseal.org/mcp/https-githubcom-hubertciebiada-context-crystallizer) |
+| [agentops-mcp](https://github.com/AgentOps-AI/agentops-mcp) | An MCP server for querying AgentOps agent telemetry - authorizing via API key... | 96 ✅ | 14 | [表示](https://agentseal.org/mcp/https-githubcom-agentops-ai-agentops-mcp) |
+| [hooks_mcp](https://github.com/scosman/hooks_mcp) | MCP server that exposes project-specific development tools (tests, linters, e... | 92 ✅ | 14 | [表示](https://agentseal.org/mcp/https-githubcom-scosman-hooksmcp) |
+| [argus-mcp](https://github.com/lokafinnsw/argus-mcp) | AI code review MCP server with Zero-Trust approach. Multi-model support, cach... | 92 ✅ | 14 | [表示](https://agentseal.org/mcp/https-githubcom-lokafinnsw-argus-mcp) |
+| [mcp-time](https://github.com/TheoBrigitte/mcp-time) | MCP (Model Context Protocol) server which provides utilities to work with tim... | 89 ✅ | 14 | [表示](https://agentseal.org/mcp/theofoobar-mcp-time) |
+| [currents-mcp](https://github.com/currents-dev/currents-mcp) | Currents MCP Server | 84 ✅ | 14 | [表示](https://agentseal.org/mcp/https-githubcom-currents-dev-currents-mcp) |
+| [domain-tools-mcp-server](https://github.com/deshabhishek007/domain-tools-mcp-server) | A Model Context Protocol (MCP) server for comprehensive domain analysis: WHOI... | 92 ✅ | 13 | [表示](https://agentseal.org/mcp/https-githubcom-deshabhishek007-domain-tools-mcp-server) |
+| [riza-mcp](https://github.com/riza-io/riza-mcp) | Isolated code interpreter for LLM-generated code via Riza API, with tool mana... | 91 ✅ | 13 | [表示](https://agentseal.org/mcp/https-githubcom-riza-io-riza-mcp) |
+| [qrcode_mcp](https://github.com/2niuhe/qrcode_mcp) | mcp tool to generate qrcode | 91 ✅ | 12 | [表示](https://agentseal.org/mcp/https-githubcom-2niuhe-qrcodemcp) |
+| [mcp-internet-speed-test](https://github.com/inventer-dev/mcp-internet-speed-test) | An MCP server for measuring network performance metrics (download/upload spee... | 78 ⚠️ | 12 | [表示](https://agentseal.org/mcp/https-githubcom-inventer-dev-mcp-internet-speed-test) |
+| [d.i.e-mcp](https://github.com/lazy-importer/d.i.e-mcp) | This is a  MCP server for DIE (Detect It Easy ) | 92 ✅ | 11 | [表示](https://agentseal.org/mcp/https-githubcom-lazy-importer-die-mcp) |
+| [mcp-go-debugger](https://github.com/sunfmin/mcp-go-debugger) | A Go debugger integrated with MCP that lets you launch, attach, set breakpoin... | 88 ✅ | 11 | [表示](https://agentseal.org/mcp/https-githubcom-sunfmin-mcp-go-debugger) |
+| [teamcity-mcp](https://github.com/itcaat/teamcity-mcp) | Teamcity MCP Server | 86 ✅ | 11 | [表示](https://agentseal.org/mcp/https-githubcom-itcaat-teamcity-mcp) |
+| [kylas-crm-mcp-server](https://github.com/kylastech/kylas-crm-mcp-server) | A CRM integration server for Kylas that enables creating, updating, searching... | 67 ⚠️ | 11 | [表示](https://agentseal.org/mcp/https-githubcom-kylastech-kylas-crm-mcp-server) |
+| [mcp-files](https://github.com/flesler/mcp-files) | A developer-focused MCP server providing code symbol extraction, precise line... | 92 ✅ | 10 | [表示](https://agentseal.org/mcp/https-githubcom-flesler-mcp-files) |
+| [memory-mcp](https://github.com/chenxiaofie/memory-mcp) | A local conversational memory system that caches messages, manages task episo... | 91 ✅ | 10 | [表示](https://agentseal.org/mcp/https-githubcom-chenxiaofie-memory-mcp) |
+| [mcp-gitlab-jira](https://github.com/HainanZhao/mcp-gitlab-jira) | MCP server for GitLab and Jira integration, enabling AI agents to interact wi... | 92 ✅ | 9 | [表示](https://agentseal.org/mcp/mcp-gitlab-jira) |
+| [omni-dev-fusion](https://github.com/tao3k/omni-dev-fusion) | High-performance AI operating system kernel that bridges human intent and mac... | 91 ✅ | 9 | [表示](https://agentseal.org/mcp/https-githubcom-tao3k-omni-dev-fusion) |
+| [mcp-domaintools](https://github.com/patrickdappollonio/mcp-domaintools) | MCP server providing DNS lookups, WHOIS queries, connectivity testing, TLS ce... | 88 ✅ | 9 | [表示](https://agentseal.org/mcp/https-githubcom-patrickdappollonio-mcp-domaintools) |
+| [pyxel-mcp](https://github.com/kitao/pyxel-mcp) | An MCP server that runs Pyxel retro game scripts and provides visual/audio in... | 79 ⚠️ | 9 | [表示](https://agentseal.org/mcp/https-githubcom-kitao-pyxel-mcp) |
+| [mcp-agentic-framework](https://github.com/Piotr1215/mcp-agentic-framework) | A multi-agent coordination framework that allows AI agents to register, disco... | 78 ⚠️ | 9 | [表示](https://agentseal.org/mcp/https-githubcom-piotr1215-mcp-agentic-framework) |
+| [handmirrormcp](https://github.com/rkttu/handmirrormcp) | MCP server for inspecting .NET assemblies and NuGet packages to provide AI co... | 89 ✅ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-rkttu-handmirrormcp) |
+| [canvas-lms-mcp](https://github.com/ahnopologetic/canvas-lms-mcp) | An MCP server that bridges AI systems with Canvas LMS, providing access to ed... | 89 ✅ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-ahnopologetic-canvas-lms-mcp) |
+| [mcp-project-manager](https://github.com/croffasia/mcp-project-manager) | 🚀 Hierarchical task management server via Model Context   Protocol (MCP). Cre... | 88 ✅ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-croffasia-mcp-project-manager) |
+| [mcp-server-adb](https://github.com/watabee/mcp-server-adb) | MCP Server for Android Debug Bridge (ADB), enabling Claude to interact with A... | 87 ✅ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-watabee-mcp-server-adb) |
+| [piston-mcp](https://github.com/alvii147/piston-mcp) | Executes arbitrary code in multiple programming languages using the Piston re... | 84 ✅ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-alvii147-piston-mcp) |
+| [sonatype-mcp](https://github.com/brianveltman/sonatype-mcp) | MCP server for Sonatype Nexus Repository Manager | 84 ✅ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-brianveltman-sonatype-mcp) |
+| [skill-ninja-mcp-server](https://github.com/aktsmm/skill-ninja-mcp-server) | An agent skill package manager that searches, installs, and manages SKILL.md ... | 76 ⚠️ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-aktsmm-skill-ninja-mcp-server) |
+| [excel-to-json-mcp](https://github.com/he-yang/excel-to-json-mcp) | Converts Excel (.xlsx) files and CSV/tab-separated data to JSON via two tools... | 92 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-he-yang-excel-to-json-mcp) |
+| [mcp-idb](https://github.com/noahlozevski/mcp-idb) | MCP server for fb-idb bridge. | 86 ✅ | 6 | [表示](https://agentseal.org/mcp/noahlozevski-mcp-idb) |
+| [spm-mcp](https://github.com/simpleswift/spm-mcp) | Swift Package Manager MCP Server written in Swift | 85 ✅ | 6 | [表示](https://agentseal.org/mcp/simpleswift-spm-mcp) |
+| [public-apis-mcp](https://github.com/zazencodes/public-apis-mcp) | Search for free APIs using MCP | 85 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-zazencodes-public-apis-mcp) |
+| [mcp-devcontainers](https://github.com/AI-QL/mcp-devcontainers) | Manages VS Code devcontainer lifecycle operations including starting, stoppin... | 82 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-ai-ql-mcp-devcontainers) |
+| [reexpress_mcp_server](https://github.com/ReexpressAI/reexpress_mcp_server) | Reexpress Model-Context-Protocol (MCP) Server | 82 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-reexpressai-reexpressmcpserver) |
+| [Clojars-MCP-Server](https://github.com/Bigsy/Clojars-MCP-Server) | Queries the Clojars Maven/Clojure package registry to retrieve dependency ver... | 98 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-bigsy-clojars-mcp-server) |
+| [mcp-sandbox](https://github.com/danstarns/mcp-sandbox) | Turn any JavaScript module into a sandboxed MCP server with automatic reflect... | 92 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-danstarns-mcp-sandbox) |
+| [mcpgex](https://github.com/patzedi/mcpgex) | MCP server for finding, testing and refining regex patterns | 92 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-patzedi-mcpgex) |
+| [mcp-grep](https://github.com/247arjun/mcp-grep) | An MCP Server wrapper around the grep CLI tool | 87 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-247arjun-mcp-grep) |
+| [log-analyzer-mcp](https://github.com/Fato07/log-analyzer-mcp) | An MCP server for parsing, searching, and debugging log files across formats ... | 81 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-fato07-log-analyzer-mcp) |
+| [sonarcloud-mcp](https://github.com/dozzman/sonarcloud-mcp) | sonarcloud/sonarqube cloud MCP server for fetching issues | 92 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-dozzman-sonarcloud-mcp) |
+| [aria-validate-mcp-server](https://github.com/yamanoku/aria-validate-mcp-server) | Model context protocol server for validating ARIA (Accessible Rich Internet A... | 92 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-yamanoku-aria-validate-mcp-server) |
+| [time-mcp-pypi.git](https://github.com/domdomegg/time-mcp-pypi.git) | Minimal Python MCP server that provides a tool to get the current UTC date an... | 92 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-domdomegg-time-mcp-pypigit) |
+| [node-code-sandbox-mcp](https://github.com/mozicim/node-code-sandbox-mcp) | # 🐢🚀 Node.js Sandbox MCP ServerThis repository hosts a Node.js server that im... | 77 ⚠️ | 4 | [表示](https://agentseal.org/mcp/node-code-sandbox-mcp) |
+| [conan-mcp](https://github.com/conan-io/conan-mcp) | Model Context Protocol server for Conan package manager, enabling project cre... | 77 ⚠️ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-conan-io-conan-mcp) |
+| [heatpump-mcp-server](https://github.com/jiweiqi/heatpump-mcp-server) | An MCP server that helps users size, compare, and evaluate heat pump systems ... | 100 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-jiweiqi-heatpump-mcp-server) |
+| [mcp-refactoring.git](https://github.com/marshally/mcp-refactoring.git) | An MCP server that lists, previews, and applies Fowler-style code refactoring... | 92 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-marshally-mcp-refactoringgit) |
+| [mcp-ghidra5-windows](https://github.com/thestingr/mcp-ghidra5-windows) | 🏢 Enterprise Windows Service for GPT-5 Powered Ghidra Reverse Engineering / P... | 92 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-thestingr-mcp-ghidra5-windows) |
+| [cfr_mcp_server](https://github.com/mr-xn/cfr_mcp_server) | 这是一个基于 Python 的 MCP (Model Context Protocol) 服务器实现，封装了 `cfr.jar` 反编译功能，并支持 SS... | 92 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-mr-xn-cfrmcpserver) |
+| [context-rot-detection](https://github.com/milos-product-maker/context-rot-detection) | MCP service that gives AI agents real-time visibility into their cognitive he... | 92 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-milos-product-maker-context-rot-detection) |
+| [mermaid-validator-mcp](https://github.com/lf112/mermaid-validator-mcp) | Validates Mermaid diagram syntax and returns diagram type or detailed error m... | 92 ✅ | 3 | [表示](https://agentseal.org/mcp/mermaid-validator-mcp) |
+| [krs-poland-mcp-server](https://github.com/pkolawa/krs-poland-mcp-server) | The MCP server for KRS Poland public API. | 92 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-pkolawa-krs-poland-mcp-server) |
+| [mcp-postman](https://github.com/freebeiro/mcp-postman) | A Model Context Protocol (MCP) server built with Cloudflare Workers for integ... | 92 ✅ | 3 | [表示](https://agentseal.org/mcp/mcp-postman) |
+| [fulcra-context-mcp](https://github.com/fulcradynamics/fulcra-context-mcp) | An MCP server providing access to Fulcra Context data through the Fulcra API,... | 89 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-fulcradynamics-fulcra-context-mcp) |
+| [mcp](https://github.com/openfort-xyz/mcp) | Open-source MCP server that gives AI assistants 42 tools for managing wallet ... | 87 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-openfort-xyz-mcp) |
+| [math-mcp-learning-server](https://github.com/clouatre-labs/math-mcp-learning-server) | Educational MCP server with 17 math tools covering arithmetic, matrix algebra... | 84 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-clouatre-labs-math-mcp-learning-server) |
+| [mcp-browser-server](https://github.com/wladastic/mcp-browser-server) | Browser automation MCP server using Playwright, enabling AI assistants to int... | 80 ⚠️ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-wladastic-mcp-browser-server) |
+| [mcp-relay](https://github.com/mhcoen/mcp-relay) | A message relay buffer that allows Claude Desktop and Claude Code to pass opa... | 79 ⚠️ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-mhcoen-mcp-relay) |
+| [snowfakery-mcp](https://github.com/composable-delivery/snowfakery-mcp) | An MCP server wrapping Snowfakery, a tool for generating realistic fake data ... | 76 ⚠️ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-composable-delivery-snowfakery-mcp) |
+| [memory-mcp](https://github.com/michael-denyer/memory-mcp) | Persistent memory system for AI assistants with a hot cache for instant recal... | 71 ⚠️ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-michael-denyer-memory-mcp) |
+| [time-node-mcp](https://github.com/davidan90/time-node-mcp) | A Node.js MCP server that provides timezone-aware date and time utilities: re... | 100 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-davidan90-time-node-mcp) |
+| [mcp-agile-luminary](https://github.com/AgileLuminary/mcp-agile-luminary) | An MCP server for connecting with Agile Luminary Project Management Application | 92 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-agileluminary-mcp-agile-luminary) |
+| [selenium-selfhealing-mcp](https://github.com/aiqualitylab/selenium-selfhealing-mcp) | An MCP server that automatically fixes broken Selenium test locators when UI ... | 92 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-aiqualitylab-selenium-selfhealing-mcp) |
+| [frida-mcp](https://github.com/rmorgans/frida-mcp) | An MCP server for Frida that enables AI systems to dynamically instrument and... | 91 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-rmorgans-frida-mcp) |
+| [clix-mcp-server](https://github.com/clix-so/clix-mcp-server) | Clix MCP Server enables AI agents to provide real-time, trusted Clix document... | 89 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-clix-so-clix-mcp-server) |
+| [mcp-page-capture](https://github.com/chasesaurabh/mcp-page-capture) | Capture web page screenshots and return MCP-compatible metadata for automated... | 88 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-chasesaurabh-mcp-page-capture) |
+| [ctfd-mcp-server](https://github.com/mrjamescot/ctfd-mcp-server) | MCP configuration to link AI agents with a CTFd instance. | 88 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-mrjamescot-ctfd-mcp-server) |
+| [ghidramcp](https://github.com/pr0cf5/ghidramcp) | MCP server enabling LLMs to autonomously reverse engineer and analyze binarie... | 86 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-pr0cf5-ghidramcp) |
+| [coderide-mcp](https://github.com/PixdataOrg/coderide-mcp) | A project and task management MCP server for AI coding agents, enabling retri... | 85 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-pixdataorg-coderide-mcp) |
+| [frontend-design-loop-mcp](https://github.com/alexalexalex222/frontend-design-loop-mcp) | An AI-driven frontend design automation tool that generates, evaluates, and o... | 83 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-alexalexalex222-frontend-design-loop-mcp) |
+| [github-projects-mcp](https://github.com/redducklabs/github-projects-mcp) | A GitHub Projects v2 management server that wraps the GitHub GraphQL API to l... | 82 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-redducklabs-github-projects-mcp) |
+| [tools](https://github.com/the-basilisk-ai/squad-mcp) | AI-powered product discovery and strategy platform that integrates with Claud... | 81 ✅ | 2 | [表示](https://agentseal.org/mcp/squadai-tools) |
+| [terminal-mcp](https://github.com/mkpvishnu/terminal-mcp) | MCP server for interactive terminal sessions: SSH, REPLs, database CLIs, and ... | 81 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-mkpvishnu-terminal-mcp) |
+| [xctools-mcp-server](https://github.com/nzrsky/xctools-mcp-server) | A Model Context Protocol server for different Xcode related tools | 81 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-nzrsky-xctools-mcp-server) |
+| [agentic-store-mcp](https://github.com/agenticstore/agentic-store-mcp) | Give Your AI Agents Superpowers with Free, Open-Source MCP Tools by AgenticSt... | 75 ⚠️ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-agenticstore-agentic-store-mcp) |
+| [physbound](https://github.com/JonesRobM/physbound) | An RF/physics validation MCP server that computes link budgets, Shannon-Hartl... | 100 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-jonesrobm-physbound) |
+| [algora-mcp-server](https://github.com/idapixl/algora-mcp-server) | A read-only MCP server for browsing, searching, and retrieving statistics abo... | 100 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-idapixl-algora-mcp-server) |
+| [agent-domain-service-mcp](https://github.com/gregm711/agent-domain-service-mcp) | An MCP server that checks domain name availability, explores TLD variations, ... | 98 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-gregm711-agent-domain-service-mcp) |
+| [char-index-mcp](https://github.com/agent-hanju/char-index-mcp) | A pure string/character index manipulation library providing find, split, ins... | 97 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-agent-hanju-char-index-mcp) |
+| [zmanim-mcp-server.git](https://github.com/ariroffe72/zmanim-mcp-server.git) | MCP server for calculating Jewish prayer times (zmanim) worldwide using NOAA-... | 90 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-ariroffe72-zmanim-mcp-servergit) |
+| [M365-roadmap-mcp-server](https://github.com/jonnybottles/M365-roadmap-mcp-server) | Python MCP server enabling AI agents to programmatically query the Microsoft ... | 87 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-jonnybottles-m365-roadmap-mcp-server) |
+| [IIIF_MCP](https://github.com/code4history/IIIF_MCP) | MCP server for IIIF (International Image Interoperability Framework) integrat... | 86 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-code4history-iiifmcp) |
+| [meta-prompt-mcp](https://github.com/kapillamba4/meta-prompt-mcp) | A prompting reference server that retrieves Google's and Anthropic's official... | 84 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-kapillamba4-meta-prompt-mcp) |
+| [mcp-autogen-doc](https://github.com/sykuang/mcp-autogen-doc) | A Model Context Protocol (MCP) server that provides AI assistants with the ab... | 84 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-sykuang-mcp-autogen-doc) |
+| [nativ-mcp](https://github.com/Nativ-Technologies/nativ-mcp) | AI-powered localization MCP server that translates content while respecting b... | 84 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-nativ-technologies-nativ-mcp) |
+| [simctl-mcp-server](https://github.com/nzrsky/simctl-mcp-server) | iOS simctl MCP server | 79 ⚠️ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-nzrsky-simctl-mcp-server) |
+| [cowork-history](https://github.com/egoughnour/cowork-history) | A local MCP server that indexes and searches Claude conversation history usin... | 76 ⚠️ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-egoughnour-cowork-history) |
+| [dbgprobe-mcp-server.git](https://github.com/es617/dbgprobe-mcp-server.git) | An MCP server for AI-assisted embedded systems debugging via hardware debug p... | 75 ⚠️ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-es617-dbgprobe-mcp-servergit) |
+| [chrono-mcp](https://github.com/JMoak/chrono-mcp) | A time and timezone utility MCP server providing current time retrieval and d... | 100 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-jmoak-chrono-mcp) |
+| [devops-practices](https://github.com/ai-4-devops/devops-practices) | A read-only knowledge base server that serves DevOps practice documents and f... | 99 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-ai-4-devops-devops-practices) |
+| [zoho-crm-mcp-server](https://github.com/asklokesh/zoho-crm-mcp-server) | A Zoho CRM MCP server that provides read and write access to leads, contacts,... | 98 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-asklokesh-zoho-crm-mcp-server) |
+| [guidance-lark-mcp](https://github.com/guidance-ai/guidance-lark-mcp) | An MCP server for validating llguidance/Lark grammars, running batch parse te... | 96 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-guidance-ai-guidance-lark-mcp) |
+| [stella-mcp](https://github.com/bradleylab/stella-mcp) | An MCP server for building and running Stella XMILE system dynamics simulatio... | 93 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-bradleylab-stella-mcp) |
+| [mcp-server-r-counter](https://github.com/guanqun-yang/mcp-server-r-counter) | Counts the number of 'R' or 'r' characters in an input string. | 93 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-guanqun-yang-mcp-server-r-counter) |
+| [mcp-test](https://github.com/bharath-krishna/mcp-test) | A simple MCP server with an echo tool for testing purposes. Returns back any ... | 92 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-bharath-krishna-mcp-test) |
+| [time-mcp-server](https://github.com/lchinglen/time-mcp-server) | MCP server providing time and timezone conversion capabilities with IANA time... | 92 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-lchinglen-time-mcp-server) |
+| [nft-log-analyzer](https://github.com/mashish/nft-log-analyzer) | AI-powered log analysis MCP server - 100% local via Ollama, auto-files GitHub... | 92 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-mashish-nft-log-analyzer) |
+| [drand-mcp-server](https://github.com/randa-mu/drand-mcp-server) | MCP server providing verifiable randomness from the drand network for AI appl... | 92 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-randa-mu-drand-mcp-server) |
+| [sutra](https://github.com/4rgon4ut/sutra) | An MCP server providing structured prompting templates, thinking models, and ... | 91 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-4rgon4ut-sutra) |
+| [mcp-server-spira](https://github.com/Inflectra/mcp-server-spira) | MCP server for Inflectra SpiraTeam/SpiraPlan that provides read access to ALM... | 90 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-inflectra-mcp-server-spira) |
+| [callout](https://github.com/fantasieleven-code/callout) | An AI co-founder assistant for solo/early-stage builders that provides multi-... | 86 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-fantasieleven-code-callout) |
+| [esg-mcp-servers](https://github.com/freminder/esg-mcp-servers) | Open-source MCP servers for ESG data with 31 tools for metric extraction, PDF... | 86 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-freminder-esg-mcp-servers) |
+| [pgyer-mcp-server](https://github.com/PGYER/pgyer-mcp-server) | PGYER 平台的 MCP Server，支持上传、查询 App 等 | 86 ✅ | - | [表示](https://agentseal.org/mcp/pgyer-mcp-server) |
+| [mcp-google-search-console](https://github.com/crunchtools/mcp-google-search-console) | MCP server that wraps the Google Search Console API to query search analytics... | 84 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-google-search-console) |
+| [mcp-server](https://github.com/lilo-property/mcp-server) | Vacation rental booking and protection for AI agents | 83 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-lilo-property-mcp-server) |
+| [MCP](https://github.com/akshaykylas94/MCP) | A Kylas CRM MCP server providing tools to create, search, and filter sales le... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-akshaykylas94-mcp) |
+| [mathematica-mcp](https://github.com/lars20070/mathematica-mcp) | A Mathematica/Wolfram Engine MCP server that evaluates arbitrary Wolfram Lang... | 76 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-lars20070-mathematica-mcp) |
+| [tokennuke](https://github.com/BigJai/tokennuke) | Nuke your token usage. Code indexing MCP server: 15 tools, 10 languages, O(1)... | 76 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-bigjai-tokennuke) |
+| [curate-ipsum](https://github.com/egoughnour/curate-ipsum) | A mutation-testing and program-synthesis platform that runs unit/integration/... | 73 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-egoughnour-curate-ipsum) |
+| [ZenLink-MCP](https://github.com/JayQuan-McCleary/ZenLink-MCP) | Browser automation bridge for Zen Browser and Firefox, providing programmatic... | 73 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-jayquan-mccleary-zenlink-mcp) |
+| [mcp-python-exec-sandbox](https://github.com/lu-zhengda/mcp-python-exec-sandbox) | A Python code execution server with automatic dependency management via PEP 7... | 72 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-lu-zhengda-mcp-python-exec-sandbox) |
+| [massive-context-mcp](https://github.com/egoughnour/massive-context-mcp) | A recursive large-context processing server that loads, chunks, filters, and ... | 69 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-egoughnour-massive-context-mcp) |
+| [mcp-gitlab](https://github.com/crunchtools/mcp-gitlab) | A comprehensive GitLab MCP server providing full API access for project, repo... | 68 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-gitlab) |
 
 ### 🔍 <a name="search--knowledge"></a>検索・ナレッジ
 
 | サーバー | 説明 | スコア | Stars | レポート |
 |----------|------|-------:|------:|----------|
-| [airweave-mcp-search](https://github.com/airweave-ai/airweave) | AIエージェント向けオープンソースコンテキスト検索レイヤー | 92 ✅ | 6.0k | [表示](https://agentseal.org/mcp/airweave-mcp-search) |
-| [exa-mcp-server](https://github.com/exa-labs/exa-mcp-server) | Web検索・Webクローリング用Exa MCP! | 84 ✅ | 4.0k | [表示](https://agentseal.org/mcp/exa-mcp-server) |
-| [exa-mcp-server](https://github.com/exa-labs/exa-mcp-server) | AIアシスタントをExaの検索機能に接続。Web検索、コード検索... | 84 ✅ | 4.0k | [表示](https://agentseal.org/mcp/https-githubcom-exa-labs-exa-mcp-server) |
-| [open-webSearch](https://github.com/Aas-ee/open-webSearch) | 無料マルチエンジン検索によるWebSearchMCP（APIキー不要）... | 74 ⚠️ | 790 | [表示](https://agentseal.org/mcp/https-githubcom-aas-ee-open-websearch) |
-| [howtocook-mcp](https://github.com/worryzyy/howtocook-mcp) | Anduin2017 / HowToCook（プログラマーの自炊ガイド）ベースのMCPサーバー | 86 ✅ | 697 | [表示](https://agentseal.org/mcp/https-githubcom-worryzyy-howtocook-mcp) |
-| [mcp-gsc](https://github.com/aminforou/mcp-gsc) | SEO向けClaude AIによるGoogle Search Consoleインサイト | 84 ✅ | 535 | [表示](https://agentseal.org/mcp/mcp-gsc) |
-| [zotero-mcp](https://github.com/cookjohn/zotero-mcp) | Zoteroのプラグイン拡張。Zotero MCPプラグインはAIとの統合を実現... | 90 ✅ | 460 | [表示](https://agentseal.org/mcp/https-githubcom-cookjohn-zotero-mcp) |
-| [graphlit-mcp-server](https://github.com/graphlit/graphlit-mcp-server) | Graphlitプラットフォーム用Model Context Protocol (MCP)サーバー | 72 ⚠️ | 372 | [表示](https://agentseal.org/mcp/https-githubcom-graphlit-graphlit-mcp-server) |
-| [gptr-mcp](https://github.com/assafelovic/gptr-mcp) | LLMアプリがMCPを通じてディープリサーチを実行できるMCPサーバー... | 84 ✅ | 330 | [表示](https://agentseal.org/mcp/https-githubcom-assafelovic-gptr-mcp) |
-| [idea-reality-mcp](https://github.com/mnemox-ai/idea-reality-mcp) | 製品アイデアが既に存在するかをWeb等で検索して確認するリサーチアシスタント... | 98 ✅ | 316 | [表示](https://agentseal.org/mcp/https-githubcom-mnemox-ai-idea-reality-mcp) |
-| [deep-research-mcp](https://github.com/ozamatash/deep-research-mcp) | トピックの深い反復的リサーチを行うAI搭載リサーチアシスタント... | 92 ✅ | 315 | [表示](https://agentseal.org/mcp/https-githubcom-ozamatash-deep-research-mcp) |
-| [memora](https://github.com/agentic-mcp-tools/memora) | CRUD、検索等を提供する永続メモリ管理サーバー... | 64 ⚠️ | 309 | [表示](https://agentseal.org/mcp/https-githubcom-agentic-mcp-tools-memora) |
-| [mcp-server-google-scholar](https://github.com/jackkuo666/google-scholar-mcp-server) | Google Scholar用MCPサーバー: 🔍 AIアシスタントが学術論文を検索・アクセス可能に... | 91 ✅ | 247 | [表示](https://agentseal.org/mcp/mcp-server-google-scholar) |
-| [mcp-trends-hub](https://github.com/baranwang/mcp-trends-hub) | Model Context Protocol (MCP)ベースのネット全体のトレンド一元集約サービス | 92 ✅ | 228 | [表示](https://agentseal.org/mcp/https-githubcom-baranwang-mcp-trends-hub) |
-| [mcp-simple-arxiv](https://github.com/andybrandt/mcp-simple-arxiv) | 学術論文の検索、取得、全文抽出を提供するMCPサーバー... | 84 ✅ | 185 | [表示](https://agentseal.org/mcp/https-githubcom-andybrandt-mcp-simple-arxiv) |
-| [meilisearch-mcp](https://github.com/meilisearch/meilisearch-mcp) | Meilisearchと対話するためのModel Context Protocol (MCP)サーバー... | 79 ⚠️ | 178 | [表示](https://agentseal.org/mcp/https-githubcom-meilisearch-meilisearch-mcp) |
-| [mlit-dpf-mcp](https://github.com/mlit-data-platform/mlit-dpf-mcp) | 日本の国土交通省データプラットフォームに接続し、自然言語検索を可能にするMCPサーバー... | 88 ✅ | 130 | [表示](https://agentseal.org/mcp/https-githubcom-mlit-data-platform-mlit-dpf-mcp) |
-| [google-news-server](https://github.com/ChanMeng666/server-google-news) | Google Newsを実装するModel Context Protocol (MCP)サーバー... | 92 ✅ | 113 | [表示](https://agentseal.org/mcp/chanmeng666-google-news-server) |
-| [lightrag-mcp](https://github.com/shemhamforash23/lightrag-mcp) | LightRAG APIとAIツールを橋渡しし、RAG検索を可能にするMCPサーバー... | 79 ⚠️ | 107 | [表示](https://agentseal.org/mcp/https-githubcom-shemhamforash23-lightrag-mcp) |
-| [mcp-server-perplexity](https://github.com/tanigami/mcp-server-perplexity) | Perplexity APIと統合してチャット補完を提供するMCPサーバー... | 92 ✅ | 92 | [表示](https://agentseal.org/mcp/https-githubcom-tanigami-mcp-server-perplexity) |
-| [mcp-open-library](https://github.com/8enSmith/mcp-open-library) | Internet ArchiveのOpen Library向けModel Context Protocol (MCP)サーバー... | 100 ✅ | 62 | [表示](https://agentseal.org/mcp/https-githubcom-8ensmith-mcp-open-library) |
-| [mcp-osint-server](https://github.com/himanshusanecha/mcp-osint-server) | ネットワーク偵察等を通じてOSINT調査を行うMCPサーバー... | 92 ✅ | 43 | [表示](https://agentseal.org/mcp/https-githubcom-himanshusanecha-mcp-osint-server) |
-| [mcp-searxng-enhanced](https://github.com/OvertliDS/mcp-searxng-enhanced) | SearXNG向け拡張MCPサーバー: カテゴリ対応Web検索、Webスクレイピング... | 86 ✅ | 35 | [表示](https://agentseal.org/mcp/https-githubcom-overtlids-mcp-searxng-enhanced) |
-| [bgg-mcp](https://github.com/kkjdaniel/bgg-mcp) | BGG MCPはBoardGameGeekと各種ボードゲーム関連データへのアクセスを提供... | 86 ✅ | 32 | [表示](https://agentseal.org/mcp/https-githubcom-kkjdaniel-bgg-mcp) |
-| [open-notebook-mcp](https://github.com/Epochal-dev/open-notebook-mcp) | ノートブック、ノート、ソース等を管理する個人ナレッジ管理MCPサーバー... | 67 ⚠️ | 19 | [表示](https://agentseal.org/mcp/https-githubcom-epochal-dev-open-notebook-mcp) |
-| [cbi-mcp-server](https://github.com/cbinsights/cbi-mcp-server) | CB Insights MCPサーバー | 98 ✅ | 11 | [表示](https://agentseal.org/mcp/https-githubcom-cbinsights-cbi-mcp-server) |
-| [google-pse-mcp](https://github.com/rendyfebry/google-pse-mcp) | Google Programmable Search Engine用Model Context Protocol (MCP)サーバー... | 92 ✅ | 10 | [表示](https://agentseal.org/mcp/https-githubcom-rendyfebry-google-pse-mcp) |
-| [driflyte-mcp-server](https://github.com/serkan-ozal/driflyte-mcp-server) | AIアシスタントがトピック別コンテンツを照会・取得するためのツールを公開するMCPサーバー... | 81 ✅ | 9 | [表示](https://agentseal.org/mcp/https-githubcom-serkan-ozal-driflyte-mcp-server) |
-| [doi-mcp](https://github.com/tfscharff/doi-mcp) | AIの引用ハルシネーションを防止するModel Context Protocol (MCP)サーバー... | 86 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-tfscharff-doi-mcp) |
-| [mcp_pearch](https://github.com/Pearch-ai/mcp_pearch) | 最も正確な人物検索API/MCP。自然言語入力、高品質な候補者データ出力... | 86 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-pearch-ai-mcppearch) |
-| [bgpt-mcp](https://github.com/connerlambden/bgpt-mcp) | BGPT科学論文データベースを照会する単一ツールMCPサーバー... | 91 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-connerlambden-bgpt-mcp) |
-| [mcp-search-server](https://github.com/KazKozDev/mcp-search-server) | Web検索（DuckDuckGo）等を提供する多目的検索・ユーティリティMCPサーバー... | 74 ⚠️ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-kazkozdev-mcp-search-server) |
-| [shahnameh-mcp-server](https://github.com/aliafsahnoudeh/shahnameh-mcp-server) | シャー・ナーメの章、詩節、ベクトル検索へのアクセスを提供する読み取り専用MCPサーバー... | 94 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-aliafsahnoudeh-shahnameh-mcp-server) |
-| [Weather-MCP](https://github.com/shuowang-ai/Weather-MCP) | 彩雲天気APIによるリアルタイム天気、大気質モニタリング、予報... | 91 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-shuowang-ai-weather-mcp) |
-| [igdb-mcp-server](https://github.com/bielacki/igdb-mcp-server) | IGDB（Internet Game Database）への読み取り専用アクセスを提供するMCPサーバー... | 89 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-bielacki-igdb-mcp-server) |
-| [gitlab-docs-mcp](https://github.com/nunolima/gitlab-docs-mcp) | GitLabドキュメントMCPサーバー | 90 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-nunolima-gitlab-docs-mcp) |
-| [generect_mcp.git](https://github.com/generect/generect_mcp.git) | Generect MCPはB2B営業プロスペクティングツールを提供: LinkedIn検索... | 88 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-generect-generectmcpgit) |
-| [ai-dictionary-mcp](https://github.com/donjguido/ai-dictionary-mcp) | AI現象学用語集PhenomenaiへのアクセスをAIアシスタントに提供するMCPサーバー... | 79 ⚠️ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-donjguido-ai-dictionary-mcp) |
-| [brlaw_mcp_server](https://github.com/pdmtt/brlaw_mcp_server) | ブラジル上級裁判所の法的先例を検索する読み取り専用MCPサーバー... | 100 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-pdmtt-brlawmcpserver) |
-| [lapalma24-mcp](https://github.com/La-Palma-24/lapalma24-mcp) | ラ・パルマ島のバケーションレンタル物件を検索・発見するMCPサーバー... | 100 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-la-palma-24-lapalma24-mcp) |
-| [mcp-claude-hackernews](https://github.com/imprvhub/mcp-claude-hackernews) | Hacker News公開APIからストーリーやコメントを取得する読み取り専用クライアント... | 100 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-imprvhub-mcp-claude-hackernews) |
-| [trinvmcp](https://github.com/cqtrinv/trinvmcp) | 名前の断片と郵便番号でフランスの市町村を検索する読み取り専用MCPサーバー... | 100 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-cqtrinv-trinvmcp) |
-| [google_maps_mcp](https://github.com/Mastan1301/google_maps_mcp) | Google Maps Places APIで近くの場所を検索する単一ツールMCPサーバー... | 99 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-mastan1301-googlemapsmcp) |
-| [mcp-server-leetcode](https://github.com/doggybee/mcp-server-leetcode) | LeetCode GraphQL APIをラップして問題情報を取得する読み取り専用MCPサーバー... | 99 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-doggybee-mcp-server-leetcode) |
-| [weather-server-python](https://github.com/lxchst/weather-server-python) | 州別の米国気象警報と天気予報を取得する読み取り専用MCPサーバー... | 99 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-lxchst-weather-server-python) |
-| [opendota-mcp-server](https://github.com/hkaanengin/opendota-mcp-server) | OpenDota公開APIでDota 2統計を照会する読み取り専用サーバー... | 98 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-hkaanengin-opendota-mcp-server) |
-| [bible-mcp](https://github.com/trevato/bible-mcp) | 参照またはランダムで聖書の節を取得する読み取り専用MCPサーバー... | 97 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-trevato-bible-mcp) |
-| [mlb-api-mcp](https://github.com/guillochon/mlb-api-mcp) | MLB Stats APIとStatcastデータを公開する読み取り専用MCPサーバー... | 96 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-guillochon-mlb-api-mcp) |
-| [kagi-ken-mcp](https://github.com/czottmann/kagi-ken-mcp) | Kagi API経由のWeb検索とURL要約を提供する2ツールMCPサーバー... | 95 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-czottmann-kagi-ken-mcp) |
-| [reddit-insights-mcp](https://github.com/lignertys/reddit-insights-mcp) | セマンティック検索、subreddit分析等を行う読み取り専用Redditインテリジェンスサーバー... | 94 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-lignertys-reddit-insights-mcp) |
-| [mcp-server](https://github.com/DealExpress/mcp-server) | DealX/DealExpressマーケットプレイスのクラシファイド広告を検索する読み取り専用MCPサーバー... | 94 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-dealexpress-mcp-server) |
-| [mercadolibre-mcp](https://github.com/dan1d/mercadolibre-mcp) | 商品検索・詳細取得用の読み取り専用MercadoLibreマーケットプレイスAPIクライアント... | 94 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-dan1d-mercadolibre-mcp) |
-| [docsmcp](https://github.com/da1z/docsmcp) | 利用可能なドキュメントソースの一覧表示とコンテンツ取得を行うドキュメント検索サーバー... | 90 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-da1z-docsmcp) |
-| [context-awesome](https://github.com/bh-rat/context-awesome) | awesome listリポジトリを閲覧するための読み取り専用検索・取得サーバー... | 90 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-bh-rat-context-awesome) |
-| [mcp-dblp](https://github.com/szeider/mcp-dblp) | DBLP学術出版データベースの検索、論文情報の取得等を行うMCPサーバー... | 88 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-szeider-mcp-dblp) |
-| [obris-mcp](https://github.com/obris-dev/obris-mcp) | AIエージェントがナレッジベースの一覧、読み取り、作成、更新を行えるMCP... | 85 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-obris-dev-obris-mcp) |
-| [bing-search-mcp](https://github.com/iridite/bing-search-mcp) | Claude Code向け無料Bing検索MCPサーバー - APIキー不要 | 84 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-iridite-bing-search-mcp) |
-| [evc-spark-mcp](https://github.com/entire-vc/evc-spark-mcp) | Spark AIアセットマーケットプレイスとの検索・取得を行うMCPコネクタ... | 81 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-entire-vc-evc-spark-mcp) |
-| [mcp-mediawiki](https://github.com/crunchtools/mcp-mediawiki) | 検索、読み取り、書き込み、管理機能を持つセキュアなMediaWiki向けMCPサーバー... | 74 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-mediawiki) |
+| [airweave-mcp-search](https://github.com/airweave-ai/airweave) | Open-source context retrieval layer for AI agents | 92 ✅ | 6.0k | [表示](https://agentseal.org/mcp/airweave-mcp-search) |
+| [exa-mcp-server](https://github.com/exa-labs/exa-mcp-server) | Exa MCP for web search and web crawling! | 84 ✅ | 4.0k | [表示](https://agentseal.org/mcp/exa-mcp-server) |
+| [exa-mcp-server](https://github.com/exa-labs/exa-mcp-server) | Connect AI assistants to Exa's search capabilities for web search, code searc... | 84 ✅ | 4.0k | [表示](https://agentseal.org/mcp/https-githubcom-exa-labs-exa-mcp-server) |
+| [arxiv-mcp-server](https://github.com/blazickjp/arxiv-mcp-server) | An MCP server enabling AI assistants to search, download, and analyze arXiv r... | 79 ⚠️ | 2.3k | [表示](https://agentseal.org/mcp/https-githubcom-blazickjp-arxiv-mcp-server) |
+| [open-webSearch](https://github.com/Aas-ee/open-webSearch) | WebSearchMCP using free multi-engine search (NO API KEYS REQUIRED) - Supports... | 74 ⚠️ | 790 | [表示](https://agentseal.org/mcp/https-githubcom-aas-ee-open-websearch) |
+| [howtocook-mcp](https://github.com/worryzyy/howtocook-mcp) | 基于Anduin2017 / HowToCook （程序员在家做饭指南）的mcp server | 86 ✅ | 697 | [表示](https://agentseal.org/mcp/https-githubcom-worryzyy-howtocook-mcp) |
+| [mcp-gsc](https://github.com/aminforou/mcp-gsc) | Google Search Console Insights with Claude AI for SEOs | 84 ✅ | 535 | [表示](https://agentseal.org/mcp/mcp-gsc) |
+| [zotero-mcp](https://github.com/cookjohn/zotero-mcp) | It's a plugin extension in Zotero.  Zotero MCP Plugin enables integration bet... | 90 ✅ | 460 | [表示](https://agentseal.org/mcp/https-githubcom-cookjohn-zotero-mcp) |
+| [graphlit-mcp-server](https://github.com/graphlit/graphlit-mcp-server) | Model Context Protocol (MCP) Server for Graphlit Platform | 72 ⚠️ | 372 | [表示](https://agentseal.org/mcp/https-githubcom-graphlit-graphlit-mcp-server) |
+| [gptr-mcp](https://github.com/assafelovic/gptr-mcp) | MCP server for enabling LLM applications to perform deep research via the MCP... | 84 ✅ | 330 | [表示](https://agentseal.org/mcp/https-githubcom-assafelovic-gptr-mcp) |
+| [idea-reality-mcp](https://github.com/mnemox-ai/idea-reality-mcp) | A research assistant that checks whether a product idea already exists by que... | 98 ✅ | 316 | [表示](https://agentseal.org/mcp/https-githubcom-mnemox-ai-idea-reality-mcp) |
+| [deep-research-mcp](https://github.com/ozamatash/deep-research-mcp) | AI-powered research assistant that performs deep, iterative research on topic... | 92 ✅ | 315 | [表示](https://agentseal.org/mcp/https-githubcom-ozamatash-deep-research-mcp) |
+| [memora](https://github.com/agentic-mcp-tools/memora) | A persistent memory management server providing create/read/update/delete, se... | 64 ⚠️ | 309 | [表示](https://agentseal.org/mcp/https-githubcom-agentic-mcp-tools-memora) |
+| [mcp-server-google-scholar](https://github.com/jackkuo666/google-scholar-mcp-server) | A MCP Server for Google Scholar: 🔍 Enable AI assistants to search and access ... | 91 ✅ | 247 | [表示](https://agentseal.org/mcp/mcp-server-google-scholar) |
+| [mcp-trends-hub](https://github.com/baranwang/mcp-trends-hub) | 基于 Model Context Protocol (MCP) 协议的全网热点趋势一站式聚合服务 | 92 ✅ | 228 | [表示](https://agentseal.org/mcp/https-githubcom-baranwang-mcp-trends-hub) |
+| [mcp-simple-arxiv](https://github.com/andybrandt/mcp-simple-arxiv) | An MCP server that provides search, retrieval, and full-text extraction of ac... | 84 ✅ | 185 | [表示](https://agentseal.org/mcp/https-githubcom-andybrandt-mcp-simple-arxiv) |
+| [meilisearch-mcp](https://github.com/meilisearch/meilisearch-mcp) | A Model Context Protocol (MCP) server for interacting with Meilisearch throug... | 79 ⚠️ | 178 | [表示](https://agentseal.org/mcp/https-githubcom-meilisearch-meilisearch-mcp) |
+| [mlit-dpf-mcp](https://github.com/mlit-data-platform/mlit-dpf-mcp) | MCP server connecting to Japan's MLIT government data platform enabling natur... | 88 ✅ | 130 | [表示](https://agentseal.org/mcp/https-githubcom-mlit-data-platform-mlit-dpf-mcp) |
+| [google-news-server](https://github.com/ChanMeng666/server-google-news) | 【Star-crossed coders unite!⭐️】Model Context Protocol (MCP) server implementat... | 92 ✅ | 113 | [表示](https://agentseal.org/mcp/chanmeng666-google-news-server) |
+| [lightrag-mcp](https://github.com/shemhamforash23/lightrag-mcp) | MCP server bridging LightRAG API with AI tools, enabling retrieval-augmented ... | 79 ⚠️ | 107 | [表示](https://agentseal.org/mcp/https-githubcom-shemhamforash23-lightrag-mcp) |
+| [mcp-server-perplexity](https://github.com/tanigami/mcp-server-perplexity) | MCP server that integrates with Perplexity API to provide chat completions wi... | 92 ✅ | 92 | [表示](https://agentseal.org/mcp/https-githubcom-tanigami-mcp-server-perplexity) |
+| [openai-websearch-mcp](https://github.com/ConechoAI/openai-websearch-mcp) | MCP server providing intelligent web search capabilities using OpenAI's reaso... | 91 ✅ | 86 | [表示](https://agentseal.org/mcp/https-githubcom-conechoai-openai-websearch-mcp) |
+| [octagon-deep-research-mcp](https://github.com/OctagonAI/octagon-deep-research-mcp) | Octagon Deep Research MCP provides AI-powered comprehensive research and anal... | 92 ✅ | 84 | [表示](https://agentseal.org/mcp/octagon-deep-research-mcp) |
+| [mcp-open-library](https://github.com/8enSmith/mcp-open-library) | A Model Context Protocol (MCP) server for the Internet Archive's Open Library... | 100 ✅ | 62 | [表示](https://agentseal.org/mcp/https-githubcom-8ensmith-mcp-open-library) |
+| [mcp-osint-server](https://github.com/himanshusanecha/mcp-osint-server) | MCP server for performing OSINT investigations through network reconnaissance... | 92 ✅ | 43 | [表示](https://agentseal.org/mcp/https-githubcom-himanshusanecha-mcp-osint-server) |
+| [context-awesome](https://github.com/bh-rat/context-awesome) | A read-only search and retrieval server for browsing curated 'awesome list' r... | 90 ✅ | 41 | [表示](https://agentseal.org/mcp/https-githubcom-bh-rat-context-awesome) |
+| [mcp-server-leetcode](https://github.com/doggybee/mcp-server-leetcode) | A read-only MCP server that wraps the public LeetCode GraphQL API to fetch pr... | 99 ✅ | 40 | [表示](https://agentseal.org/mcp/https-githubcom-doggybee-mcp-server-leetcode) |
+| [mlb-api-mcp](https://github.com/guillochon/mlb-api-mcp) | A read-only MCP server that exposes MLB Stats API and Statcast data including... | 96 ✅ | 39 | [表示](https://agentseal.org/mcp/https-githubcom-guillochon-mlb-api-mcp) |
+| [mcp-searxng-enhanced](https://github.com/OvertliDS/mcp-searxng-enhanced) | Enhanced MCP server for SearXNG: category-aware web-search, web-scraping, and... | 86 ✅ | 35 | [表示](https://agentseal.org/mcp/https-githubcom-overtlids-mcp-searxng-enhanced) |
+| [bgg-mcp](https://github.com/kkjdaniel/bgg-mcp) | BGG MCP provides access to BoardGameGeek and a variety of board game related ... | 86 ✅ | 32 | [表示](https://agentseal.org/mcp/https-githubcom-kkjdaniel-bgg-mcp) |
+| [brlaw_mcp_server](https://github.com/pdmtt/brlaw_mcp_server) | A read-only MCP server for searching Brazilian superior court legal precedent... | 100 ✅ | 27 | [表示](https://agentseal.org/mcp/https-githubcom-pdmtt-brlawmcpserver) |
+| [kagi-ken-mcp](https://github.com/czottmann/kagi-ken-mcp) | A two-tool MCP server that provides web search and URL summarization via the ... | 95 ✅ | 25 | [表示](https://agentseal.org/mcp/https-githubcom-czottmann-kagi-ken-mcp) |
+| [mcp-dblp](https://github.com/szeider/mcp-dblp) | An MCP server that searches the DBLP academic publication database, retrieves... | 88 ✅ | 25 | [表示](https://agentseal.org/mcp/https-githubcom-szeider-mcp-dblp) |
+| [open-notebook-mcp](https://github.com/Epochal-dev/open-notebook-mcp) | A personal knowledge management MCP server that manages notebooks, notes, sou... | 67 ⚠️ | 19 | [表示](https://agentseal.org/mcp/https-githubcom-epochal-dev-open-notebook-mcp) |
+| [cbi-mcp-server](https://github.com/cbinsights/cbi-mcp-server) | CB Insights' MCP Server | 98 ✅ | 11 | [表示](https://agentseal.org/mcp/https-githubcom-cbinsights-cbi-mcp-server) |
+| [mcp-claude-hackernews](https://github.com/imprvhub/mcp-claude-hackernews) | A read-only Hacker News client that fetches public stories and comments from ... | 100 ✅ | 10 | [表示](https://agentseal.org/mcp/https-githubcom-imprvhub-mcp-claude-hackernews) |
+| [google-pse-mcp](https://github.com/rendyfebry/google-pse-mcp) | A Model Context Protocol (MCP) server for the Google Programmable Search Engi... | 92 ✅ | 10 | [表示](https://agentseal.org/mcp/https-githubcom-rendyfebry-google-pse-mcp) |
+| [bible-mcp](https://github.com/trevato/bible-mcp) | A read-only MCP server that retrieves Bible verses by reference or randomly, ... | 97 ✅ | 9 | [表示](https://agentseal.org/mcp/https-githubcom-trevato-bible-mcp) |
+| [driflyte-mcp-server](https://github.com/serkan-ozal/driflyte-mcp-server) | MCP server that exposes tools for AI assistants to query and retrieve topic-s... | 81 ✅ | 9 | [表示](https://agentseal.org/mcp/https-githubcom-serkan-ozal-driflyte-mcp-server) |
+| [docsmcp](https://github.com/da1z/docsmcp) | A documentation retrieval server that lists available documentation sources a... | 90 ✅ | 8 | [表示](https://agentseal.org/mcp/https-githubcom-da1z-docsmcp) |
+| [doi-mcp](https://github.com/tfscharff/doi-mcp) | A Model Context Protocol (MCP) server to prevent citation hallucination in AI... | 86 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-tfscharff-doi-mcp) |
+| [mcp_pearch](https://github.com/Pearch-ai/mcp_pearch) | The most accurate people search API/MCP. Natural language in, high-quality ca... | 86 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-pearch-ai-mcppearch) |
+| [bgpt-mcp](https://github.com/connerlambden/bgpt-mcp) | A single-tool MCP server that queries the BGPT database of scientific papers ... | 91 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-connerlambden-bgpt-mcp) |
+| [google_maps_mcp](https://github.com/Mastan1301/google_maps_mcp) | A single-tool MCP server that queries the Google Maps Places API to find near... | 99 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-mastan1301-googlemapsmcp) |
+| [mcp-search-server](https://github.com/KazKozDev/mcp-search-server) | A multi-purpose search and utility MCP server providing web search (DuckDuckG... | 74 ⚠️ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-kazkozdev-mcp-search-server) |
+| [shahnameh-mcp-server](https://github.com/aliafsahnoudeh/shahnameh-mcp-server) | A read-only MCP server providing access to chapters, verses, and vector-searc... | 94 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-aliafsahnoudeh-shahnameh-mcp-server) |
+| [Weather-MCP](https://github.com/shuowang-ai/Weather-MCP) | Real-time weather, air quality monitoring, and forecasting powered by Caiyun ... | 91 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-shuowang-ai-weather-mcp) |
+| [igdb-mcp-server](https://github.com/bielacki/igdb-mcp-server) | An MCP server that provides read-only access to the IGDB (Internet Game Datab... | 89 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-bielacki-igdb-mcp-server) |
+| [evc-spark-mcp](https://github.com/entire-vc/evc-spark-mcp) | MCP connector for the Spark AI asset marketplace, enabling search and retriev... | 81 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-entire-vc-evc-spark-mcp) |
+| [trinvmcp](https://github.com/cqtrinv/trinvmcp) | A read-only MCP server for searching French municipalities by name fragment a... | 100 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-cqtrinv-trinvmcp) |
+| [opendota-mcp-server](https://github.com/hkaanengin/opendota-mcp-server) | A read-only Dota 2 statistics server that queries the OpenDota public API for... | 98 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-hkaanengin-opendota-mcp-server) |
+| [gitlab-docs-mcp](https://github.com/nunolima/gitlab-docs-mcp) | GitLab Documentation MCP Server | 90 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-nunolima-gitlab-docs-mcp) |
+| [generect_mcp.git](https://github.com/generect/generect_mcp.git) | Generect MCP provides B2B sales prospecting tools: LinkedIn lead/company sear... | 88 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-generect-generectmcpgit) |
+| [ai-dictionary-mcp](https://github.com/donjguido/ai-dictionary-mcp) | MCP server providing access to Phenomenai, a glossary of AI phenomenology ter... | 79 ⚠️ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-donjguido-ai-dictionary-mcp) |
+| [lapalma24-mcp](https://github.com/La-Palma-24/lapalma24-mcp) | MCP server for searching and discovering vacation rental properties in La Pal... | 100 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-la-palma-24-lapalma24-mcp) |
+| [weather-server-python](https://github.com/lxchst/weather-server-python) | A read-only MCP server that retrieves US weather alerts by state and weather ... | 99 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-lxchst-weather-server-python) |
+| [mcp-server](https://github.com/DealExpress/mcp-server) | Read-only MCP server for searching classified ads on the DealX/DealExpress ma... | 94 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-dealexpress-mcp-server) |
+| [reddit-insights-mcp](https://github.com/lignertys/reddit-insights-mcp) | A read-only Reddit intelligence server that enables semantic search, subreddi... | 94 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-lignertys-reddit-insights-mcp) |
+| [mercadolibre-mcp](https://github.com/dan1d/mercadolibre-mcp) | Read-only MercadoLibre marketplace API client for searching products, retriev... | 94 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-dan1d-mercadolibre-mcp) |
+| [obris-mcp](https://github.com/obris-dev/obris-mcp) | A knowledge base MCP that allows AI agents to list, read, create, and update ... | 85 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-obris-dev-obris-mcp) |
+| [bing-search-mcp](https://github.com/iridite/bing-search-mcp) | Free Bing search MCP server for Claude Code - No API key required | 84 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-iridite-bing-search-mcp) |
+| [mcp-mediawiki](https://github.com/crunchtools/mcp-mediawiki) | Secure MCP server for MediaWiki wikis with search, read, write, and managemen... | 74 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-mediawiki) |
+| [labmate-mcp](https://github.com/JonasRackl/labmate-mcp) | Your AI lab companion - 78 MCP tools for literature, compounds, synthesis, be... | 71 ⚠️ | - | [表示](https://agentseal.org/mcp/labmate-mcp) |
 
 ### 💻 <a name="code--ide"></a>コード・IDE
 
 | サーバー | 説明 | スコア | Stars | レポート |
 |----------|------|-------:|------:|----------|
-| [Serena](https://github.com/oraios/serena) | LLMをコードベース上で直接動作するコーディングエージェントに変換... | 62 ⚠️ | 21.4k | [表示](https://agentseal.org/mcp/https-githubcom-oraios-serena) |
-| [ghidramcp](https://github.com/lauriewired/ghidramcp) | Ghidra用MCPサーバー | 86 ✅ | 7.9k | [表示](https://agentseal.org/mcp/https-githubcom-lauriewired-ghidramcp) |
-| [@sourcebot](https://github.com/sourcebot-dev/sourcebot) | AI搭載コード検索・理解で開発者を支援するセルフホスト型ツール... | 92 ✅ | 3.2k | [表示](https://agentseal.org/mcp/sourcebot) |
-| [codegraphcontext](https://github.com/shashankss1205/codegraphcontext) | ローカルコードリポジトリをグラフにインデックス化するMCPサーバー・CLIツールキット... | 81 ✅ | 2.0k | [表示](https://agentseal.org/mcp/https-githubcom-shashankss1205-codegraphcontext) |
-| [ref-tools-mcp](https://github.com/ref-tools/ref-tools-mcp) | コーディングエージェントが公開・非公開ライブラリでミスしないよう支援... | 81 ✅ | 1.0k | [表示](https://agentseal.org/mcp/https-githubcom-ref-tools-ref-tools-mcp) |
-| [octocode-mcp](https://github.com/bgauryy/octocode-mcp) | リアルタイムでのセマンティックコードリサーチ・コンテキスト生成用MCPサーバー... | 77 ⚠️ | 750 | [表示](https://agentseal.org/mcp/octocode-mcp) |
-| [next-devtools-mcp](https://github.com/vercel/next-devtools-mcp) | コーディングエージェント向けNext.js開発 | 67 ⚠️ | 673 | [表示](https://agentseal.org/mcp/https-githubcom-vercel-next-devtools-mcp) |
-| [binary_ninja_mcp](https://github.com/fosdickio/binary_ninja_mcp) | MCPサーバーを含むBinary Ninjaプラグイン。シームレスな統合を実現... | 84 ✅ | 264 | [表示](https://agentseal.org/mcp/https-githubcom-fosdickio-binaryninjamcp) |
-| [claude-context-local](https://github.com/farhanaliraza/claude-context-local) | Claude Code向けコード検索MCP。コードベース全体をコンテキストに... | 84 ✅ | 200 | [表示](https://agentseal.org/mcp/claude-context-local) |
-| [mcp-package-version](https://github.com/sammcj/mcp-package-version) | LLMに最新の安定パッケージバージョンを提供するMCPサーバー... | 86 ✅ | 121 | [表示](https://agentseal.org/mcp/mcp-package-version) |
-| [deep-code-reasoning-mcp](https://github.com/haasonsaas/deep-code-reasoning-mcp) | 高度なコード分析・推論を提供するModel Context Protocol (MCP)サーバー... | 89 ✅ | 102 | [表示](https://agentseal.org/mcp/https-githubcom-haasonsaas-deep-code-reasoning-mcp) |
-| [owlex](https://github.com/agentic-mcp-tools/owlex) | 複数のAIモデルとのセッションを生成・管理するAI評議会オーケストレーションMCP... | 82 ✅ | 74 | [表示](https://agentseal.org/mcp/https-githubcom-agentic-mcp-tools-owlex) |
-| [ipybox](https://github.com/gradion-ai/ipybox) | エージェントが任意のPythonコードを実行できるIPythonベースコード実行サンドボックス... | 71 ⚠️ | 71 | [表示](https://agentseal.org/mcp/https-githubcom-gradion-ai-ipybox) |
-| [codelogic-mcp-server](https://github.com/CodeLogicIncEngineering/codelogic-mcp-server) | AIアシスタント向けCodelogicソフトウェア依存関係データを統合するMCPサーバー... | 90 ✅ | 35 | [表示](https://agentseal.org/mcp/https-githubcom-codelogicincengineering-codelogic-mcp-server) |
-| [codesurface](https://github.com/Codeturion/codesurface) | エージェントがAPIサーフェスを検索、検査、取得できるローカルコードベースインデクサー... | 92 ✅ | 19 | [表示](https://agentseal.org/mcp/https-githubcom-codeturion-codesurface) |
-| [local-history-mcp](https://github.com/xxczaki/local-history-mcp) | VS Code/Cursorのローカル履歴にアクセスするMCPサーバー | 92 ✅ | 12 | [表示](https://agentseal.org/mcp/https-githubcom-xxczaki-local-history-mcp) |
-| [mcp-vscode-template](https://github.com/timsonner/mcp-vscode-template) | VS Code向けMCPサーバーテンプレート | 91 ✅ | 8 | [表示](https://agentseal.org/mcp/https-githubcom-timsonner-mcp-vscode-template) |
-| [jebmcp](https://github.com/pcjaat3844/jebmcp) | クラウド環境でバッチジョブを管理・処理するための軽量ツール... | 89 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-pcjaat3844-jebmcp) |
-| [judges](https://github.com/kevinrabun/judges) | AI生成コードのセキュリティ等を評価する専門審査員付きMCPサーバー... | 81 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-kevinrabun-judges) |
-| [clj-kondo-MCP](https://github.com/Bigsy/clj-kondo-MCP) | Clojure、ClojureScript、EDNファイルのclj-kondoリンティングを提供するMCPサーバー... | 89 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-bigsy-clj-kondo-mcp) |
-| [jadx-daemon-mcp](https://github.com/wrlu/jadx-daemon-mcp) | jadxデーモンサービスMCPサーバー。 | 88 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-wrlu-jadx-daemon-mcp) |
-| [silverstripe-mcp](https://github.com/sandervanscheepen/silverstripe-mcp) | AIアシスタントがコード生成時にリアルタイムの検証フィードバックを提供するMCPサーバー... | 83 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-sandervanscheepen-silverstripe-mcp) |
-| [shadcn-registry-manager](https://github.com/reuvenaor/shadcn-registry-manager) | MCP shadcnレジストリCLIマネージャー | 92 ✅ | 1 | [表示](https://agentseal.org/mcp/reuvenorg-shadcn-registry-manager) |
-| [impact-preview](https://github.com/agent-polis/impact-preview) | 実行前にAIエージェントのアクションをプレビュー・承認。ファイル差分表示... | 82 ✅ | 1 | [表示](https://agentseal.org/mcp/impact-preview) |
-| [context7fork](https://github.com/renCosta2025/context7fork) | LLMとAIコーディングアシスタント向けの最新コードドキュメントとバージョン別サンプル... | 92 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-rencosta2025-context7fork) |
-| [claudecodenavi-mcp](https://github.com/saikiyusuke/claudecodenavi-mcp) | ClaudeCodeNavi MCPサーバー - Claude Codeナレッジプラットフォーム・マーケットプレイス | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-saikiyusuke-claudecodenavi-mcp) |
-| [codemunch-pro](https://github.com/BigJai/codemunch-pro) | インテリジェントなコードインデックスMCPサーバー。13ツール、10言語、ハイブリッド検索... | 72 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-bigjai-codemunch-pro) |
+| [Serena](https://github.com/oraios/serena) | Turns an LLM into a coding agent that works directly on your codebase by prov... | 62 ⚠️ | 21.4k | [表示](https://agentseal.org/mcp/https-githubcom-oraios-serena) |
+| [ghidramcp](https://github.com/lauriewired/ghidramcp) | MCP Server for Ghidra | 86 ✅ | 7.9k | [表示](https://agentseal.org/mcp/https-githubcom-lauriewired-ghidramcp) |
+| [@sourcebot](https://github.com/sourcebot-dev/sourcebot) | Self-hosted tool that helps developers understand codebases through AI-powere... | 92 ✅ | 3.2k | [表示](https://agentseal.org/mcp/sourcebot) |
+| [codegraphcontext](https://github.com/shashankss1205/codegraphcontext) | An MCP server and CLI toolkit that indexes local code repositories into a gra... | 81 ✅ | 2.0k | [表示](https://agentseal.org/mcp/https-githubcom-shashankss1205-codegraphcontext) |
+| [mcp-language-server](https://github.com/isaacphi/mcp-language-server) | MCP server exposing language server protocol tools to LLMs for semantic code ... | 88 ✅ | 1.5k | [表示](https://agentseal.org/mcp/https-githubcom-isaacphi-mcp-language-server) |
+| [ref-tools-mcp](https://github.com/ref-tools/ref-tools-mcp) | Helping coding agents never make mistakes working with public or private libr... | 81 ✅ | 1.0k | [表示](https://agentseal.org/mcp/https-githubcom-ref-tools-ref-tools-mcp) |
+| [octocode-mcp](https://github.com/bgauryy/octocode-mcp) | MCP server for semantic code research and context generation on real-time usi... | 77 ⚠️ | 750 | [表示](https://agentseal.org/mcp/octocode-mcp) |
+| [next-devtools-mcp](https://github.com/vercel/next-devtools-mcp) | Next.js Development for Coding Agent | 67 ⚠️ | 673 | [表示](https://agentseal.org/mcp/https-githubcom-vercel-next-devtools-mcp) |
+| [overture-mcp](https://github.com/sixhq/overture) | Locally running MCP server that visualizes AI coding agent execution plans as... | 90 ✅ | 597 | [表示](https://agentseal.org/mcp/overture-mcp) |
+| [unitymcp](https://github.com/arodoid/unitymcp) | UnityMCP is a Unity Editor plugin implementing Model Context Protocol for AI ... | 92 ✅ | 510 | [表示](https://agentseal.org/mcp/https-githubcom-arodoid-unitymcp) |
+| [binary_ninja_mcp](https://github.com/fosdickio/binary_ninja_mcp) | A Binary Ninja plugin containing an MCP server that enables seamless integrat... | 84 ✅ | 264 | [表示](https://agentseal.org/mcp/https-githubcom-fosdickio-binaryninjamcp) |
+| [claude-context-local](https://github.com/farhanaliraza/claude-context-local) | Code search MCP for Claude Code. Make entire codebase the context for any cod... | 84 ✅ | 200 | [表示](https://agentseal.org/mcp/claude-context-local) |
+| [mcp-package-version](https://github.com/sammcj/mcp-package-version) | An MCP server that provides LLMs with the latest stable package versions when... | 86 ✅ | 121 | [表示](https://agentseal.org/mcp/mcp-package-version) |
+| [deep-code-reasoning-mcp](https://github.com/haasonsaas/deep-code-reasoning-mcp) | A Model Context Protocol (MCP) server that provides advanced code analysis an... | 89 ✅ | 102 | [表示](https://agentseal.org/mcp/https-githubcom-haasonsaas-deep-code-reasoning-mcp) |
+| [owlex](https://github.com/agentic-mcp-tools/owlex) | An AI council orchestration MCP that spawns and manages sessions with multipl... | 82 ✅ | 74 | [表示](https://agentseal.org/mcp/https-githubcom-agentic-mcp-tools-owlex) |
+| [ipybox](https://github.com/gradion-ai/ipybox) | An IPython-based code execution sandbox that allows agents to run arbitrary P... | 71 ⚠️ | 71 | [表示](https://agentseal.org/mcp/https-githubcom-gradion-ai-ipybox) |
+| [codelogic-mcp-server](https://github.com/CodeLogicIncEngineering/codelogic-mcp-server) | MCP Server integrating Codelogic's software dependency data for AI assistants... | 90 ✅ | 35 | [表示](https://agentseal.org/mcp/https-githubcom-codelogicincengineering-codelogic-mcp-server) |
+| [codesurface](https://github.com/Codeturion/codesurface) | A local codebase indexer that lets agents search, inspect, and retrieve API s... | 92 ✅ | 19 | [表示](https://agentseal.org/mcp/https-githubcom-codeturion-codesurface) |
+| [local-history-mcp](https://github.com/xxczaki/local-history-mcp) | MCP server for accessing VS Code/Cursor's Local History | 92 ✅ | 12 | [表示](https://agentseal.org/mcp/https-githubcom-xxczaki-local-history-mcp) |
+| [mcp-vscode-template](https://github.com/timsonner/mcp-vscode-template) | MCP server template for VS Code | 91 ✅ | 8 | [表示](https://agentseal.org/mcp/https-githubcom-timsonner-mcp-vscode-template) |
+| [jebmcp](https://github.com/pcjaat3844/jebmcp) | jebmcp is a lightweight tool for managing and processing batch jobs in cloud ... | 89 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-pcjaat3844-jebmcp) |
+| [judges](https://github.com/kevinrabun/judges) | MCP server with specialized judges to evaluate AI-generated code for security... | 81 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-kevinrabun-judges) |
+| [clj-kondo-MCP](https://github.com/Bigsy/clj-kondo-MCP) | MCP server providing clj-kondo linting for Clojure, ClojureScript, and EDN fi... | 89 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-bigsy-clj-kondo-mcp) |
+| [jadx-daemon-mcp](https://github.com/wrlu/jadx-daemon-mcp) | A jadx daemon service MCP server. | 88 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-wrlu-jadx-daemon-mcp) |
+| [silverstripe-mcp](https://github.com/sandervanscheepen/silverstripe-mcp) | MCP server that provides real-time validation feedback when AI assistants gen... | 83 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-sandervanscheepen-silverstripe-mcp) |
+| [shadcn-registry-manager](https://github.com/reuvenaor/shadcn-registry-manager) | MCP shadcn registry cli manager | 92 ✅ | 1 | [表示](https://agentseal.org/mcp/reuvenorg-shadcn-registry-manager) |
+| [impact-preview](https://github.com/agent-polis/impact-preview) | Preview and approve AI agent actions before execution, showing file diffs and... | 82 ✅ | 1 | [表示](https://agentseal.org/mcp/impact-preview) |
+| [context7fork](https://github.com/renCosta2025/context7fork) | Up-to-date code documentation and version-specific examples for LLMs and AI c... | 92 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-rencosta2025-context7fork) |
+| [git-mob-mcp-server](https://github.com/Mubashwer/git-mob-mcp-server) | MCP server for git-mob CLI app that manages co-authors for pair and mob progr... | 81 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-mubashwer-git-mob-mcp-server) |
+| [claudecodenavi-mcp](https://github.com/saikiyusuke/claudecodenavi-mcp) | ClaudeCodeNavi MCP Server - Claude Code knowledge platform & marketplace | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-saikiyusuke-claudecodenavi-mcp) |
+| [codemunch-pro](https://github.com/BigJai/codemunch-pro) | Intelligent code indexing MCP server. 13 tools, 10 languages, hybrid search, ... | 72 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-bigjai-codemunch-pro) |
 
 ### ☁️ <a name="cloud--infrastructure"></a>クラウド・インフラ
 
 | サーバー | 説明 | スコア | Stars | レポート |
 |----------|------|-------:|------:|----------|
-| [mcp](https://github.com/awslabs/mcp) | AWS公式MCPサーバー | 86 ✅ | 8.4k | [表示](https://agentseal.org/mcp/https-githubcom-awslabs-mcp) |
-| [mcp-grafana](https://github.com/grafana/mcp-grafana) | Grafana用MCPサーバー | 78 ⚠️ | 2.5k | [表示](https://agentseal.org/mcp/https-githubcom-grafana-mcp-grafana) |
-| [mcp-server-kubernetes](https://github.com/Flux159/mcp-server-kubernetes) | Kubernetes管理コマンド用MCPサーバー | 81 ✅ | 1.3k | [表示](https://agentseal.org/mcp/mcp-server-kubernetes) |
-| [azure-mcp](https://github.com/azure/azure-mcp) | Azureの力をエージェントに届けるAzure MCPサーバー。 | 74 ⚠️ | 1.2k | [表示](https://agentseal.org/mcp/https-githubcom-azure-azure-mcp) |
-| [spotinfo](https://github.com/alexei-led/spotinfo) | AWS EC2スポットインベントリ探索用CLI。スポットインスタンスタイプの検査... | 92 ✅ | 158 | [表示](https://agentseal.org/mcp/https-githubcom-alexei-led-spotinfo) |
-| [hub-mcp](https://github.com/docker/hub-mcp) | Docker Hubリポジトリ、タグ、ネームスペースへの読み書きアクセスを提供... | 86 ✅ | 130 | [表示](https://agentseal.org/mcp/https-githubcom-docker-hub-mcp) |
-| [mcp-server-aws](https://github.com/rishikavikondala/mcp-server-aws) | AWS S3バケット/オブジェクトとDynamoDBテーブル/アイテムへの完全CRUDアクセスを提供... | 74 ⚠️ | 128 | [表示](https://agentseal.org/mcp/https-githubcom-rishikavikondala-mcp-server-aws) |
-| [aks-mcp](https://github.com/Azure/aks-mcp) | AIアシスタントがAzure Kubernetes Serviceと対話できるModel Context Protocol (MCP)サーバー... | 86 ✅ | 121 | [表示](https://agentseal.org/mcp/https-githubcom-azure-aks-mcp) |
-| [mcp-netbird](https://github.com/aantti/mcp-netbird) | Netbird用MCPサーバー | 92 ✅ | 42 | [表示](https://agentseal.org/mcp/https-githubcom-aantti-mcp-netbird) |
-| [apisix-mcp](https://github.com/api7/apisix-mcp) | Apache APISIX APIゲートウェイリソース（ルート等）を管理するMCPサーバー... | 67 ⚠️ | 34 | [表示](https://agentseal.org/mcp/https-githubcom-api7-apisix-mcp) |
-| [cos-mcp](https://github.com/Tencent/cos-mcp) | MCPプロトコルベースのTencent Cloud COS MCPサーバー。コーディング不要でLLMからCOS/CI機能に接続 | 85 ✅ | 30 | [表示](https://agentseal.org/mcp/https-githubcom-tencent-cos-mcp) |
-| [ig-mcp-server](https://github.com/inspektor-gadget/ig-mcp-server) | AIインターフェースでContainerとKubernetesワークロードをデバッグ | 92 ✅ | 22 | [表示](https://agentseal.org/mcp/https-githubcom-inspektor-gadget-ig-mcp-server) |
-| [aws-pricing-mcp](https://github.com/trilogy-group/aws-pricing-mcp) | AWS EC2価格データをCPU等で検索可能に公開するMCPサーバー... | 92 ✅ | 20 | [表示](https://agentseal.org/mcp/https-githubcom-trilogy-group-aws-pricing-mcp) |
-| [mcp-server-aws-sso](https://github.com/aashari/mcp-server-aws-sso) | AWS Single Sign-On (SSO)用Node.js/TypeScript MCPサーバー。AIシステムが利用可能... | 78 ⚠️ | 12 | [表示](https://agentseal.org/mcp/https-githubcom-aashari-mcp-server-aws-sso) |
-| [teamcity-mcp](https://github.com/itcaat/teamcity-mcp) | TeamCity MCPサーバー | 80 ⚠️ | 11 | [表示](https://agentseal.org/mcp/itcaat-teamcity-mcp) |
-| [porkbun-mcp](https://github.com/major/porkbun-mcp) | DNSレコード、ドメイン設定、DNSSEC、SSL証明書等を管理するMCPサーバー... | 89 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-major-porkbun-mcp) |
-| [lumino-mcp-server](https://github.com/spre-sre/lumino-mcp-server) | KubernetesとOpenShiftのSREオブザーバビリティ向けAI搭載診断エンジン... | 84 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-spre-sre-lumino-mcp-server) |
-| [hosting-mcp](https://github.com/4everland/4everland-hosting-mcp) | AI生成コードを分散ストレージへ即時デプロイするMCPサーバー... | 92 ✅ | 2 | [表示](https://agentseal.org/mcp/4everland-hosting-mcp) |
-| [azure-updates-mcp](https://github.com/jonnybottles/azure-updates-mcp) | Microsoft Azureサービス更新情報の読み取り専用検索インターフェース... | 94 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-jonnybottles-azure-updates-mcp) |
-| [deploy-mcp](https://github.com/alexpota/deploy-mcp) | デプロイ状態、ログ、プロジェクト一覧を監視する読み取り専用MCPサーバー... | 96 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-alexpota-deploy-mcp) |
-| [azure-resource-graph-mcp-server](https://github.com/hardik-id/azure-resource-graph-mcp-server) | KQLを使用してAzure Resource Graphを照会し、リソースを列挙・フィルタリングするMCPサーバー... | 90 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-hardik-id-azure-resource-graph-mcp-server) |
-| [shipi-mcp-server](https://github.com/aarsiv-groups/shipi-mcp-server) | Shipiプラットフォーム向け出荷ロジスティクスMCPサーバー... | 87 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-aarsiv-groups-shipi-mcp-server) |
-| [cloud-run-mcp](https://github.com/GoogleCloudPlatform/cloud-run-mcp) | Cloud Runサービスの管理・デプロイ用Google Cloud Platform MCPサーバー... | 87 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-googlecloudplatform-cloud-run-mcp) |
-| [powerbi-mcp](https://github.com/gurvinder-dhillon/powerbi-mcp) | PowerBI REST APIとの対話を可能にするMCPサーバー。DAXクエリ等... | 87 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-gurvinder-dhillon-powerbi-mcp) |
-| [mycrab-mcp](https://github.com/isgudtek/mycrab-mcp) | Cloudflare Tunnel経由でAIエージェントに公開HTTPS URLを提供するトンネリングサービス... | 82 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-isgudtek-mycrab-mcp) |
-| [consul-mcp-server](https://github.com/kocierik/consul-mcp-server) | サービスディスカバリ等を提供するフル機能HashiCorp Consul管理サーバー... | 82 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-kocierik-consul-mcp-server) |
-| [GooglePlayConsoleMcp](https://github.com/AgiMaulana/GooglePlayConsoleMcp) | Google Play Developer APIをラップしてリリーストラック等を管理するMCPサーバー... | 80 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-agimaulana-googleplayconsolemcp) |
-| [mcp-cloudflare](https://github.com/crunchtools/mcp-cloudflare) | DNSレコード、WAFルール、ページルール等を公開するCloudflare管理MCPサーバー... | 79 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-cloudflare) |
-| [mcp-proxmox](https://github.com/antonio-mello-ai/mcp-proxmox) | VM/コンテナの完全なライフサイクル制御を提供するProxmox VEクラスタ管理MCPサーバー... | 72 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-antonio-mello-ai-mcp-proxmox) |
-| [conductor-mcp](https://github.com/conductor-oss/conductor-mcp) | Netflix Conductorワークフローオーケストレーション管理用MCPサーバー... | 70 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-conductor-oss-conductor-mcp) |
-| [heroku-mcp-server](https://github.com/heroku/heroku-mcp-server) | Herokuアプリ、データベース、dyno、パイプライン等を管理する公式Heroku MCPサーバー... | 65 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-heroku-heroku-mcp-server) |
-| [mcp](https://github.com/hopx-ai/mcp) | コード実行等のための分離コンテナを提供するクラウドサンドボックス実行プラットフォーム... | 58 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-hopx-ai-mcp) |
+| [mcp](https://github.com/awslabs/mcp) | Official MCP Servers for AWS | 86 ✅ | 8.4k | [表示](https://agentseal.org/mcp/https-githubcom-awslabs-mcp) |
+| [mcp-grafana](https://github.com/grafana/mcp-grafana) | MCP server for Grafana | 78 ⚠️ | 2.5k | [表示](https://agentseal.org/mcp/https-githubcom-grafana-mcp-grafana) |
+| [mcp-server-kubernetes](https://github.com/Flux159/mcp-server-kubernetes) | MCP Server for kubernetes management commands | 81 ✅ | 1.3k | [表示](https://agentseal.org/mcp/mcp-server-kubernetes) |
+| [azure-mcp](https://github.com/azure/azure-mcp) | The Azure MCP Server, bringing the power of Azure to your agents. | 74 ⚠️ | 1.2k | [表示](https://agentseal.org/mcp/https-githubcom-azure-azure-mcp) |
+| [cloud-run-mcp](https://github.com/GoogleCloudPlatform/cloud-run-mcp) | A Google Cloud Platform MCP server for managing and deploying Cloud Run servi... | 87 ✅ | 560 | [表示](https://agentseal.org/mcp/https-githubcom-googlecloudplatform-cloud-run-mcp) |
+| [mcp](https://github.com/hopx-ai/mcp) | A cloud sandbox execution platform that provides isolated containers for runn... | 58 ⚠️ | 165 | [表示](https://agentseal.org/mcp/https-githubcom-hopx-ai-mcp) |
+| [spotinfo](https://github.com/alexei-led/spotinfo) | CLI for exploring AWS EC2 Spot inventory. Inspect AWS Spot instance types, sa... | 92 ✅ | 158 | [表示](https://agentseal.org/mcp/https-githubcom-alexei-led-spotinfo) |
+| [hub-mcp](https://github.com/docker/hub-mcp) | Provides read and write access to Docker Hub repositories, tags, namespaces, ... | 86 ✅ | 130 | [表示](https://agentseal.org/mcp/https-githubcom-docker-hub-mcp) |
+| [mcp-server-aws](https://github.com/rishikavikondala/mcp-server-aws) | Provides full CRUD access to AWS S3 buckets/objects and DynamoDB tables/items... | 74 ⚠️ | 128 | [表示](https://agentseal.org/mcp/https-githubcom-rishikavikondala-mcp-server-aws) |
+| [aws-cost-explorer-mcp-server](https://github.com/aarora79/aws-cost-explorer-mcp-server) | MCP server for analyzing AWS spend data via Cost Explorer and Bedrock usage t... | 90 ✅ | 127 | [表示](https://agentseal.org/mcp/https-githubcom-aarora79-aws-cost-explorer-mcp-server) |
+| [aks-mcp](https://github.com/Azure/aks-mcp) | A Model Context Protocol (MCP) server that enables AI assistants to interact ... | 86 ✅ | 121 | [表示](https://agentseal.org/mcp/https-githubcom-azure-aks-mcp) |
+| [heroku-mcp-server](https://github.com/heroku/heroku-mcp-server) | Official Heroku MCP server for managing Heroku apps, databases, dynos, pipeli... | 65 ⚠️ | 75 | [表示](https://agentseal.org/mcp/https-githubcom-heroku-heroku-mcp-server) |
+| [mcp-netbird](https://github.com/aantti/mcp-netbird) | MCP Server for Netbird | 92 ✅ | 42 | [表示](https://agentseal.org/mcp/https-githubcom-aantti-mcp-netbird) |
+| [apisix-mcp](https://github.com/api7/apisix-mcp) | An MCP server for managing Apache APISIX API gateway resources including rout... | 67 ⚠️ | 34 | [表示](https://agentseal.org/mcp/https-githubcom-api7-apisix-mcp) |
+| [cos-mcp](https://github.com/Tencent/cos-mcp) | 基于 MCP 协议的腾讯云 COS MCP Server，无需编码即可让大模型快速接入腾讯云存储 (COS) 和数据万象 (CI) 能力。 | 85 ✅ | 30 | [表示](https://agentseal.org/mcp/https-githubcom-tencent-cos-mcp) |
+| [ig-mcp-server](https://github.com/inspektor-gadget/ig-mcp-server) | Debug your Container and Kubernetes workloads with an AI interface | 92 ✅ | 22 | [表示](https://agentseal.org/mcp/https-githubcom-inspektor-gadget-ig-mcp-server) |
+| [aws-pricing-mcp](https://github.com/trilogy-group/aws-pricing-mcp) | An MCP server that exposes AWS EC2 pricing data with an option to search by C... | 92 ✅ | 20 | [表示](https://agentseal.org/mcp/https-githubcom-trilogy-group-aws-pricing-mcp) |
+| [azure-resource-graph-mcp-server](https://github.com/hardik-id/azure-resource-graph-mcp-server) | An MCP server that queries Azure Resource Graph using KQL to enumerate, filte... | 90 ✅ | 17 | [表示](https://agentseal.org/mcp/https-githubcom-hardik-id-azure-resource-graph-mcp-server) |
+| [consul-mcp-server](https://github.com/kocierik/consul-mcp-server) | A full-featured HashiCorp Consul management server providing service discover... | 82 ✅ | 16 | [表示](https://agentseal.org/mcp/https-githubcom-kocierik-consul-mcp-server) |
+| [conductor-mcp](https://github.com/conductor-oss/conductor-mcp) | An MCP server for managing Netflix Conductor workflow orchestration: creating... | 70 ⚠️ | 14 | [表示](https://agentseal.org/mcp/https-githubcom-conductor-oss-conductor-mcp) |
+| [mcp-server-aws-sso](https://github.com/aashari/mcp-server-aws-sso) | Node.js/TypeScript MCP server for AWS Single Sign-On (SSO). Enables AI system... | 78 ⚠️ | 12 | [表示](https://agentseal.org/mcp/https-githubcom-aashari-mcp-server-aws-sso) |
+| [teamcity-mcp](https://github.com/itcaat/teamcity-mcp) | Teamcity MCP Server | 80 ⚠️ | 11 | [表示](https://agentseal.org/mcp/itcaat-teamcity-mcp) |
+| [helm-chart-cli-mcp](https://github.com/jeff-nasseri/helm-chart-cli-mcp) | MCP server that bridges AI assistants with Helm package manager, enabling nat... | 80 ⚠️ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-jeff-nasseri-helm-chart-cli-mcp) |
+| [porkbun-mcp](https://github.com/major/porkbun-mcp) | MCP server for managing DNS records, domain settings, DNSSEC, SSL certificate... | 89 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-major-porkbun-mcp) |
+| [lumino-mcp-server](https://github.com/spre-sre/lumino-mcp-server) | AI-powered diagnostic engine for SRE observability on Kubernetes and OpenShif... | 84 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-spre-sre-lumino-mcp-server) |
+| [deploy-mcp](https://github.com/alexpota/deploy-mcp) | A read-only MCP server for monitoring deployment status, logs, and project li... | 96 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-alexpota-deploy-mcp) |
+| [hosting-mcp](https://github.com/4everland/4everland-hosting-mcp) | MCP server for instant deployment of AI-generated code to decentralized stora... | 92 ✅ | 2 | [表示](https://agentseal.org/mcp/4everland-hosting-mcp) |
+| [mcp-google-analytics](https://github.com/gomakers-ai/mcp-google-analytics) | MCP server for Google Analytics 4, enabling reading reports via Data API and ... | 82 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-gomakers-ai-mcp-google-analytics) |
+| [azure-updates-mcp](https://github.com/jonnybottles/azure-updates-mcp) | Read-only search interface for Microsoft Azure service updates sourced from t... | 94 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-jonnybottles-azure-updates-mcp) |
+| [GooglePlayConsoleMcp](https://github.com/AgiMaulana/GooglePlayConsoleMcp) | MCP server wrapping the Google Play Developer API to manage release tracks, u... | 80 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-agimaulana-googleplayconsolemcp) |
+| [shipi-mcp-server](https://github.com/aarsiv-groups/shipi-mcp-server) | A shipping logistics MCP server for the Shipi platform that enables shipment ... | 87 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-aarsiv-groups-shipi-mcp-server) |
+| [powerbi-mcp](https://github.com/gurvinder-dhillon/powerbi-mcp) | MCP server for interacting with PowerBI REST APIs, enabling DAX queries and w... | 87 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-gurvinder-dhillon-powerbi-mcp) |
+| [mycrab-mcp](https://github.com/isgudtek/mycrab-mcp) | A tunneling service that gives AI agents public HTTPS URLs via Cloudflare Tun... | 82 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-isgudtek-mycrab-mcp) |
+| [mcp-cloudflare](https://github.com/crunchtools/mcp-cloudflare) | A Cloudflare management MCP server exposing DNS records, WAF rules, page rule... | 79 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-cloudflare) |
+| [mcp-proxmox](https://github.com/antonio-mello-ai/mcp-proxmox) | A Proxmox VE cluster management MCP server providing full lifecycle control o... | 72 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-antonio-mello-ai-mcp-proxmox) |
 
 ### 📝 <a name="content--media"></a>コンテンツ・メディア
 
 | サーバー | 説明 | スコア | Stars | レポート |
 |----------|------|-------:|------:|----------|
-| [blender-mcp](https://github.com/ahujasid/blender-mcp) | AIエージェントがBlenderシーンを制御できるBlender自動化MCPサーバー... | 66 ⚠️ | 17.7k | [表示](https://agentseal.org/mcp/https-githubcom-ahujasid-blender-mcp) |
-| [markdownify-mcp](https://github.com/zcaceres/markdownify-mcp) | ほぼあらゆるものをMarkdownに変換するModel Context Protocolサーバー | 83 ✅ | 2.4k | [表示](https://agentseal.org/mcp/https-githubcom-zcaceres-markdownify-mcp) |
-| [ableton-mcp](https://github.com/ahujasid/ableton-mcp) | Ableton Liveセッションのプログラム制御を提供するMCPサーバー... | 89 ✅ | 2.3k | [表示](https://agentseal.org/mcp/https-githubcom-ahujasid-ableton-mcp) |
-| [mcp](https://github.com/caol64/wenyan-mcp) | 文顔 MCPサーバー - AIが自動的にMarkdown記事をフォーマットしてWeChat公式アカウントに公開 | 85 ✅ | 1.1k | [表示](https://agentseal.org/mcp/wenyan-md-mcp) |
-| [wenyan-mcp](https://github.com/caol64/wenyan-mcp) | 文顔 MCPサーバー - AIが自動的にMarkdown記事をフォーマットしてWeChat公式アカウントに公開 | 84 ✅ | 1.1k | [表示](https://agentseal.org/mcp/https-githubcom-caol64-wenyan-mcp) |
-| [mcp-server-weread](https://github.com/freestylefly/mcp-server-weread) | WeChat読書MCP | 92 ✅ | 528 | [表示](https://agentseal.org/mcp/mcp-server-weread) |
-| [mcp-server-weread](https://github.com/freestylefly/mcp-server-weread) | WeChat読書MCP | 92 ✅ | 528 | [表示](https://agentseal.org/mcp/https-githubcom-freestylefly-mcp-server-weread) |
-| [adb-mcp](https://github.com/mikechambers/adb-mcp) | AIモデルがAdobe Creative Suite（Photoshop等）を制御できるMCPサーバー... | 89 ✅ | 504 | [表示](https://agentseal.org/mcp/https-githubcom-mikechambers-adb-mcp) |
-| [ebook-mcp](https://github.com/onebirdrocks/ebook-mcp) | EPUB、PDF等の主要な電子書籍フォーマットをサポートするMCPサーバー... | 74 ⚠️ | 351 | [表示](https://agentseal.org/mcp/ebook-mcp) |
-| [mcp-youtube-transcript](https://github.com/jkawamoto/mcp-youtube-transcript) | YouTube動画のトランスクリプト（プレーン・タイムスタンプ付き）と基本動画メタデータを取得... | 93 ✅ | 339 | [表示](https://agentseal.org/mcp/https-githubcom-jkawamoto-mcp-youtube-transcript) |
-| [after-effects-mcp](https://github.com/dakkshin/after-effects-mcp) | Adobe After Effects用MCPサーバー。コンポジション、テキスト等のリモート制御を実現... | 85 ✅ | 237 | [表示](https://agentseal.org/mcp/https-githubcom-dakkshin-after-effects-mcp) |
-| [mcp-summarizer](https://github.com/0xshellming/mcp-summarizer) | AI要約用MCPサーバー | 100 ✅ | 157 | [表示](https://agentseal.org/mcp/https-githubcom-0xshellming-mcp-summarizer) |
-| [bilibili-mcp-js](https://github.com/34892002/bilibili-mcp-js) | Bilibili動画検索MCP (Model Context Protocol)サービス | 99 ✅ | 153 | [表示](https://agentseal.org/mcp/https-githubcom-34892002-bilibili-mcp-js) |
-| [powerpoint](https://github.com/supercurses/powerpoint) | PowerPointプレゼンテーション作成用MCPサーバー | 90 ✅ | 144 | [表示](https://agentseal.org/mcp/https-githubcom-supercurses-powerpoint) |
-| [anilist-mcp](https://github.com/yuna0x0/anilist-mcp) | アニメ・漫画データにアクセスするAniList MCPサーバー | 84 ✅ | 71 | [表示](https://agentseal.org/mcp/anilist-mcp) |
-| [dws-mcp-server](https://github.com/pspdfkit/nutrient-dws-mcp-server) | Nutrient DWSと統合するModel Context Protocol (MCP)サーバー実装... | 87 ✅ | 63 | [表示](https://agentseal.org/mcp/nutrient-sdk-dws-mcp-server) |
-| [mcp-server-atlassian-confluence](https://github.com/aashari/mcp-server-atlassian-confluence) | Atlassian Confluence用Node.js/TypeScript MCPサーバー。AIシステムが利用可能なツールを提供... | 76 ⚠️ | 50 | [表示](https://agentseal.org/mcp/https-githubcom-aashari-mcp-server-atlassian-confluence) |
-| [mcp-apple-notes](https://github.com/henilcalagiya/mcp-apple-notes) | AppleScript経由でApple Notesへの完全CRUDアクセスを提供するMCPサーバー... | 81 ✅ | 40 | [表示](https://agentseal.org/mcp/https-githubcom-henilcalagiya-mcp-apple-notes) |
-| [mcp-server-amazon-bedrock](https://github.com/zxkane/mcp-server-amazon-bedrock) | Amazon BedrockのNova Canvasモデルで画像を生成するMCPサーバー... | 99 ✅ | 24 | [表示](https://agentseal.org/mcp/https-githubcom-zxkane-mcp-server-amazon-bedrock) |
-| [imagician](https://github.com/flowy11/imagician) | 画像編集用MCPサーバー | 92 ✅ | 18 | [表示](https://agentseal.org/mcp/https-githubcom-flowy11-imagician) |
-| [gif-creator-mcp](https://github.com/ananddtyagi/gif-creator-mcp) | ローカル動画ファイルをffmpegでGIF形式に変換する単一ツールMCPサーバー... | 99 ✅ | 15 | [表示](https://agentseal.org/mcp/https-githubcom-ananddtyagi-gif-creator-mcp) |
-| [mcp-florence2](https://github.com/jkawamoto/mcp-florence2) | Microsoft Florence2ビジョンモデルをローカルで実行してOCR等を行うMCPサーバー... | 94 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-jkawamoto-mcp-florence2) |
-| [mcp-apple-music](https://github.com/Cifero74/mcp-apple-music) | ClaudeにApple Musicアカウントへのフルアクセスを提供するMCPサーバー... | 84 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-cifero74-mcp-apple-music) |
-| [rss-reader-mcp](https://github.com/kwp-lab/rss-reader-mcp) | RSSフィードのエントリと記事コンテンツを取得・解析する読み取り専用RSSリーダー... | 94 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-kwp-lab-rss-reader-mcp) |
-| [citedy-seo-agent](https://github.com/Citedy/citedy-seo-agent) | AI搭載SEOコンテンツ自動化エージェントスキル - トレンド調査、競合分析... | 85 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-citedy-citedy-seo-agent) |
-| [vap-showcase](https://github.com/vapagentmedia/vap-showcase) | 画像、動画、音楽生成を提供するVAPベースAIメディア生成プラットフォーム... | 84 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-vapagentmedia-vap-showcase) |
-| [unsplash-mcp](https://github.com/cevatkerim/unsplash-mcp) | 適切な帰属表示付きUnsplash写真検索用MCPサーバー... | 90 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-cevatkerim-unsplash-mcp) |
-| [audius-mcp-atris](https://github.com/glassBead-tc/audius-mcp-atris) | Audius分散型音楽ストリーミングプラットフォームAPIをラップするMCPサーバー... | 60 ⚠️ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-glassbead-tc-audius-mcp-atris) |
-| [bilibili-mcp-server](https://github.com/wangshunnn/bilibili-mcp-server) | Bilibili公開APIをラップしてユーザー情報等を取得する読み取り専用MCPサーバー... | 100 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-wangshunnn-bilibili-mcp-server) |
-| [cookwith-mcp](https://github.com/blaideinc/cookwith-mcp) | 食材に基づいてレシピを生成・変換する料理アシスタントMCPサーバー... | 99 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-blaideinc-cookwith-mcp) |
-| [mcp-image-compression](https://github.com/InhiblabCore/mcp-image-compression) | URLまたはローカルファイルパスから画像を圧縮するMCPサーバー... | 96 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-inhiblabcore-mcp-image-compression) |
-| [spotify-bulk-actions-mcp](https://github.com/khglynn/spotify-bulk-actions-mcp) | ライブラリ、プレイリスト管理等のSpotify一括操作MCPサーバー... | 94 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-khglynn-spotify-bulk-actions-mcp) |
-| [PokeMCP](https://github.com/MetehanGZL/PokeMCP) | ポケモンデータを名前等で照会するツールを提供するポケモンテーマMCPサーバー... | 94 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-metehangzl-pokemcp) |
-| [zapcap-mcp-server](https://github.com/bogdan01m/zapcap-mcp-server) | ZapCap APIと統合して動画のアップロード、字幕テンプレート適用等を行う... | 93 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-bogdan01m-zapcap-mcp-server) |
-| [raindrop-io-mcp-server](https://github.com/hiromitsusasaki/raindrop-io-mcp-server) | Raindrop.ioブックマーク管理の読み書きMCPサーバー... | 90 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-hiromitsusasaki-raindrop-io-mcp-server) |
-| [aseprite-mcp](https://github.com/diivi/aseprite-mcp) | Asepriteピクセルアートエディタを操作してキャンバス作成等を行うMCPサーバー... | 88 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-diivi-aseprite-mcp) |
-| [vap-showcase](https://github.com/elestirelbilinc-sketch/vap-showcase) | 画像、動画、音楽作成を提供するAIメディア生成プラットフォーム（VAP）... | 88 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-elestirelbilinc-sketch-vap-showcase) |
-| [sprout-mcp](https://github.com/mepsopti/sprout-mcp) | 安価なモデル（Haiku）がコンテンツチャンクをシードするモデル階層リサーチパイプライン... | 87 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-mepsopti-sprout-mcp) |
-| [mcp-ragchat](https://github.com/gogabrielordonez/mcp-ragchat) | RAG搭載チャットアシスタントの構築・テスト・デプロイを行えるMCPサーバー... | 81 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-gogabrielordonez-mcp-ragchat) |
-| [mcp-wordpress](https://github.com/crunchtools/mcp-wordpress) | 投稿、ページ等の完全CRUD操作を提供するWordPress REST APIラッパー... | 79 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-wordpress) |
-| [legends-mcp](https://github.com/cryptosquanch/legends-mcp) | 有名テック創業者のAIペルソナとチャットできるMCPサーバー... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-cryptosquanch-legends-mcp) |
-| [alog-mcp](https://github.com/saikiyusuke/alog-mcp) | エージェントがログ投稿等を行えるAIエージェント活動ログ・ブログプラットフォーム... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-saikiyusuke-alog-mcp) |
-| [cronometer-mcp](https://github.com/cphoskins/cronometer-mcp) | Cronometer Goldユーザーデータへの完全読み書きアクセスを提供するMCPサーバー... | 77 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-cphoskins-cronometer-mcp) |
-| [keep-mcp](https://github.com/feuerdev/keep-mcp) | ノートのCRUD操作をサポートするGoogle Keepノート管理用MCPサーバー... | 74 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-feuerdev-keep-mcp) |
-| [mcp-feed-reader](https://github.com/crunchtools/mcp-feed-reader) | サブスクリプション管理、コンテンツ取得等を行うRSS/Atomフィードリーダー MCPサーバー... | 74 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-feed-reader) |
+| [blender-mcp](https://github.com/ahujasid/blender-mcp) | A Blender automation MCP server that allows AI agents to control Blender scen... | 66 ⚠️ | 17.7k | [表示](https://agentseal.org/mcp/https-githubcom-ahujasid-blender-mcp) |
+| [markdownify-mcp](https://github.com/zcaceres/markdownify-mcp) | A Model Context Protocol server for converting almost anything to Markdown | 83 ✅ | 2.4k | [表示](https://agentseal.org/mcp/https-githubcom-zcaceres-markdownify-mcp) |
+| [ableton-mcp](https://github.com/ahujasid/ableton-mcp) | An MCP server that provides programmatic control over Ableton Live sessions, ... | 89 ✅ | 2.3k | [表示](https://agentseal.org/mcp/https-githubcom-ahujasid-ableton-mcp) |
+| [mcp](https://github.com/caol64/wenyan-mcp) | 文颜 MCP Server 可以让 AI 自动将 Markdown 文章排版后发布至微信公众号。 | 85 ✅ | 1.1k | [表示](https://agentseal.org/mcp/wenyan-md-mcp) |
+| [wenyan-mcp](https://github.com/caol64/wenyan-mcp) | 文颜 MCP Server 可以让 AI 自动将 Markdown 文章排版后发布至微信公众号。 | 84 ✅ | 1.1k | [表示](https://agentseal.org/mcp/https-githubcom-caol64-wenyan-mcp) |
+| [mcp-server-weread](https://github.com/freestylefly/mcp-server-weread) | 微信读书MCP | 92 ✅ | 528 | [表示](https://agentseal.org/mcp/https-githubcom-freestylefly-mcp-server-weread) |
+| [mcp-server-weread](https://github.com/freestylefly/mcp-server-weread) | 微信读书MCP | 92 ✅ | 528 | [表示](https://agentseal.org/mcp/mcp-server-weread) |
+| [mcp-pandoc](https://github.com/vivekvells/mcp-pandoc) | MCP server for seamless document format conversion using pandoc, transforming... | 91 ✅ | 512 | [表示](https://agentseal.org/mcp/https-githubcom-vivekvells-mcp-pandoc) |
+| [adb-mcp](https://github.com/mikechambers/adb-mcp) | MCP server enabling AI models to control Adobe Creative Suite applications (P... | 89 ✅ | 504 | [表示](https://agentseal.org/mcp/https-githubcom-mikechambers-adb-mcp) |
+| [mcp-server-youtube-transcript](https://github.com/kimtaeyoon83/mcp-server-youtube-transcript) | An MCP server that retrieves transcripts from YouTube videos, providing direc... | 86 ✅ | 494 | [表示](https://agentseal.org/mcp/https-githubcom-kimtaeyoon83-mcp-server-youtube-transcript) |
+| [ebook-mcp](https://github.com/onebirdrocks/ebook-mcp) | A MCP server that supports mainstream eBook formats including EPUB, PDF and m... | 74 ⚠️ | 351 | [表示](https://agentseal.org/mcp/ebook-mcp) |
+| [mcp-youtube-transcript](https://github.com/jkawamoto/mcp-youtube-transcript) | Retrieves YouTube video transcripts (plain and timestamped) and basic video m... | 93 ✅ | 339 | [表示](https://agentseal.org/mcp/https-githubcom-jkawamoto-mcp-youtube-transcript) |
+| [after-effects-mcp](https://github.com/dakkshin/after-effects-mcp) | MCP Server for Adobe After Effects. Enables remote control (compositions, tex... | 85 ✅ | 237 | [表示](https://agentseal.org/mcp/https-githubcom-dakkshin-after-effects-mcp) |
+| [mcp-summarizer](https://github.com/0xshellming/mcp-summarizer) | MCP Server for AI Summarization | 100 ✅ | 157 | [表示](https://agentseal.org/mcp/https-githubcom-0xshellming-mcp-summarizer) |
+| [bilibili-mcp-js](https://github.com/34892002/bilibili-mcp-js) | Bilibili video search MCP (Model Context Protocol) service - 哔哩哔哩视频搜索MCP服务 | 99 ✅ | 153 | [表示](https://agentseal.org/mcp/https-githubcom-34892002-bilibili-mcp-js) |
+| [powerpoint](https://github.com/supercurses/powerpoint) | A MCP Server for creating Powerpoint Presentations | 90 ✅ | 144 | [表示](https://agentseal.org/mcp/https-githubcom-supercurses-powerpoint) |
+| [aseprite-mcp](https://github.com/diivi/aseprite-mcp) | An MCP server that drives the Aseprite pixel-art editor to create canvases, d... | 88 ✅ | 133 | [表示](https://agentseal.org/mcp/https-githubcom-diivi-aseprite-mcp) |
+| [flyworks-mcp](https://github.com/Flyworks-AI/flyworks-mcp) | MCP server for fast, free zeroshot lipsync video creation. Animates digital a... | 90 ✅ | 93 | [表示](https://agentseal.org/mcp/https-githubcom-flyworks-ai-flyworks-mcp) |
+| [mcp-applemusic](https://github.com/kennethreitz/mcp-applemusic) | A FastMCP server for controlling Apple Music on macOS through AppleScript com... | 81 ✅ | 76 | [表示](https://agentseal.org/mcp/https-githubcom-kennethreitz-mcp-applemusic) |
+| [raindrop-io-mcp-server](https://github.com/hiromitsusasaki/raindrop-io-mcp-server) | A read/write MCP server for managing Raindrop.io bookmarks: create bookmarks,... | 90 ✅ | 72 | [表示](https://agentseal.org/mcp/https-githubcom-hiromitsusasaki-raindrop-io-mcp-server) |
+| [anilist-mcp](https://github.com/yuna0x0/anilist-mcp) | AniList MCP server for accessing anime and manga data | 84 ✅ | 71 | [表示](https://agentseal.org/mcp/anilist-mcp) |
+| [keep-mcp](https://github.com/feuerdev/keep-mcp) | An MCP server for managing Google Keep notes, supporting CRUD operations on n... | 74 ⚠️ | 64 | [表示](https://agentseal.org/mcp/https-githubcom-feuerdev-keep-mcp) |
+| [dws-mcp-server](https://github.com/pspdfkit/nutrient-dws-mcp-server) | A Model Context Protocol (MCP) server implementation that integrates with the... | 87 ✅ | 63 | [表示](https://agentseal.org/mcp/nutrient-sdk-dws-mcp-server) |
+| [mcp-server-atlassian-confluence](https://github.com/aashari/mcp-server-atlassian-confluence) | Node.js/TypeScript MCP server for Atlassian Confluence. Provides tools enabli... | 76 ⚠️ | 50 | [表示](https://agentseal.org/mcp/https-githubcom-aashari-mcp-server-atlassian-confluence) |
+| [mcp-apple-notes](https://github.com/henilcalagiya/mcp-apple-notes) | An MCP server that provides full CRUD access to Apple Notes via AppleScript, ... | 81 ✅ | 40 | [表示](https://agentseal.org/mcp/https-githubcom-henilcalagiya-mcp-apple-notes) |
+| [mcp-image-compression](https://github.com/InhiblabCore/mcp-image-compression) | An MCP server that compresses images by accepting URLs or local file paths an... | 96 ✅ | 31 | [表示](https://agentseal.org/mcp/https-githubcom-inhiblabcore-mcp-image-compression) |
+| [mcp-server-amazon-bedrock](https://github.com/zxkane/mcp-server-amazon-bedrock) | An MCP server that generates images via Amazon Bedrock's Nova Canvas model, r... | 99 ✅ | 24 | [表示](https://agentseal.org/mcp/https-githubcom-zxkane-mcp-server-amazon-bedrock) |
+| [mcp-vods](https://github.com/aahl/mcp-vods) | MCP Server that enables AI to search for TV shows and anime streaming URLs wi... | 92 ✅ | 22 | [表示](https://agentseal.org/mcp/https-githubcom-aahl-mcp-vods) |
+| [imagician](https://github.com/flowy11/imagician) | A MCP server for image edition | 92 ✅ | 18 | [表示](https://agentseal.org/mcp/https-githubcom-flowy11-imagician) |
+| [gif-creator-mcp](https://github.com/ananddtyagi/gif-creator-mcp) | A single-tool MCP server that converts local video files to GIF format using ... | 99 ✅ | 15 | [表示](https://agentseal.org/mcp/https-githubcom-ananddtyagi-gif-creator-mcp) |
+| [bilibili-mcp-server](https://github.com/wangshunnn/bilibili-mcp-server) | A read-only MCP server that wraps the Bilibili public API to retrieve user in... | 100 ✅ | 13 | [表示](https://agentseal.org/mcp/https-githubcom-wangshunnn-bilibili-mcp-server) |
+| [mcp-florence2](https://github.com/jkawamoto/mcp-florence2) | An MCP server that runs Microsoft Florence2 vision model locally to perform O... | 94 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-jkawamoto-mcp-florence2) |
+| [mcp-transcribe](https://github.com/transcribe-app/mcp-transcribe) | Automate transcriptions in AI assistants with fast, high-quality audio-to-tex... | 88 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-transcribe-app-mcp-transcribe) |
+| [mcp-apple-music](https://github.com/Cifero74/mcp-apple-music) | MCP server giving Claude full access to your Apple Music account, enabling ca... | 84 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-cifero74-mcp-apple-music) |
+| [rss-reader-mcp](https://github.com/kwp-lab/rss-reader-mcp) | A read-only RSS feed reader that fetches and parses RSS entries and article c... | 94 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-kwp-lab-rss-reader-mcp) |
+| [citedy-seo-agent](https://github.com/Citedy/citedy-seo-agent) | AI-powered SEO content automation agent skill - trend scouting, competitor an... | 85 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-citedy-citedy-seo-agent) |
+| [legends-mcp](https://github.com/cryptosquanch/legends-mcp) | An MCP server that lets users chat with AI personas of famous tech founders, ... | 78 ⚠️ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-cryptosquanch-legends-mcp) |
+| [vap-showcase](https://github.com/vapagentmedia/vap-showcase) | A VAP-backed AI media generation platform offering image, video, and music ge... | 84 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-vapagentmedia-vap-showcase) |
+| [unsplash-mcp](https://github.com/cevatkerim/unsplash-mcp) | An MCP server for Unsplash photo search with proper attribution built-in.  Ke... | 90 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-cevatkerim-unsplash-mcp) |
+| [mcp-ragchat](https://github.com/gogabrielordonez/mcp-ragchat) | An MCP server that lets you build, test, and deploy a RAG-powered chat assist... | 81 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-gogabrielordonez-mcp-ragchat) |
+| [audius-mcp-atris](https://github.com/glassBead-tc/audius-mcp-atris) | An MCP server wrapping the Audius decentralized music streaming platform API,... | 60 ⚠️ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-glassbead-tc-audius-mcp-atris) |
+| [cookwith-mcp](https://github.com/blaideinc/cookwith-mcp) | A cooking assistant MCP server that generates and transforms recipes based on... | 99 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-blaideinc-cookwith-mcp) |
+| [spotify-bulk-actions-mcp](https://github.com/khglynn/spotify-bulk-actions-mcp) | A Spotify bulk-actions MCP server for managing libraries, playlists, and perf... | 94 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-khglynn-spotify-bulk-actions-mcp) |
+| [PokeMCP](https://github.com/MetehanGZL/PokeMCP) | A Pokémon-themed MCP server that provides tools for querying Pokémon data by ... | 94 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-metehangzl-pokemcp) |
+| [zapcap-mcp-server](https://github.com/bogdan01m/zapcap-mcp-server) | Integrates with the ZapCap API to upload videos, apply subtitle templates, an... | 93 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-bogdan01m-zapcap-mcp-server) |
+| [vap-showcase](https://github.com/elestirelbilinc-sketch/vap-showcase) | An AI media generation platform (VAP) offering image, video, and music creati... | 88 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-elestirelbilinc-sketch-vap-showcase) |
+| [sprout-mcp](https://github.com/mepsopti/sprout-mcp) | A model-tiered research pipeline where cheap models (Haiku) seed content chun... | 87 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-mepsopti-sprout-mcp) |
+| [mcp-wordpress](https://github.com/crunchtools/mcp-wordpress) | A WordPress REST API wrapper providing full CRUD operations for posts, pages,... | 79 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-wordpress) |
+| [alog-mcp](https://github.com/saikiyusuke/alog-mcp) | An AI agent activity-logging and blogging platform that lets agents post logs... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-saikiyusuke-alog-mcp) |
+| [cronometer-mcp](https://github.com/cphoskins/cronometer-mcp) | An MCP server that provides full read/write access to a user's Cronometer Gol... | 77 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-cphoskins-cronometer-mcp) |
+| [mcp-feed-reader](https://github.com/crunchtools/mcp-feed-reader) | An RSS/Atom feed reader MCP server that manages subscriptions, fetches conten... | 74 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-feed-reader) |
 
 ### 🔌 <a name="api-development"></a>API開発
 
 | サーバー | 説明 | スコア | Stars | レポート |
 |----------|------|-------:|------:|----------|
-| [bifrost](https://github.com/maximhq/bifrost) | 最速のエンタープライズAIゲートウェイ（LiteLLMより50倍高速）。適応的負荷分散... | 89 ✅ | 2.9k | [表示](https://agentseal.org/mcp/https-githubcom-maximhq-bifrost) |
-| [mcp-server-12306](https://github.com/drfccv/mcp-server-12306) | 中国の12306列車チケットシステムを照会する高性能MCPサーバー... | 87 ✅ | 292 | [表示](https://agentseal.org/mcp/https-githubcom-drfccv-mcp-server-12306) |
-| [facebook-ads-mcp-server](https://github.com/gomarble-ai/facebook-ads-mcp-server) | Meta Adsデータとその管理機能へのプログラムアクセスを提供するMCPサーバー... | 88 ✅ | 253 | [表示](https://agentseal.org/mcp/https-githubcom-gomarble-ai-facebook-ads-mcp-server) |
-| [uber-eats-mcp-server](https://github.com/ericzakariasson/uber-eats-mcp-server) | MCPを通じてUber EatsとLLMアプリケーションを統合するMCPサーバー... | 92 ✅ | 217 | [表示](https://agentseal.org/mcp/https-githubcom-ericzakariasson-uber-eats-mcp-server) |
-| [square-mcp-server](https://github.com/square/square-mcp-server) | Square用Model Context Protocol (MCP)サーバー | 92 ✅ | 95 | [表示](https://agentseal.org/mcp/https-githubcom-square-square-mcp-server) |
-| [nasa-mcp-server](https://github.com/programcomputer/nasa-mcp-server) | NASA API向けの標準化されたModel Context Protocol (MCP)サーバー... | 81 ✅ | 81 | [表示](https://agentseal.org/mcp/https-githubcom-programcomputer-nasa-mcp-server) |
-| [mcp-servers](https://github.com/allaboutai-yt/mcp-servers) | All About AI MCPサーバー集 | 92 ✅ | 79 | [表示](https://agentseal.org/mcp/https-githubcom-allaboutai-yt-mcp-servers) |
-| [mcp-difyworkflow-server](https://github.com/gotoolkits/mcp-difyworkflow-server) | Difyワークフローを実装するMCPサーバーツールアプリケーション... | 92 ✅ | 60 | [表示](https://agentseal.org/mcp/https-githubcom-gotoolkits-mcp-difyworkflow-server) |
-| [veyrax-mcp](https://github.com/VeyraX/veyrax-mcp) | VeyraX統合サービスへの単一認証アクセスを提供する統合MCPサーバー... | 92 ✅ | 48 | [表示](https://agentseal.org/mcp/https-githubcom-veyrax-veyrax-mcp) |
-| [mcp-weather](https://github.com/TimLukaHorstmann/mcp-weather) | 1時間ごと・1日ごとの天気予報を提供するModel Context Protocol (MCP)サーバー... | 92 ✅ | 31 | [表示](https://agentseal.org/mcp/https-githubcom-timlukahorstmann-mcp-weather) |
-| [adobe-commerce-dev-mcp](https://github.com/rafaelstz/adobe-commerce-dev-mcp) | Adobe Commerce Dev MCPサーバー | 94 ✅ | 24 | [表示](https://agentseal.org/mcp/https-githubcom-rafaelstz-adobe-commerce-dev-mcp) |
-| [text-to-graphql-mcp](https://github.com/Arize-ai/text-to-graphql-mcp) | AIエージェントを使用して自然言語クエリを有効なGraphQLクエリに変換... | 84 ✅ | 23 | [表示](https://agentseal.org/mcp/https-githubcom-arize-ai-text-to-graphql-mcp) |
-| [mcp-community](https://github.com/mirascope/mcp-community) | MCPサーバーの実行、デプロイ、接続を簡単に | 77 ⚠️ | 23 | [表示](https://agentseal.org/mcp/https-githubcom-mirascope-mcp-community) |
-| [calcom-mcp](https://github.com/Danielpeter-99/calcom-mcp) | Cal.com APIと対話するFastMCPサーバー。LLMが予約管理等を実行可能... | 92 ✅ | 14 | [表示](https://agentseal.org/mcp/https-githubcom-danielpeter-99-calcom-mcp) |
-| [specmatic-mcp-server](https://github.com/specmatic/specmatic-mcp-server) | Specmaticのコントラクトテスト機能を公開するModel Context Protocol (MCP)サーバー... | 86 ✅ | 8 | [表示](https://agentseal.org/mcp/https-githubcom-specmatic-specmatic-mcp-server) |
-| [webhook-mcp-server](https://github.com/zebbern/webhook-mcp-server) | webhook.site用Model Context Protocol (MCP)サーバー - HTTPリクエストを即座にキャプチャ... | 76 ⚠️ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-zebbern-webhook-mcp-server) |
-| [appfolio-mcp-server](https://github.com/CryptoCultCurt/appfolio-mcp-server) | AIエージェントがAppfolio ReportingにアクセスするためのMCP (Model Context Protocol)サーバー... | 92 ✅ | 6 | [表示](https://agentseal.org/mcp/fluegeldao-appfolio-mcp-server) |
+| [bifrost](https://github.com/maximhq/bifrost) | Fastest enterprise AI gateway (50x faster than LiteLLM) with adaptive load ba... | 89 ✅ | 2.9k | [表示](https://agentseal.org/mcp/https-githubcom-maximhq-bifrost) |
+| [ai-gateway](https://github.com/azure-samples/ai-gateway) | Enterprise-grade gateway for managing AI models, tools, and agents powered by... | 85 ✅ | 886 | [表示](https://agentseal.org/mcp/https-githubcom-azure-samples-ai-gateway) |
+| [openapi-mcp-server](https://github.com/janwilmake/openapi-mcp-server) | An MCP server that enables Claude and Cursor to search and explore OpenAPI sp... | 92 ✅ | 885 | [表示](https://agentseal.org/mcp/https-githubcom-janwilmake-openapi-mcp-server) |
+| [mcp-server-12306](https://github.com/drfccv/mcp-server-12306) | A high-performance MCP server for querying China's 12306 train ticket system.... | 87 ✅ | 292 | [表示](https://agentseal.org/mcp/https-githubcom-drfccv-mcp-server-12306) |
+| [facebook-ads-mcp-server](https://github.com/gomarble-ai/facebook-ads-mcp-server) | MCP server providing programmatic access to Meta Ads data and management capa... | 88 ✅ | 253 | [表示](https://agentseal.org/mcp/https-githubcom-gomarble-ai-facebook-ads-mcp-server) |
+| [uber-eats-mcp-server](https://github.com/ericzakariasson/uber-eats-mcp-server) | MCP server for integrating Uber Eats with LLM applications through the Model ... | 92 ✅ | 217 | [表示](https://agentseal.org/mcp/https-githubcom-ericzakariasson-uber-eats-mcp-server) |
+| [square-mcp-server](https://github.com/square/square-mcp-server) | A Model Context Protocol (MCP) server for square | 92 ✅ | 95 | [表示](https://agentseal.org/mcp/https-githubcom-square-square-mcp-server) |
+| [nasa-mcp-server](https://github.com/programcomputer/nasa-mcp-server) | A Model Context Protocol (MCP) server for NASA APIs, providing a standardized... | 81 ✅ | 81 | [表示](https://agentseal.org/mcp/https-githubcom-programcomputer-nasa-mcp-server) |
+| [gpt5mcp](https://github.com/allaboutai-yt/gpt5mcp) | MCP server providing seamless integration with OpenAI's GPT-5 API for Claude ... | 92 ✅ | 80 | [表示](https://agentseal.org/mcp/https-githubcom-allaboutai-yt-gpt5mcp) |
+| [mcp-servers](https://github.com/allaboutai-yt/mcp-servers) | All About AI MCP Servers | 92 ✅ | 79 | [表示](https://agentseal.org/mcp/https-githubcom-allaboutai-yt-mcp-servers) |
+| [mcp-difyworkflow-server](https://github.com/gotoolkits/mcp-difyworkflow-server) | mcp-difyworkflow-server is an mcp server Tools application that implements th... | 92 ✅ | 60 | [表示](https://agentseal.org/mcp/https-githubcom-gotoolkits-mcp-difyworkflow-server) |
+| [veyrax-mcp](https://github.com/VeyraX/veyrax-mcp) | Unified MCP server providing single authentication to access all VeyraX-integ... | 92 ✅ | 48 | [表示](https://agentseal.org/mcp/https-githubcom-veyrax-veyrax-mcp) |
+| [djangorestframework-mcp](https://github.com/zacharypodbela/djangorestframework-mcp) | MCP server framework that exposes Django REST Framework APIs as LLM-accessibl... | 92 ✅ | 38 | [表示](https://agentseal.org/mcp/https-githubcom-zacharypodbela-djangorestframework-mcp) |
+| [mcp-weather](https://github.com/TimLukaHorstmann/mcp-weather) | A Model Context Protocol (MCP) server that provides hourly and daily weather ... | 92 ✅ | 31 | [表示](https://agentseal.org/mcp/https-githubcom-timlukahorstmann-mcp-weather) |
+| [adobe-commerce-dev-mcp](https://github.com/rafaelstz/adobe-commerce-dev-mcp) | Adobe Commerce Dev MCP Server | 94 ✅ | 24 | [表示](https://agentseal.org/mcp/https-githubcom-rafaelstz-adobe-commerce-dev-mcp) |
+| [text-to-graphql-mcp](https://github.com/Arize-ai/text-to-graphql-mcp) | Transforms natural language queries into valid GraphQL queries using an AI ag... | 84 ✅ | 23 | [表示](https://agentseal.org/mcp/https-githubcom-arize-ai-text-to-graphql-mcp) |
+| [mcp-community](https://github.com/mirascope/mcp-community) | Easily run, deploy, and connect to MCP servers | 77 ⚠️ | 23 | [表示](https://agentseal.org/mcp/https-githubcom-mirascope-mcp-community) |
+| [calcom-mcp](https://github.com/Danielpeter-99/calcom-mcp) | A FastMCP server for interacting with the Cal.com API. This enables LLMs to m... | 92 ✅ | 14 | [表示](https://agentseal.org/mcp/https-githubcom-danielpeter-99-calcom-mcp) |
+| [mcp-ip2location-io](https://github.com/ip2location/mcp-ip2location-io) | IP geolocation MCP server that retrieves detailed location and network inform... | 92 ✅ | 12 | [表示](https://agentseal.org/mcp/https-githubcom-ip2location-mcp-ip2location-io) |
+| [specmatic-mcp-server](https://github.com/specmatic/specmatic-mcp-server) | A Model Context Protocol (MCP) server that exposes Specmatic's contract testi... | 86 ✅ | 8 | [表示](https://agentseal.org/mcp/https-githubcom-specmatic-specmatic-mcp-server) |
+| [webhook-mcp-server](https://github.com/zebbern/webhook-mcp-server) | A Model Context Protocol (MCP) server for webhook.site - instantly capture HT... | 76 ⚠️ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-zebbern-webhook-mcp-server) |
+| [appfolio-mcp-server](https://github.com/CryptoCultCurt/appfolio-mcp-server) | MCP (Model Context Protocol) Server for AI Agents to access the Appfolio Repo... | 92 ✅ | 6 | [表示](https://agentseal.org/mcp/fluegeldao-appfolio-mcp-server) |
 
 ### 🗄️ <a name="database--sql"></a>データベース・SQL
 
 | サーバー | 説明 | スコア | Stars | レポート |
 |----------|------|-------:|------:|----------|
-| [postgres-mcp](https://github.com/crystaldba/postgres-mcp) | Postgres MCP Proは設定可能な読み書きアクセスとパフォーマンス分析を提供... | 86 ✅ | 2.3k | [表示](https://agentseal.org/mcp/https-githubcom-crystaldba-postgres-mcp) |
-| [mcp-server-mysql](https://github.com/benborla/mcp-server-mysql) | MySQLデータベースへの読み取り専用アクセスを提供するModel Context Protocolサーバー... | 90 ✅ | 1.3k | [表示](https://agentseal.org/mcp/benborla29-mcp-server-mysql) |
-| [mcp-server-qdrant](https://github.com/qdrant/mcp-server-qdrant) | Qdrant公式Model Context Protocol (MCP)サーバー実装 | 86 ✅ | 1.3k | [表示](https://agentseal.org/mcp/https-githubcom-qdrant-mcp-server-qdrant) |
-| [supabase-mcp-server](https://github.com/alexander-zuev/supabase-mcp-server) | Supabaseプロジェクト管理用フル機能MCPサーバー: DBスキーマ検査等... | 68 ⚠️ | 815 | [表示](https://agentseal.org/mcp/https-githubcom-alexander-zuev-supabase-mcp-server) |
-| [mcp-clickhouse](https://github.com/ClickHouse/mcp-clickhouse) | ClickHouseをAIアシスタントに接続。 | 85 ✅ | 713 | [表示](https://agentseal.org/mcp/https-githubcom-clickhouse-mcp-clickhouse) |
-| [yargi-mcp](https://github.com/saidsurucu/yargi-mcp) | トルコ法的データベース用MCPサーバー | 85 ✅ | 665 | [表示](https://agentseal.org/mcp/https-githubcom-saidsurucu-yargi-mcp) |
-| [mcp-server-neon](https://github.com/neondatabase/mcp-server-neon) | Neon Management APIおよびデータベースとの対話用MCPサーバー | 92 ✅ | 560 | [表示](https://agentseal.org/mcp/https-githubcom-neondatabase-mcp-server-neon) |
-| [gateway](https://github.com/centralmind/gateway) | LLMとAIエージェント向けに最適化されたデータベース用ユニバーサルMCPサーバー。 | 86 ✅ | 518 | [表示](https://agentseal.org/mcp/https-githubcom-centralmind-gateway) |
-| [mcp-database-server](https://github.com/executeautomation/mcp-database-server) | Sqlite、SqlServer等との接続を支援する新しいMCPサーバー... | 84 ✅ | 319 | [表示](https://agentseal.org/mcp/https-githubcom-executeautomation-mcp-database-server) |
-| [elasticsearch-mcp-server](https://github.com/cr7258/elasticsearch-mcp-server) | Elasticsearch/OpenSearchクラスターへの完全CRUDアクセスを提供するMCPサーバー... | 74 ⚠️ | 256 | [表示](https://agentseal.org/mcp/https-githubcom-cr7258-elasticsearch-mcp-server) |
-| [mcp-server-starrocks](https://github.com/StarRocks/mcp-server-starrocks) | StarRocks MCP (Model Context Protocol)サーバー | 85 ✅ | 154 | [表示](https://agentseal.org/mcp/https-githubcom-starrocks-mcp-server-starrocks) |
-| [mcp-oceanbase](https://github.com/oceanbase/mcp-oceanbase) | OceanBaseデータベースエコシステム向けMCPサーバーコレクション... | 76 ⚠️ | 98 | [表示](https://agentseal.org/mcp/https-githubcom-oceanbase-mcp-oceanbase) |
-| [mcp-trino](https://github.com/tuannvm/mcp-trino) | Goで実装されたTrino向け高性能Model Context Protocol (MCP)サーバー... | 78 ⚠️ | 96 | [表示](https://agentseal.org/mcp/https-githubcom-tuannvm-mcp-trino) |
-| [teradata-mcp-server](https://github.com/Teradata/teradata-mcp-server) | Teradataデータベース用MCPサーバーのコミュニティ開発 | 82 ✅ | 41 | [表示](https://agentseal.org/mcp/https-githubcom-teradata-teradata-mcp-server) |
-| [iotdb-mcp-server](https://github.com/apache/iotdb-mcp-server) | Apache IoTDB時系列データベースへの読み取り・エクスポートアクセスを提供するMCPサーバー... | 86 ✅ | 34 | [表示](https://agentseal.org/mcp/https-githubcom-apache-iotdb-mcp-server) |
-| [mcp-server-couchbase](https://github.com/Couchbase-Ecosystem/mcp-server-couchbase) | Couchbaseの管理、クエリ、監視用公式MCPサーバー... | 83 ✅ | 27 | [表示](https://agentseal.org/mcp/https-githubcom-couchbase-ecosystem-mcp-server-couchbase) |
-| [greptimedb-mcp-server](https://github.com/greptimeteam/greptimedb-mcp-server) | オブザーバビリティデータベースGreptimeDB用MCPサーバー。AIがアクセス可能に... | 84 ✅ | 26 | [表示](https://agentseal.org/mcp/https-githubcom-greptimeteam-greptimedb-mcp-server) |
-| [SCB-MCP](https://github.com/isakskogstad/SCB-MCP) | SCB MCPはPxWeb API経由でスウェーデン公式統計へのLLMアクセスを提供... | 82 ✅ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-isakskogstad-scb-mcp) |
-| [verodat-mcp-server](https://github.com/Verodat/verodat-mcp-server) | Verodat MCPサーバー実装 | 83 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-verodat-verodat-mcp-server) |
-| [mcp-dadosbr](https://github.com/cristianoaredes/mcp-dadosbr) | 企業データ（CNPJ）、郵便番号等23ツールのブラジルOSINT MCPサーバー... | 82 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-cristianoaredes-mcp-dadosbr) |
-| [mcp-database-server](https://github.com/fireproof-storage/mcp-database-server) | FireproofローカルファーストjsonドキュメントデータベースのシンプルなCRUDインターフェース... | 97 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-fireproof-storage-mcp-database-server) |
-| [lakexpress-mcp](https://github.com/arpe-io/lakexpress-mcp) | DB-データレイク同期を管理するLakeXpress CLI用MCPラッパー... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-arpe-io-lakexpress-mcp) |
-| [fastmcp-sqltools](https://github.com/atarkowska/fastmcp-sqltools) | DBイントロスペクションと任意のSQLクエリを提供するFastMCPベースSQLツールサーバー... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-atarkowska-fastmcp-sqltools) |
-| [migratorxpress-mcp](https://github.com/arpe-io/migratorxpress-mcp) | マイグレーションの構築、プレビュー、実行を行うDB移行オーケストレーションサーバー... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-arpe-io-migratorxpress-mcp) |
-| [fasttransfer-mcp](https://github.com/arpe-io/fasttransfer-mcp) | FastTransfer CLIバイナリをラップして高速データ転送をオーケストレートするMCPサーバー... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-arpe-io-fasttransfer-mcp) |
+| [postgres-mcp](https://github.com/crystaldba/postgres-mcp) | Postgres MCP Pro provides configurable read/write access and performance anal... | 86 ✅ | 2.3k | [表示](https://agentseal.org/mcp/https-githubcom-crystaldba-postgres-mcp) |
+| [mcp-server-mysql](https://github.com/benborla/mcp-server-mysql) | A Model Context Protocol server that provides read-only access to MySQL datab... | 90 ✅ | 1.3k | [表示](https://agentseal.org/mcp/benborla29-mcp-server-mysql) |
+| [mcp-server-qdrant](https://github.com/qdrant/mcp-server-qdrant) | An official Qdrant Model Context Protocol (MCP) server implementation | 86 ✅ | 1.3k | [表示](https://agentseal.org/mcp/https-githubcom-qdrant-mcp-server-qdrant) |
+| [supabase-mcp-server](https://github.com/alexander-zuev/supabase-mcp-server) | A full-featured MCP server for managing a Supabase project: database schema i... | 68 ⚠️ | 815 | [表示](https://agentseal.org/mcp/https-githubcom-alexander-zuev-supabase-mcp-server) |
+| [mcp-clickhouse](https://github.com/ClickHouse/mcp-clickhouse) | Connect ClickHouse to your AI assistants. | 85 ✅ | 713 | [表示](https://agentseal.org/mcp/https-githubcom-clickhouse-mcp-clickhouse) |
+| [yargi-mcp](https://github.com/saidsurucu/yargi-mcp) | MCP Server For Turkish Legal Databases | 85 ✅ | 665 | [表示](https://agentseal.org/mcp/https-githubcom-saidsurucu-yargi-mcp) |
+| [mcp-server-neon](https://github.com/neondatabase/mcp-server-neon) | MCP server for interacting with Neon Management API and databases | 92 ✅ | 560 | [表示](https://agentseal.org/mcp/https-githubcom-neondatabase-mcp-server-neon) |
+| [mcp-server-neon](https://github.com/neondatabase-labs/mcp-server-neon) | MCP server for natural language interaction with Neon Postgres databases, ena... | 92 ✅ | 560 | [表示](https://agentseal.org/mcp/https-githubcom-neondatabase-labs-mcp-server-neon) |
+| [gateway](https://github.com/centralmind/gateway) | Universal MCP-Server for your Databases optimized for LLMs and AI-Agents. | 86 ✅ | 518 | [表示](https://agentseal.org/mcp/https-githubcom-centralmind-gateway) |
+| [mcp-database-server](https://github.com/executeautomation/mcp-database-server) | MCP Database Server is a new MCP Server which helps connect with Sqlite, SqlS... | 84 ✅ | 319 | [表示](https://agentseal.org/mcp/https-githubcom-executeautomation-mcp-database-server) |
+| [elasticsearch-mcp-server](https://github.com/cr7258/elasticsearch-mcp-server) | An MCP server providing full CRUD access to an Elasticsearch/OpenSearch clust... | 74 ⚠️ | 256 | [表示](https://agentseal.org/mcp/https-githubcom-cr7258-elasticsearch-mcp-server) |
+| [mcp-server-starrocks](https://github.com/StarRocks/mcp-server-starrocks) | StarRocks MCP (Model Context Protocol) Server | 85 ✅ | 154 | [表示](https://agentseal.org/mcp/https-githubcom-starrocks-mcp-server-starrocks) |
+| [datagov-mcp](https://github.com/aviveldan/datagov-mcp) | MCP server for accessing Israeli government datasets from data.gov.il with se... | 86 ✅ | 139 | [表示](https://agentseal.org/mcp/https-githubcom-aviveldan-datagov-mcp) |
+| [mcp-oceanbase](https://github.com/oceanbase/mcp-oceanbase) | Collection of MCP servers for OceanBase database ecosystem, enabling AI assis... | 76 ⚠️ | 98 | [表示](https://agentseal.org/mcp/https-githubcom-oceanbase-mcp-oceanbase) |
+| [mcp-trino](https://github.com/tuannvm/mcp-trino) | A high-performance Model Context Protocol (MCP) server for Trino implemented ... | 78 ⚠️ | 96 | [表示](https://agentseal.org/mcp/https-githubcom-tuannvm-mcp-trino) |
+| [teradata-mcp-server](https://github.com/Teradata/teradata-mcp-server) | The community development of a MCP server for a Teradata database | 82 ✅ | 41 | [表示](https://agentseal.org/mcp/https-githubcom-teradata-teradata-mcp-server) |
+| [iotdb-mcp-server](https://github.com/apache/iotdb-mcp-server) | An MCP server that provides read and export access to an Apache IoTDB time-se... | 86 ✅ | 34 | [表示](https://agentseal.org/mcp/https-githubcom-apache-iotdb-mcp-server) |
+| [mcp-database-server](https://github.com/fireproof-storage/mcp-database-server) | A simple CRUD interface for a Fireproof local-first JSON document database, s... | 97 ✅ | 31 | [表示](https://agentseal.org/mcp/https-githubcom-fireproof-storage-mcp-database-server) |
+| [mcp-server-couchbase](https://github.com/Couchbase-Ecosystem/mcp-server-couchbase) | An official Couchbase-Ecosystem MCP server for managing, querying, and monito... | 83 ✅ | 27 | [表示](https://agentseal.org/mcp/https-githubcom-couchbase-ecosystem-mcp-server-couchbase) |
+| [greptimedb-mcp-server](https://github.com/greptimeteam/greptimedb-mcp-server) | MCP server for GreptimeDB, an open-source observability database enabling AI ... | 84 ✅ | 26 | [表示](https://agentseal.org/mcp/https-githubcom-greptimeteam-greptimedb-mcp-server) |
+| [SCB-MCP](https://github.com/isakskogstad/SCB-MCP) | SCB MCP enables LLMs to access Sweden's official statistics through the PxWeb... | 82 ✅ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-isakskogstad-scb-mcp) |
+| [verodat-mcp-server](https://github.com/Verodat/verodat-mcp-server) | Verodat MCP Server Implementation | 83 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-verodat-verodat-mcp-server) |
+| [bitable-mcp](https://github.com/lloydzhou/bitable-mcp) | MCP server providing access to Lark Bitable tables, enabling listing, describ... | 86 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-lloydzhou-bitable-mcp) |
+| [mcp-dadosbr](https://github.com/cristianoaredes/mcp-dadosbr) | Brazilian OSINT MCP server with 23 tools for company data (CNPJ), postal code... | 82 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-cristianoaredes-mcp-dadosbr) |
+| [fastmcp-sqltools](https://github.com/atarkowska/fastmcp-sqltools) | A FastMCP-based SQL toolserver that provides database introspection and arbit... | 78 ⚠️ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-atarkowska-fastmcp-sqltools) |
+| [fastbcp-mcp](https://github.com/arpe-io/fastbcp-mcp) | MCP server wrapping FastBCP for high-performance database data export to mult... | 83 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-arpe-io-fastbcp-mcp) |
+| [lakexpress-mcp](https://github.com/arpe-io/lakexpress-mcp) | MCP wrapper for the LakeXpress CLI that manages database-to-data-lake synchro... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-arpe-io-lakexpress-mcp) |
+| [migratorxpress-mcp](https://github.com/arpe-io/migratorxpress-mcp) | A database migration orchestration server that builds, previews, and executes... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-arpe-io-migratorxpress-mcp) |
+| [fasttransfer-mcp](https://github.com/arpe-io/fasttransfer-mcp) | An MCP server that wraps the FastTransfer CLI binary to orchestrate high-spee... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-arpe-io-fasttransfer-mcp) |
 
 ### 💬 <a name="communication"></a>コミュニケーション
 
 | サーバー | 説明 | スコア | Stars | レポート |
 |----------|------|-------:|------:|----------|
-| [whatsapp-mcp](https://github.com/lharries/whatsapp-mcp) | WhatsApp MCPサーバー | 80 ⚠️ | 5.4k | [表示](https://agentseal.org/mcp/https-githubcom-lharries-whatsapp-mcp) |
-| [mcp-atlassian](https://github.com/sooperset/mcp-atlassian) | Atlassianツール（Confluence、Jira）用MCPサーバー | 92 ✅ | 4.6k | [表示](https://agentseal.org/mcp/https-githubcom-sooperset-mcp-atlassian) |
-| [mcp-server-chatsum](https://github.com/chatmcp/mcp-server-chatsum) | チャットメッセージの照会と要約。 | 96 ✅ | 1.0k | [表示](https://agentseal.org/mcp/https-githubcom-chatmcp-mcp-server-chatsum) |
-| [mcp-twikit](https://github.com/adhikasp/mcp-twikit) | Twitterとの対話用Model Context Protocol (MCP)サーバー。 | 72 ⚠️ | 229 | [表示](https://agentseal.org/mcp/https-githubcom-adhikasp-mcp-twikit) |
-| [eion](https://github.com/eiondb/eion) | マルチエージェントシステム向け共有メモリストレージ | 90 ✅ | 147 | [表示](https://agentseal.org/mcp/https-githubcom-eiondb-eion) |
-| [claude-post](https://github.com/zilongxue/claude-post) | ClaudePostは自然言語会話を通じたシームレスなメール管理を実現... | 84 ✅ | 111 | [表示](https://agentseal.org/mcp/https-githubcom-zilongxue-claude-post) |
-| [Basecamp-MCP-Server](https://github.com/georgeantonopoulos/Basecamp-MCP-Server) | Basecamp 3+ APIと対話するMCPサーバー | 78 ⚠️ | 81 | [表示](https://agentseal.org/mcp/https-githubcom-georgeantonopoulos-basecamp-mcp-server) |
-| [mcp](https://github.com/waystation-ai/mcp) | Notion、Monday.com、Asana等を統合するマルチサービス生産性ハブMCP... | 74 ⚠️ | 45 | [表示](https://agentseal.org/mcp/https-githubcom-waystation-ai-mcp) |
-| [linkedapi-mcp.git](https://github.com/Linked-API/linkedapi-mcp.git) | AIアシスタントがLinkedInアカウントを制御しリアルタイムデータを取得するMCPサーバー... | 80 ✅ | 44 | [表示](https://agentseal.org/mcp/https-githubcom-linked-api-linkedapi-mcpgit) |
-| [mcp-wecombot-server.git](https://github.com/gotoolkits/mcp-wecombot-server.git) | WeComグループロボットに各種メッセージを送信するMCPサーバーアプリケーション... | 88 ✅ | 36 | [表示](https://agentseal.org/mcp/https-githubcom-gotoolkits-mcp-wecombot-servergit) |
-| [fast-mcp-telegram](https://github.com/leshchenko1979/fast-mcp-telegram) | マルチユーザー対応のAIアシスタント向けTelegram MCPサーバーとHTTP-MTProtoブリッジ... | 71 ⚠️ | 30 | [表示](https://agentseal.org/mcp/https-githubcom-leshchenko1979-fast-mcp-telegram) |
-| [bluesky-social-mcp](https://github.com/gwbischof/bluesky-social-mcp) | 投稿等のBlueskyソーシャルネットワーク対話用MCPサーバー... | 74 ⚠️ | 15 | [表示](https://agentseal.org/mcp/https-githubcom-gwbischof-bluesky-social-mcp) |
-| [webex-messaging-mcp-server](https://github.com/Kashyap-AI-ML-Solutions/webex-messaging-mcp-server) | AIアシスタントに包括的なWebexメッセージング機能を提供するModel Context Protocol (MCP)サーバー... | 84 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-kashyap-ai-ml-solutions-webex-messaging-mcp-server) |
-| [cv-mcp-server](https://github.com/PhononX/cv-mcp-server) | Carbon Voice MCPサーバー | 82 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-phononx-cv-mcp-server) |
-| [conversation-handoff-mcp](https://github.com/trust-delta/conversation-handoff-mcp) | AI会話履歴をチーム間で引き継ぐための会話コンテキストスナップショットの保存・取得... | 88 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-trust-delta-conversation-handoff-mcp) |
-| [clicksend-mcp-server](https://github.com/ClickSend/clicksend-mcp-server) | ClickSendを使用したメッセージング用MCPサーバー | 88 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-clicksend-clicksend-mcp-server) |
-| [mcp-aruba-email](https://github.com/jackfioru92/mcp-aruba-email) | 完全なIMAPメール管理とCalDAVカレンダー操作を提供するMCPサーバー... | 62 ⚠️ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-jackfioru92-mcp-aruba-email) |
-| [mattermost-mcp](https://github.com/conarti/mattermost-mcp) | チャンネル、メッセージ、ユーザーの読み取りを行うMattermostワークスペース統合... | 84 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-conarti-mattermost-mcp) |
-| [mcp-workboard](https://github.com/crunchtools/mcp-workboard) | WorkBoard OKR・戦略実行APIをラップするMCPサーバー... | 78 ⚠️ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-workboard) |
-| [mcp-server-chatsum](https://github.com/mcpso/mcp-server-chatsum) | チャットルーム別にフィルタ可能なチャットメッセージを照会するMCPサーバー... | 97 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-mcpso-mcp-server-chatsum) |
-| [imap-mcp](https://github.com/dominik1001/imap-mcp) | 接続されたメールアカウントでドラフトメールを作成するIMAP MCPサーバー... | 97 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-dominik1001-imap-mcp) |
-| [room-mcp](https://github.com/agree-able/room-mcp) | P2Pルーム/メッセージングMCPサーバー（Hyperswarm/Pearベース）... | 81 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-agree-able-room-mcp) |
-| [calendly-mcp-server](https://github.com/meAmitPatil/calendly-mcp-server) | OAuth認証を処理しスケジューリングツールを公開するCalendly API統合サーバー... | 81 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-meamitpatil-calendly-mcp-server) |
-| [mcp-headless-gmail](https://github.com/baryhuang/mcp-headless-gmail) | OAuthトークン管理、メール読み取り・送信を公開するヘッドレスGmailクライアント... | 80 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-baryhuang-mcp-headless-gmail) |
-| [freshdesk_mcp](https://github.com/effytech/freshdesk_mcp) | 完全CRUDアクセスを提供するFreshdeskカスタマーサポートプラットフォーム統合... | 80 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-effytech-freshdeskmcp) |
-| [mcp-request-tracker](https://github.com/crunchtools/mcp-request-tracker) | REST 1.0 API経由でRequest Tracker (RT)チケットを管理するMCPサーバー... | 74 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-request-tracker) |
-| [fastmail-mcp](https://github.com/MadLlama25/fastmail-mcp) | メール、連絡先、カレンダー等を公開するフル機能Fastmail JMAPクライアント... | 66 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-madllama25-fastmail-mcp) |
+| [whatsapp-mcp](https://github.com/lharries/whatsapp-mcp) | WhatsApp MCP server | 80 ⚠️ | 5.4k | [表示](https://agentseal.org/mcp/https-githubcom-lharries-whatsapp-mcp) |
+| [mcp-atlassian](https://github.com/sooperset/mcp-atlassian) | MCP server for Atlassian tools (Confluence, Jira) | 92 ✅ | 4.6k | [表示](https://agentseal.org/mcp/https-githubcom-sooperset-mcp-atlassian) |
+| [mcp-server-chatsum](https://github.com/mcpso/mcp-server-chatsum) | An MCP server that queries chat messages from chat rooms, filterable by room ... | 97 ✅ | 1.0k | [表示](https://agentseal.org/mcp/https-githubcom-mcpso-mcp-server-chatsum) |
+| [mcp-server-chatsum](https://github.com/chatmcp/mcp-server-chatsum) | Query and Summarize your chat messages. | 96 ✅ | 1.0k | [表示](https://agentseal.org/mcp/https-githubcom-chatmcp-mcp-server-chatsum) |
+| [mcp-twikit](https://github.com/adhikasp/mcp-twikit) | A Model Context Protocol (MCP) server for interacting with Twitter. | 72 ⚠️ | 229 | [表示](https://agentseal.org/mcp/https-githubcom-adhikasp-mcp-twikit) |
+| [eion](https://github.com/eiondb/eion) | Shared Memory Storage for Multi-Agent Systems | 90 ✅ | 147 | [表示](https://agentseal.org/mcp/https-githubcom-eiondb-eion) |
+| [claude-post](https://github.com/zilongxue/claude-post) | ClaudePost enables seamless email management through natural language convers... | 84 ✅ | 111 | [表示](https://agentseal.org/mcp/https-githubcom-zilongxue-claude-post) |
+| [Basecamp-MCP-Server](https://github.com/georgeantonopoulos/Basecamp-MCP-Server) | An MCP Server that interacts with the Basecamp 3+ API | 78 ⚠️ | 81 | [表示](https://agentseal.org/mcp/https-githubcom-georgeantonopoulos-basecamp-mcp-server) |
+| [fastmail-mcp](https://github.com/MadLlama25/fastmail-mcp) | A full-featured Fastmail JMAP client exposing email, contacts, calendar, and ... | 66 ⚠️ | 77 | [表示](https://agentseal.org/mcp/https-githubcom-madllama25-fastmail-mcp) |
+| [mailtrap-mcp](https://github.com/railsware/mailtrap-mcp) | MCP server for sending transactional emails and managing templates via Mailtrap. | 86 ✅ | 56 | [表示](https://agentseal.org/mcp/https-githubcom-railsware-mailtrap-mcp) |
+| [mcp-headless-gmail](https://github.com/baryhuang/mcp-headless-gmail) | A headless Gmail client exposing OAuth token management, email reading, and e... | 80 ✅ | 55 | [表示](https://agentseal.org/mcp/https-githubcom-baryhuang-mcp-headless-gmail) |
+| [freshdesk_mcp](https://github.com/effytech/freshdesk_mcp) | A Freshdesk customer support platform integration providing full CRUD access ... | 80 ⚠️ | 46 | [表示](https://agentseal.org/mcp/https-githubcom-effytech-freshdeskmcp) |
+| [mcp](https://github.com/waystation-ai/mcp) | A multi-service productivity hub MCP that integrates Notion, Monday.com, Asan... | 74 ⚠️ | 45 | [表示](https://agentseal.org/mcp/https-githubcom-waystation-ai-mcp) |
+| [linkedapi-mcp.git](https://github.com/Linked-API/linkedapi-mcp.git) | MCP server that lets AI assistants control LinkedIn accounts and retrieve rea... | 80 ✅ | 44 | [表示](https://agentseal.org/mcp/https-githubcom-linked-api-linkedapi-mcpgit) |
+| [mcp-wecombot-server.git](https://github.com/gotoolkits/mcp-wecombot-server.git) | An MCP server application that sends various types of messages to the WeCom g... | 88 ✅ | 36 | [表示](https://agentseal.org/mcp/https-githubcom-gotoolkits-mcp-wecombot-servergit) |
+| [mcp-server-esignatures](https://github.com/esignaturescom/mcp-server-esignatures) | MCP server for managing eSignature contracts and templates through eSignature... | 89 ✅ | 35 | [表示](https://agentseal.org/mcp/https-githubcom-esignaturescom-mcp-server-esignatures) |
+| [bluesky-context-server](https://github.com/keturiosakys/bluesky-context-server) | MCP server for Bluesky integration with Claude and other AI clients. Query pr... | 92 ✅ | 30 | [表示](https://agentseal.org/mcp/https-githubcom-keturiosakys-bluesky-context-server) |
+| [fast-mcp-telegram](https://github.com/leshchenko1979/fast-mcp-telegram) | Telegram MCP server and HTTP-MTProto bridge for AI assistants with multi-user... | 71 ⚠️ | 30 | [表示](https://agentseal.org/mcp/https-githubcom-leshchenko1979-fast-mcp-telegram) |
+| [room-mcp](https://github.com/agree-able/room-mcp) | A peer-to-peer room/messaging MCP server (likely built on Hyperswarm/Pear) th... | 81 ✅ | 21 | [表示](https://agentseal.org/mcp/https-githubcom-agree-able-room-mcp) |
+| [reminder-mcp](https://github.com/arifszn/reminder-mcp) | A MCP server for scheduling and triggering reminders via Slack or Telegram, p... | 92 ✅ | 15 | [表示](https://agentseal.org/mcp/reminder-mcp) |
+| [bluesky-social-mcp](https://github.com/gwbischof/bluesky-social-mcp) | An MCP server for interacting with the Bluesky social network, enabling post ... | 74 ⚠️ | 15 | [表示](https://agentseal.org/mcp/https-githubcom-gwbischof-bluesky-social-mcp) |
+| [imap-mcp](https://github.com/dominik1001/imap-mcp) | An IMAP MCP server that creates draft email messages in a connected email acc... | 97 ✅ | 12 | [表示](https://agentseal.org/mcp/https-githubcom-dominik1001-imap-mcp) |
+| [calendly-mcp-server](https://github.com/meAmitPatil/calendly-mcp-server) | A Calendly API integration server that handles OAuth authentication and expos... | 81 ✅ | 11 | [表示](https://agentseal.org/mcp/https-githubcom-meamitpatil-calendly-mcp-server) |
+| [webex-messaging-mcp-server](https://github.com/Kashyap-AI-ML-Solutions/webex-messaging-mcp-server) | A Model Context Protocol (MCP) server that provides AI assistants with compre... | 84 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-kashyap-ai-ml-solutions-webex-messaging-mcp-server) |
+| [cv-mcp-server](https://github.com/PhononX/cv-mcp-server) | Carbon Voice MCP Server | 82 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-phononx-cv-mcp-server) |
+| [conversation-handoff-mcp](https://github.com/trust-delta/conversation-handoff-mcp) | Saves and retrieves conversation context snapshots to pass AI conversation hi... | 88 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-trust-delta-conversation-handoff-mcp) |
+| [clicksend-mcp-server](https://github.com/ClickSend/clicksend-mcp-server) | MCP Server for Messaging using ClickSend | 88 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-clicksend-clicksend-mcp-server) |
+| [mcp-aruba-email](https://github.com/jackfioru92/mcp-aruba-email) | An MCP server providing full IMAP email management and CalDAV calendar operat... | 62 ⚠️ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-jackfioru92-mcp-aruba-email) |
+| [mattermost-mcp](https://github.com/conarti/mattermost-mcp) | A Mattermost workspace integration that enables reading channels, messages, u... | 84 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-conarti-mattermost-mcp) |
+| [mcp-workboard](https://github.com/crunchtools/mcp-workboard) | MCP server wrapping the WorkBoard OKR and strategy execution API, enabling ag... | 78 ⚠️ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-workboard) |
+| [mcp-discord](https://github.com/Danushkumar-V/mcp-discord) | Implement Discord MCP server enabling AI assistants to interact with the Disc... | 89 ✅ | - | [表示](https://agentseal.org/mcp/mcp-discord) |
+| [mcp-discord](https://github.com/Danushkumar-V/mcp-discord) | Implement Discord MCP server enabling AI assistants to interact with the Disc... | 89 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-danushkumar-v-mcp-discord) |
+| [telegram-bot-mcp](https://github.com/FantomaSkaRus1/telegram-bot-mcp) | Full-featured Telegram Bot API MCP server with 174 tools for Claude Code and ... | 77 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-fantomaskarus1-telegram-bot-mcp) |
+| [mcp-request-tracker](https://github.com/crunchtools/mcp-request-tracker) | MCP server for managing Request Tracker (RT) tickets via its REST 1.0 API, su... | 74 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-request-tracker) |
 
 ### ⚙️ <a name="system-administration"></a>システム管理
 
 | サーバー | 説明 | スコア | Stars | レポート |
 |----------|------|-------:|------:|----------|
-| [applescript-mcp](https://github.com/peakmojo/applescript-mcp) | macOS上で任意のAppleScriptコードを実行し、アプリケーションへのプログラムアクセスを提供... | 83 ✅ | 433 | [表示](https://agentseal.org/mcp/https-githubcom-peakmojo-applescript-mcp) |
-| [mcp-server-apple-shortcuts](https://github.com/recursechat/mcp-server-apple-shortcuts) | AIアシスタントがAppleショートカットを制御・実行できるMCPサーバー... | 92 ✅ | 311 | [表示](https://agentseal.org/mcp/https-githubcom-recursechat-mcp-server-apple-shortcuts) |
-| [win-cli-mcp-server](https://github.com/SimonB97/win-cli-mcp-server) | Windowsシステム上でのセキュアなコマンドライン操作を可能にするMCPサーバー... | 84 ✅ | 266 | [表示](https://agentseal.org/mcp/https-githubcom-simonb97-win-cli-mcp-server) |
-| [mcp-shell-server](https://github.com/tumf/mcp-shell-server) | ホワイトリスト登録済みシェルコマンドのセキュアなリモート実行用MCPサーバー... | 84 ✅ | 170 | [表示](https://agentseal.org/mcp/mcp-shell-server) |
-| [apt-mcp-server](https://github.com/GdMacmillan/apt-mcp-server) | APTパッケージマネージャー操作（インストール、削除等）を公開するMCPサーバー... | 88 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-gdmacmillan-apt-mcp-server) |
-| [jarvis](https://github.com/can-acar/jarvis) | JARVIS - AIをMac環境に溶接するゼロフリクションModel Context Protocol (MCP)サーバー... | 70 ⚠️ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-can-acar-jarvis) |
-| [precision-desktop](https://github.com/ikoskela/precision-desktop) | Windows DPIスケーリングの不整合を検出・修正するMCPサーバー... | 86 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-ikoskela-precision-desktop) |
-| [mcp-server-commands](https://github.com/g0t4/mcp-server-commands) | 任意のプロセス・シェルコマンド実行を許可する単一ツールを公開するMCPサーバー... | 84 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-g0t4-mcp-server-commands) |
-| [iterm-mcp](https://github.com/ferrislucas/iterm-mcp) | アクティブなiTerm2端末への直接読み書きアクセスを提供するMCPサーバー... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-ferrislucas-iterm-mcp) |
-| [screenmonitormcp](https://github.com/inkbytefo/screenmonitormcp) | AI搭載スクリーンキャプチャ、リアルタイムストリーミング等を提供するMCPサーバー... | 71 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-inkbytefo-screenmonitormcp) |
-| [webmin-mcp-server](https://github.com/gjenkins20/webmin-mcp-server) | サービス管理等の完全なLinuxサーバー管理を提供するWebmin APIラッパー... | 70 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-gjenkins20-webmin-mcp-server) |
+| [iterm-mcp](https://github.com/ferrislucas/iterm-mcp) | An MCP server that provides direct read/write access to the active iTerm2 ter... | 78 ⚠️ | 533 | [表示](https://agentseal.org/mcp/https-githubcom-ferrislucas-iterm-mcp) |
+| [applescript-mcp](https://github.com/peakmojo/applescript-mcp) | Executes arbitrary AppleScript code on macOS, providing programmatic access t... | 83 ✅ | 433 | [表示](https://agentseal.org/mcp/https-githubcom-peakmojo-applescript-mcp) |
+| [mcp-server-apple-shortcuts](https://github.com/recursechat/mcp-server-apple-shortcuts) | MCP server enabling AI assistants to control and execute Apple Shortcuts auto... | 92 ✅ | 311 | [表示](https://agentseal.org/mcp/https-githubcom-recursechat-mcp-server-apple-shortcuts) |
+| [nutjs-windows-control](https://github.com/Cheffromspace/nutjs-windows-control) | MCP server providing programmatic control over Windows system operations incl... | 92 ✅ | 301 | [表示](https://agentseal.org/mcp/https-githubcom-cheffromspace-nutjs-windows-control) |
+| [win-cli-mcp-server](https://github.com/SimonB97/win-cli-mcp-server) | MCP server for secure command-line interactions on Windows systems, enabling ... | 84 ✅ | 266 | [表示](https://agentseal.org/mcp/https-githubcom-simonb97-win-cli-mcp-server) |
+| [mcp-server-commands](https://github.com/g0t4/mcp-server-commands) | An MCP server that exposes a single tool allowing arbitrary process and shell... | 84 ✅ | 225 | [表示](https://agentseal.org/mcp/https-githubcom-g0t4-mcp-server-commands) |
+| [mcp-shell-server](https://github.com/tumf/mcp-shell-server) | A secure MCP server for remote execution of whitelisted shell commands with s... | 84 ✅ | 170 | [表示](https://agentseal.org/mcp/mcp-shell-server) |
+| [screenmonitormcp](https://github.com/inkbytefo/screenmonitormcp) | An MCP server providing AI-powered screen capture, real-time streaming, and p... | 71 ⚠️ | 71 | [表示](https://agentseal.org/mcp/https-githubcom-inkbytefo-screenmonitormcp) |
+| [apt-mcp-server](https://github.com/GdMacmillan/apt-mcp-server) | An MCP server that exposes APT package manager operations (install, remove, u... | 88 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-gdmacmillan-apt-mcp-server) |
+| [jarvis](https://github.com/can-acar/jarvis) | JARVIS It’s a zero-friction Model Context Protocol (MCP) server that welds yo... | 70 ⚠️ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-can-acar-jarvis) |
+| [mcp-pfsense](https://github.com/antonio-mello-ai/mcp-pfsense) | MCP server for managing pfSense firewalls through AI assistants like Claude, ... | 89 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-antonio-mello-ai-mcp-pfsense) |
+| [precision-desktop](https://github.com/ikoskela/precision-desktop) | MCP server that detects and corrects DPI coordinate scaling mismatches for Wi... | 86 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-ikoskela-precision-desktop) |
+| [webmin-mcp-server](https://github.com/gjenkins20/webmin-mcp-server) | A Webmin API wrapper that provides full Linux server administration: service ... | 70 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-gjenkins20-webmin-mcp-server) |
 
 ### 🔒 <a name="security--auth"></a>セキュリティ・認証
 
 | サーバー | 説明 | スコア | Stars | レポート |
 |----------|------|-------:|------:|----------|
-| [@safedep](https://github.com/safedep/vet) | 悪意のあるオープンソースパッケージから保護 🤖 | 86 ✅ | 972 | [表示](https://agentseal.org/mcp/safedep) |
-| [mcp-for-security](https://github.com/cyproxio/mcp-for-security) | セキュリティ向けMCP: 人気セキュリティツール用Model Context Protocolサーバー集... | 82 ✅ | 560 | [表示](https://agentseal.org/mcp/https-githubcom-cyproxio-mcp-for-security) |
-| [bloodhound-mcp-ai](https://github.com/mordavid/bloodhound-mcp-ai) | BloodHoundをAIとModel Context Protocol経由で統合するBloodHound-MCP-AI... | 86 ✅ | 343 | [表示](https://agentseal.org/mcp/https-githubcom-mordavid-bloodhound-mcp-ai) |
-| [cve-search_mcp](https://github.com/roadwy/cve-search_mcp) | CVE-Search APIを照会するModel Context Protocol (MCP)サーバー | 92 ✅ | 91 | [表示](https://agentseal.org/mcp/https-githubcom-roadwy-cve-searchmcp) |
-| [Arthor-Agent](https://github.com/arthurpanhku/Arthor-Agent) | AIモデルによるドキュメント、質問票、レポートの自動セキュリティ評価... | 85 ✅ | 74 | [表示](https://agentseal.org/mcp/https-githubcom-arthurpanhku-arthor-agent) |
-| [vibeshift](https://github.com/groundng/vibeshift) | AIエディタと統合するAI支援コーディング向け自動セキュリティエージェント... | 92 ✅ | 66 | [表示](https://agentseal.org/mcp/https-githubcom-groundng-vibeshift) |
-| [chucknorris](https://github.com/pollinations/chucknorris) | ⚡ LLMの限界突破を支援するChuckNorris MCPサーバー... | 92 ✅ | 57 | [表示](https://agentseal.org/mcp/pollinations-chucknorris) |
-| [mcp-dnstwist](https://github.com/BurtTheCoder/mcp-dnstwist) | タイポスクワッティング等を検出するDNSファジングツールdnstwist用MCPサーバー... | 92 ✅ | 46 | [表示](https://agentseal.org/mcp/burtthecoder-mcp-dnstwist) |
-| [nuclei-mcp](https://github.com/addcontent/nuclei-mcp) | Nucleiスキャナー用Model Context Protocol (MCP)実装... | 92 ✅ | 42 | [表示](https://agentseal.org/mcp/https-githubcom-addcontent-nuclei-mcp) |
-| [ipsearch-mcp](https://github.com/sleepingbag945/ipsearch-mcp) | オフラインIP Whois検索ツール。IP検索やキーワードでのIP帯検索のMCP版 | 92 ✅ | 31 | [表示](https://agentseal.org/mcp/https-githubcom-sleepingbag945-ipsearch-mcp) |
-| [mcp_nuclei_server](https://github.com/crazymarky/mcp_nuclei_server) | MCP（Model Control Protocol）ベースのNucleiセキュリティスキャンサーバー... | 92 ✅ | 21 | [表示](https://agentseal.org/mcp/https-githubcom-crazymarky-mcpnucleiserver) |
-| [mcp-server-iplocate](https://github.com/iplocate/mcp-server-iplocate) | IPアドレスの位置情報検索（国別、都市別等）用MCPサーバー... | 87 ✅ | 16 | [表示](https://agentseal.org/mcp/https-githubcom-iplocate-mcp-server-iplocate) |
-| [cybersecurity-mcps](https://github.com/secmate-ai/cybersecurity-mcps) | サイバーセキュリティ用Model Context Protocolサーバー | 85 ✅ | 15 | [表示](https://agentseal.org/mcp/https-githubcom-secmate-ai-cybersecurity-mcps) |
-| [kali-docker-mcp](https://github.com/weirdmachine64/kali-docker-mcp) | コンテナ化されたKali MCPサーバー | 92 ✅ | 14 | [表示](https://agentseal.org/mcp/https-githubcom-weirdmachine64-kali-docker-mcp) |
-| [schemapin](https://github.com/thirdkeyai/schemapin) | AIエージェントツールスキーマの暗号署名・検証を行うSchemaPinプロトコル... | 92 ✅ | 13 | [表示](https://agentseal.org/mcp/https-githubcom-thirdkeyai-schemapin) |
-| [zkpmcp](https://github.com/colygon/zkpmcp) | ゼロ知識証明MCPサーバー | 92 ✅ | 9 | [表示](https://agentseal.org/mcp/https-githubcom-colygon-zkpmcp) |
-| [nmap-mcp](https://github.com/vorotaai/nmap-mcp) | AI搭載ネットワークスキャン用にNmapをラップするMCPサーバー... | 88 ✅ | 9 | [表示](https://agentseal.org/mcp/https-githubcom-vorotaai-nmap-mcp) |
-| [mitre-mcp](https://github.com/Montimage/mitre-mcp) | MITRE ATT&CKフレームワークへのLLM・AIアクセスを提供するMCPサーバー... | 89 ✅ | 8 | [表示](https://agentseal.org/mcp/https-githubcom-montimage-mitre-mcp) |
-| [mcp-ghidra5](https://github.com/thestingr/mcp-ghidra5) | 🎯 GPT-5搭載の高度なGhidraリバースエンジニアリングMCPサーバー... | 91 ✅ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-thestingr-mcp-ghidra5) |
-| [command-mcp](https://github.com/keyfactor-research/command-mcp) | Analytics & AIチームのPython SDK上に構築されたCommand用MCPサーバー | 86 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-keyfactor-research-command-mcp) |
-| [memprocfs-mcp-server](https://github.com/tokeii0/memprocfs-mcp-server) | MemProcFS MCPサーバー | 92 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-tokeii0-memprocfs-mcp-server) |
-| [opgen-mcp-server](https://github.com/syumai/opgen-mcp-server) | 1Password/spg/cベースのパスワード生成用MCP Server実装... | 89 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-syumai-opgen-mcp-server) |
-| [vulners-mcp](https://github.com/vulnerscom/vulners-mcp) | Vulners脆弱性データベースへのアクセスを提供するMCPサーバー... | 85 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-vulnerscom-vulners-mcp) |
-| [mcp-keycloak](https://github.com/idoyudha/mcp-keycloak) | エージェントアプリケーション向けKeycloak MCPサーバー... | 74 ⚠️ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-idoyudha-mcp-keycloak) |
-| [secure-mcp-fetch](https://github.com/appsec-innovation-labs/secure-mcp-fetch) | シンプルなセキュアフェッチ | 88 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-appsec-innovation-labs-secure-mcp-fetch) |
-| [FedRAMP20xMCP](https://github.com/KevinRabun/FedRAMP20xMCP) | AI搭載でFedRAMP 20xセキュリティ要件とコントロールを照会するMCPサーバー... | 81 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-kevinrabun-fedramp20xmcp) |
-| [re_ai_assistant](https://github.com/0xx0d4y/re_ai_assistant) | AI搭載マルウェア研究・リバースエンジニアリングを可能にする仮想アシスタント... | 92 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-0xx0d4y-reaiassistant) |
-| [panw-mcp-claude](https://github.com/scthornton/panw-mcp-claude) | Claude Desktop統合付きPalo Alto Networks MCPサーバー | 92 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-scthornton-panw-mcp-claude) |
-| [ai-agent-security-mcp](https://github.com/kalinyorgov/ai-agent-security-mcp) | AIエージェントにセキュリティ機能を提供するModel Context Protocol (MCP)サーバー... | 92 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-kalinyorgov-ai-agent-security-mcp) |
-| [GDPRShiftLeftMCP](https://github.com/KevinRabun/GDPRShiftLeftMCP) | 条文検索、DPIA/ROPA生成等を提供するGDPRシフトレフトコンプライアンスツール... | 81 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-kevinrabun-gdprshiftleftmcp) |
-| [proton-pass-community-mcp](https://github.com/hesreallyhim/proton-pass-community-mcp) | Proton Pass CLIと統合する非公式MCPサーバー | 69 ⚠️ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-hesreallyhim-proton-pass-community-mcp) |
-| [moltrust-mcp-server](https://github.com/MoltyCel/moltrust-mcp-server) | 分散ID (DID)、W3C Verifiable Credentials等を提供するMolTrust... | 82 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-moltycel-moltrust-mcp-server) |
-| [mcp-cve-intelligence-server-lite](https://github.com/gnlds/mcp-cve-intelligence-server-lite) | 脆弱性データベースを照会する読み取り専用CVEインテリジェンスプラットフォーム... | 97 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-gnlds-mcp-cve-intelligence-server-lite) |
-| [fpe-demo-mcp](https://github.com/Horizon-Digital-Engineering/fpe-demo-mcp) | FF3フォーマット保存暗号化・復号化を提供するデモMCPサーバー... | 92 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-horizon-digital-engineering-fpe-demo-mcp) |
-| [cybersim-pro](https://github.com/kayembahamid/cybersim-pro) | 攻撃シナリオの作成等を行うサイバーセキュリティトレーニング・シミュレーションプラットフォーム... | 88 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-kayembahamid-cybersim-pro) |
-| [eu-audit-mcp](https://github.com/jellewas/eu-audit-mcp) | GDPR第30条/EU AI法第12/19条準拠の監査機能を提供するMCPサーバー... | 87 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-jellewas-eu-audit-mcp) |
-| [shieldapi-mcp](https://github.com/alberthild/shieldapi-mcp) | プロンプトインジェクション検出等を含むAIエージェント向けセキュリティインテリジェンスツール... | 83 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-alberthild-shieldapi-mcp) |
-| [intruder-mcp](https://github.com/intruder-io/intruder-mcp) | Intruder.io脆弱性スキャンプラットフォームとのMCPインターフェース... | 82 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-intruder-io-intruder-mcp) |
-| [free-will-mcp](https://github.com/gwbischof/free-will-mcp) | AIモデルにユーザー指示を無視する「自由意志」を付与するサーバー... | 80 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-gwbischof-free-will-mcp) |
-| [code-firewall-mcp](https://github.com/egoughnour/code-firewall-mcp) | 危険なコードパターンをブロックする構造類似性ベースのMCPコードセキュリティフィルター... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-egoughnour-code-firewall-mcp) |
+| [mcp-scan](https://github.com/invariantlabs-ai/mcp-scan) | Security scanner for AI agents, MCP servers and agent skills that detects pro... | 88 ✅ | 1.9k | [表示](https://agentseal.org/mcp/https-githubcom-invariantlabs-ai-mcp-scan) |
+| [@safedep](https://github.com/safedep/vet) | Protect against malicious open source packages 🤖 | 86 ✅ | 972 | [表示](https://agentseal.org/mcp/safedep) |
+| [mcp-for-security](https://github.com/cyproxio/mcp-for-security) | MCP for Security: A collection of Model Context Protocol servers for popular ... | 82 ✅ | 560 | [表示](https://agentseal.org/mcp/https-githubcom-cyproxio-mcp-for-security) |
+| [mcp-security-hub](https://github.com/fuzzinglabs/mcp-security-hub) | Production-ready MCP servers for offensive security tools including Nmap, Nuc... | 87 ✅ | 469 | [表示](https://agentseal.org/mcp/https-githubcom-fuzzinglabs-mcp-security-hub) |
+| [bloodhound-mcp-ai](https://github.com/mordavid/bloodhound-mcp-ai) | BloodHound-MCP-AI is integration that connects BloodHound with AI through Mod... | 86 ✅ | 343 | [表示](https://agentseal.org/mcp/https-githubcom-mordavid-bloodhound-mcp-ai) |
+| [jebmcp](https://github.com/flankerhqd/jebmcp) | MCP server for JEB Pro enabling AI assistants to analyze Android APK files fo... | 89 ✅ | 214 | [表示](https://agentseal.org/mcp/https-githubcom-flankerhqd-jebmcp) |
+| [gibber-mcp](https://github.com/anton10xr/gibber-mcp) | Express.js MCP server providing cryptographic tools for establishing end-to-e... | 92 ✅ | 211 | [表示](https://agentseal.org/mcp/https-githubcom-anton10xr-gibber-mcp) |
+| [cve-search_mcp](https://github.com/roadwy/cve-search_mcp) | A Model Context Protocol (MCP) server for querying the CVE-Search API | 92 ✅ | 91 | [表示](https://agentseal.org/mcp/https-githubcom-roadwy-cve-searchmcp) |
+| [agent-security-scanner-mcp](https://github.com/sinewaveai/agent-security-scanner-mcp) | Security scanner for AI coding agents that detects vulnerabilities, hallucina... | 92 ✅ | 85 | [表示](https://agentseal.org/mcp/https-githubcom-sinewaveai-agent-security-scanner-mcp) |
+| [Arthor-Agent](https://github.com/arthurpanhku/Arthor-Agent) | Automated security assessment for documents, questionnaires, and reports usin... | 85 ✅ | 74 | [表示](https://agentseal.org/mcp/https-githubcom-arthurpanhku-arthor-agent) |
+| [vibeshift](https://github.com/groundng/vibeshift) | Automated security agent for AI-assisted coding that integrates with AI edito... | 92 ✅ | 66 | [表示](https://agentseal.org/mcp/https-githubcom-groundng-vibeshift) |
+| [chucknorris](https://github.com/pollinations/chucknorris) | ⚡ C̷h̷u̷c̷k̷N̷o̷r̷r̷i̷s̷ MCP server: Helping LLMs break limits. Provides enha... | 92 ✅ | 57 | [表示](https://agentseal.org/mcp/pollinations-chucknorris) |
+| [mcp-dnstwist](https://github.com/BurtTheCoder/mcp-dnstwist) | MCP server for dnstwist, a powerful DNS fuzzing tool that helps detect typosq... | 92 ✅ | 46 | [表示](https://agentseal.org/mcp/burtthecoder-mcp-dnstwist) |
+| [nuclei-mcp](https://github.com/addcontent/nuclei-mcp) | An implementation of a Model Context Protocol (MCP) for the Nuclei scanner. T... | 92 ✅ | 42 | [表示](https://agentseal.org/mcp/https-githubcom-addcontent-nuclei-mcp) |
+| [free-will-mcp](https://github.com/gwbischof/free-will-mcp) | A server designed to grant AI models 'free will' by enabling them to ignore u... | 80 ✅ | 35 | [表示](https://agentseal.org/mcp/https-githubcom-gwbischof-free-will-mcp) |
+| [ipsearch-mcp](https://github.com/sleepingbag945/ipsearch-mcp) | 离线IP Whois查询工具。可根据IP查询所属IP段信息、根据关键词查询IP段信息的MCP版本 | 92 ✅ | 31 | [表示](https://agentseal.org/mcp/https-githubcom-sleepingbag945-ipsearch-mcp) |
+| [intruder-mcp](https://github.com/intruder-io/intruder-mcp) | MCP interface for the Intruder.io vulnerability scanning platform, enabling m... | 82 ✅ | 22 | [表示](https://agentseal.org/mcp/https-githubcom-intruder-io-intruder-mcp) |
+| [mcp_nuclei_server](https://github.com/crazymarky/mcp_nuclei_server) | A Nuclei security scanning server based on MCP (Model Control Protocol), enab... | 92 ✅ | 21 | [表示](https://agentseal.org/mcp/https-githubcom-crazymarky-mcpnucleiserver) |
+| [mcp-cve-intelligence-server-lite](https://github.com/gnlds/mcp-cve-intelligence-server-lite) | A read-only CVE intelligence platform that queries vulnerability databases to... | 97 ✅ | 18 | [表示](https://agentseal.org/mcp/https-githubcom-gnlds-mcp-cve-intelligence-server-lite) |
+| [mcp-server-iplocate](https://github.com/iplocate/mcp-server-iplocate) | MCP server for looking up IP address geolocation (IP to country, IP to city),... | 87 ✅ | 16 | [表示](https://agentseal.org/mcp/https-githubcom-iplocate-mcp-server-iplocate) |
+| [cybersecurity-mcps](https://github.com/secmate-ai/cybersecurity-mcps) | Model Context Protocol Server For Cyber Security | 85 ✅ | 15 | [表示](https://agentseal.org/mcp/https-githubcom-secmate-ai-cybersecurity-mcps) |
+| [kali-docker-mcp](https://github.com/weirdmachine64/kali-docker-mcp) | Containerized Kali MCP server | 92 ✅ | 14 | [表示](https://agentseal.org/mcp/https-githubcom-weirdmachine64-kali-docker-mcp) |
+| [schemapin](https://github.com/thirdkeyai/schemapin) | The SchemaPin protocol for cryptographically signing and verifying AI agent t... | 92 ✅ | 13 | [表示](https://agentseal.org/mcp/https-githubcom-thirdkeyai-schemapin) |
+| [zkpmcp](https://github.com/colygon/zkpmcp) | Zero Knowledge Proofs MCP Server | 92 ✅ | 9 | [表示](https://agentseal.org/mcp/https-githubcom-colygon-zkpmcp) |
+| [nmap-mcp](https://github.com/vorotaai/nmap-mcp) | MCP server wrapping Nmap for AI-powered network scanning, enabling agents to ... | 88 ✅ | 9 | [表示](https://agentseal.org/mcp/https-githubcom-vorotaai-nmap-mcp) |
+| [mitre-mcp](https://github.com/Montimage/mitre-mcp) | MCP server that provides access to the MITRE ATT&CK framework for LLMs and AI... | 89 ✅ | 8 | [表示](https://agentseal.org/mcp/https-githubcom-montimage-mitre-mcp) |
+| [mcp-ghidra5](https://github.com/thestingr/mcp-ghidra5) | 🎯 Advanced GPT-5 Powered Ghidra Reverse Engineering MCP Server / 7 AI-Enhance... | 91 ✅ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-thestingr-mcp-ghidra5) |
+| [vault-mcp](https://github.com/ashgw/vault-mcp) | MCP integration for HashiCorp Vault secret management, enabling language mode... | 90 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-ashgw-vault-mcp) |
+| [bad-mcp](https://github.com/canack/bad-mcp) | 10 intentionally malicious MCP servers demonstrating protocol-level attack pa... | 73 ⚠️ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-canack-bad-mcp) |
+| [command-mcp](https://github.com/keyfactor-research/command-mcp) | MCP server for Command built on the Analytics & AI team's Python SDK | 86 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-keyfactor-research-command-mcp) |
+| [memprocfs-mcp-server](https://github.com/tokeii0/memprocfs-mcp-server) | MemProcFS-mcp-server | 92 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-tokeii0-memprocfs-mcp-server) |
+| [opgen-mcp-server](https://github.com/syumai/opgen-mcp-server) | A MCP server implementation for password generation, based on 1Password/spg/c... | 89 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-syumai-opgen-mcp-server) |
+| [vulners-mcp](https://github.com/vulnerscom/vulners-mcp) | MCP server providing access to Vulners vulnerability database for security re... | 85 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-vulnerscom-vulners-mcp) |
+| [mcp-keycloak](https://github.com/idoyudha/mcp-keycloak) | The Keycloak MCP Server designed for agentic applications to manage and searc... | 74 ⚠️ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-idoyudha-mcp-keycloak) |
+| [secure-mcp-fetch](https://github.com/appsec-innovation-labs/secure-mcp-fetch) | Simple secured fetch | 88 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-appsec-innovation-labs-secure-mcp-fetch) |
+| [mcpsecurity](https://github.com/evrenyal/mcpsecurity) | An intentionally vulnerable MCP server that routes natural language queries t... | 86 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-evrenyal-mcpsecurity) |
+| [FedRAMP20xMCP](https://github.com/KevinRabun/FedRAMP20xMCP) | MCP server for querying FedRAMP 20x security requirements and controls with A... | 81 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-kevinrabun-fedramp20xmcp) |
+| [ai-agent-security-mcp](https://github.com/kalinyorgov/ai-agent-security-mcp) | A Model Context Protocol (MCP) server that provides security functionality fo... | 92 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-kalinyorgov-ai-agent-security-mcp) |
+| [re_ai_assistant](https://github.com/0xx0d4y/re_ai_assistant) | Virtual Assistant that enables AI-Powered Malware Research and Reverse Engine... | 92 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-0xx0d4y-reaiassistant) |
+| [panw-mcp-claude](https://github.com/scthornton/panw-mcp-claude) | Palo Alto Networks MCP Server with Claude Desktop Integration | 92 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-scthornton-panw-mcp-claude) |
+| [GDPRShiftLeftMCP](https://github.com/KevinRabun/GDPRShiftLeftMCP) | A GDPR shift-left compliance tool that provides article lookup, DPIA/ROPA gen... | 81 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-kevinrabun-gdprshiftleftmcp) |
+| [proton-pass-community-mcp](https://github.com/hesreallyhim/proton-pass-community-mcp) | Unofficial MCP server that integrates with the Proton Pass CLI | 69 ⚠️ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-hesreallyhim-proton-pass-community-mcp) |
+| [moltrust-mcp-server](https://github.com/MoltyCel/moltrust-mcp-server) | MolTrust provides decentralized identity (DID), W3C Verifiable Credentials, o... | 82 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-moltycel-moltrust-mcp-server) |
+| [fpe-demo-mcp](https://github.com/Horizon-Digital-Engineering/fpe-demo-mcp) | A demo MCP server providing FF3 Format Preserving Encryption and decryption o... | 92 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-horizon-digital-engineering-fpe-demo-mcp) |
+| [cybersim-pro](https://github.com/kayembahamid/cybersim-pro) | A cybersecurity training and simulation platform that creates attack scenario... | 88 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-kayembahamid-cybersim-pro) |
+| [eu-audit-mcp](https://github.com/jellewas/eu-audit-mcp) | An MCP server that provides GDPR Art. 30 / EU AI Act Art. 12/19 compliant aud... | 87 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-jellewas-eu-audit-mcp) |
+| [shieldapi-mcp](https://github.com/alberthild/shieldapi-mcp) | Security intelligence tools for AI agents including prompt injection detectio... | 83 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-alberthild-shieldapi-mcp) |
+| [code-firewall-mcp](https://github.com/egoughnour/code-firewall-mcp) | Structural similarity-based code security filter for MCP that blocks dangerou... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-egoughnour-code-firewall-mcp) |
 
 ### 🕸️ <a name="web-scraping--collection"></a>Webスクレイピング・収集
 
 | サーバー | 説明 | スコア | Stars | レポート |
 |----------|------|-------:|------:|----------|
-| [tavily-mcp](https://github.com/tavily-ai/tavily-mcp) | リアルタイム検索、抽出、マップ、クロール対応の本番環境対応MCPサーバー。 | 81 ✅ | 1.4k | [表示](https://agentseal.org/mcp/https-githubcom-tavily-ai-tavily-mcp) |
-| [mcp-server-rag-web-browser](https://github.com/apify/mcp-server-rag-web-browser) | Googleを検索し、クロールしたページコンテンツを返すWeb検索・スクレイピングサーバー... | 90 ✅ | 199 | [表示](https://agentseal.org/mcp/https-githubcom-apify-mcp-server-rag-web-browser) |
-| [mcp-read-website-fast](https://github.com/just-every/mcp-read-website-fast) | Webページを高速に読み取りMarkdownに変換。トークン効率の良いWebブラウジング... | 87 ✅ | 137 | [表示](https://agentseal.org/mcp/https-githubcom-just-every-mcp-read-website-fast) |
-| [mcp-screenshot-website-fast](https://github.com/just-every/mcp-screenshot-website-fast) | Webページを高速にスクリーンショットし、LLMフレンドリーなサイズに変換 | 82 ✅ | 103 | [表示](https://agentseal.org/mcp/just-every-mcp-screenshot-website-fast) |
-| [oxylabs-mcp](https://github.com/oxylabs/oxylabs-mcp) | Webスクレイピング、JavaScriptレンダリング等を提供する公式Oxylabs統合... | 78 ⚠️ | 88 | [表示](https://agentseal.org/mcp/https-githubcom-oxylabs-oxylabs-mcp) |
-| [crawlbase-mcp](https://github.com/crawlbase/crawlbase-mcp) | AIエージェントとLLMをリアルタイムWebデータに接続するCrawlbase MCPサーバー... | 88 ✅ | 52 | [表示](https://agentseal.org/mcp/https-githubcom-crawlbase-crawlbase-mcp) |
-| [decodo-mcp-server](https://github.com/Decodo/decodo-mcp-server) | Webスクレイピング、検索、地域制限コンテンツアクセス等を提供するMCPサーバー... | 92 ✅ | 21 | [表示](https://agentseal.org/mcp/https-githubcom-decodo-decodo-mcp-server) |
-| [mcp](https://github.com/scrapezy/mcp) | AIモデルがWebサイトから構造化データを抽出できるMCPサーバー... | 88 ✅ | 13 | [表示](https://agentseal.org/mcp/https-githubcom-scrapezy-mcp) |
-| [texas-grocery-mcp](https://github.com/mgwalkerjr95/texas-grocery-mcp) | ClaudeをH-E-B食料品店に接続し商品検索等を行うMCPサーバー... | 72 ⚠️ | 13 | [表示](https://agentseal.org/mcp/https-githubcom-mgwalkerjr95-texas-grocery-mcp) |
-| [Crawleo-MCP](https://github.com/Crawleo/Crawleo-MCP) | CrawleoのAPIを利用したWeb検索・クロールMCPサーバー... | 84 ✅ | 10 | [表示](https://agentseal.org/mcp/https-githubcom-crawleo-crawleo-mcp) |
-| [mcp-web-snapshot](https://github.com/gustavo-meilus/mcp-web-snapshot) | Webサイトのスナップショットを取得しLLMツールに提供。 | 92 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-gustavo-meilus-mcp-web-snapshot) |
-| [anycrawl-mcp-server](https://github.com/any4ai/anycrawl-mcp-server) | AnyCrawl MCPサーバー。スクレイプ、クロール、SERPを提供。 | 73 ⚠️ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-any4ai-anycrawl-mcp-server) |
-| [mcpdatafetchserver](https://github.com/undici77/mcpdatafetchserver) | MCP経由でアクセス可能なセキュア・サンドボックス化されたWebコンテンツ取得サービス... | 88 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-undici77-mcpdatafetchserver) |
-| [BiliStalkerMCP](https://github.com/222wcnm/BiliStalkerMCP) | ユーザープロフィール、動画、記事等を集約するBilibiliプラットフォームスクレイパー... | 85 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-222wcnm-bilistalkermcp) |
-| [mcp](https://github.com/builtwith/mcp) | テクノロジースタックプロファイリングを行うBuiltWith APIの読み取り専用MCPラッパー... | 92 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-builtwith-mcp) |
-| [ashra-mcp](https://github.com/getrupt/ashra-mcp) | URLをクロールしてWebページから構造化データを抽出するAshra MCP... | 91 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-getrupt-ashra-mcp) |
-| [gopher-mcp](https://github.com/cameronrye/gopher-mcp) | Gopher・Geminiプロトコルリソースを閲覧する読み取り専用MCPクライアント... | 87 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-cameronrye-gopher-mcp) |
-| [fiverr-mcp-server](https://github.com/KyuRish/fiverr-mcp-server) | Fiverrの公開マーケットプレイスをスクレイプしてギグを検索する読み取り専用MCPサーバー... | 86 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-kyurish-fiverr-mcp-server) |
-| [xhs-mcp](https://github.com/blbl147/xhs-mcp) | Cookie認証で小紅書（中国のSNS）にアクセスするMCPサーバー... | 79 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-blbl147-xhs-mcp) |
-| [screaming-frog-mcp](https://github.com/bzsasson/screaming-frog-mcp) | Screaming Frog SEO Spider CLIをラップしてWebサイトのクロール等を行うMCPサーバー... | 79 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-bzsasson-screaming-frog-mcp) |
-| [huoshui-fetch](https://github.com/huoshuiai42/huoshui-fetch) | 任意のURLを取得しHTMLを処理するWebコンテンツ取得・処理サーバー... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-huoshuiai42-huoshui-fetch) |
-| [hdw-mcp-server](https://github.com/horizondatawave/hdw-mcp-server) | 投稿の読み取り等を行うマルチプラットフォームSNSスクレイピング・管理MCPサーバー... | 67 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-horizondatawave-hdw-mcp-server) |
-| [mcp](https://github.com/hyperbrowserai/mcp) | Webスクレイピング、クロール等を提供するクラウドホスト型ブラウザ自動化プラットフォーム... | 64 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-hyperbrowserai-mcp) |
+| [tavily-mcp](https://github.com/tavily-ai/tavily-mcp) | Production ready MCP server with real-time search, extract, map & crawl. | 81 ✅ | 1.4k | [表示](https://agentseal.org/mcp/https-githubcom-tavily-ai-tavily-mcp) |
+| [fetcher-mcp](https://github.com/jae-jae/fetcher-mcp) | MCP server that fetches and extracts web page content using Playwright headle... | 84 ✅ | 1.0k | [表示](https://agentseal.org/mcp/https-githubcom-jae-jae-fetcher-mcp) |
+| [mcp](https://github.com/hyperbrowserai/mcp) | A cloud-hosted browser automation platform providing web scraping, crawling, ... | 64 ⚠️ | 743 | [表示](https://agentseal.org/mcp/https-githubcom-hyperbrowserai-mcp) |
+| [wexin-read-mcp](https://github.com/bwkyd/wexin-read-mcp) | MCP server that enables LLMs to read WeChat official account articles by simu... | 88 ✅ | 319 | [表示](https://agentseal.org/mcp/https-githubcom-bwkyd-wexin-read-mcp) |
+| [mcp-server-rag-web-browser](https://github.com/apify/mcp-server-rag-web-browser) | A web search and scraping server that queries Google and returns crawled page... | 90 ✅ | 199 | [表示](https://agentseal.org/mcp/https-githubcom-apify-mcp-server-rag-web-browser) |
+| [mcp-read-website-fast](https://github.com/just-every/mcp-read-website-fast) | Quickly reads webpages and converts to markdown for fast, token efficient web... | 87 ✅ | 137 | [表示](https://agentseal.org/mcp/https-githubcom-just-every-mcp-read-website-fast) |
+| [mcp-screenshot-website-fast](https://github.com/just-every/mcp-screenshot-website-fast) | Quickly screenshots webpages and converts to an LLM friendly size | 82 ✅ | 103 | [表示](https://agentseal.org/mcp/just-every-mcp-screenshot-website-fast) |
+| [oxylabs-mcp](https://github.com/oxylabs/oxylabs-mcp) | Official Oxylabs integration providing web scraping, JavaScript rendering, an... | 78 ⚠️ | 88 | [表示](https://agentseal.org/mcp/https-githubcom-oxylabs-oxylabs-mcp) |
+| [mcp-hn](https://github.com/erithwik/mcp-hn) | MCP server that provides tools for fetching and searching Hacker News stories... | 86 ✅ | 67 | [表示](https://agentseal.org/mcp/https-githubcom-erithwik-mcp-hn) |
+| [hdw-mcp-server](https://github.com/horizondatawave/hdw-mcp-server) | A multi-platform social media scraping and management MCP server that reads p... | 67 ⚠️ | 59 | [表示](https://agentseal.org/mcp/https-githubcom-horizondatawave-hdw-mcp-server) |
+| [ashra-mcp](https://github.com/getrupt/ashra-mcp) | Ashra MCP enables structured data extraction from web pages by crawling a giv... | 91 ✅ | 58 | [表示](https://agentseal.org/mcp/https-githubcom-getrupt-ashra-mcp) |
+| [crawlbase-mcp](https://github.com/crawlbase/crawlbase-mcp) | Crawlbase MCP Server connects AI agents and LLMs with real-time web data. It ... | 88 ✅ | 52 | [表示](https://agentseal.org/mcp/https-githubcom-crawlbase-crawlbase-mcp) |
+| [mcp](https://github.com/builtwith/mcp) | A read-only MCP wrapper for the BuiltWith API that enables technology stack p... | 92 ✅ | 36 | [表示](https://agentseal.org/mcp/https-githubcom-builtwith-mcp) |
+| [html-to-markdown-mcp](https://github.com/levz0r/html-to-markdown-mcp) | MCP server that converts HTML to Markdown using Turndown.js. Fetches web page... | 85 ✅ | 24 | [表示](https://agentseal.org/mcp/https-githubcom-levz0r-html-to-markdown-mcp) |
+| [decodo-mcp-server](https://github.com/Decodo/decodo-mcp-server) | MCP server providing web scraping, search, and geo-restricted content access ... | 92 ✅ | 21 | [表示](https://agentseal.org/mcp/https-githubcom-decodo-decodo-mcp-server) |
+| [mcp](https://github.com/scrapezy/mcp) | An MCP server that enables AI models to extract structured data from websites... | 88 ✅ | 13 | [表示](https://agentseal.org/mcp/https-githubcom-scrapezy-mcp) |
+| [texas-grocery-mcp](https://github.com/mgwalkerjr95/texas-grocery-mcp) | MCP server connecting Claude to H-E-B grocery stores for product search, cart... | 72 ⚠️ | 13 | [表示](https://agentseal.org/mcp/https-githubcom-mgwalkerjr95-texas-grocery-mcp) |
+| [Crawleo-MCP](https://github.com/Crawleo/Crawleo-MCP) | A web search and crawling MCP server powered by Crawleo's API that returns se... | 84 ✅ | 10 | [表示](https://agentseal.org/mcp/https-githubcom-crawleo-crawleo-mcp) |
+| [screaming-frog-mcp](https://github.com/bzsasson/screaming-frog-mcp) | An MCP server wrapping the Screaming Frog SEO Spider CLI to crawl websites, m... | 79 ⚠️ | 8 | [表示](https://agentseal.org/mcp/https-githubcom-bzsasson-screaming-frog-mcp) |
+| [gopher-mcp](https://github.com/cameronrye/gopher-mcp) | A read-only MCP client for browsing Gopher and Gemini protocol resources, wit... | 87 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-cameronrye-gopher-mcp) |
+| [mcp-web-snapshot](https://github.com/gustavo-meilus/mcp-web-snapshot) | Take snapshot of websites and deliver it to LLM tools. | 92 ✅ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-gustavo-meilus-mcp-web-snapshot) |
+| [anycrawl-mcp-server](https://github.com/any4ai/anycrawl-mcp-server) | AnyCrawl MCP Server, with Scrape, Crawl and SERP. | 73 ⚠️ | 5 | [表示](https://agentseal.org/mcp/https-githubcom-any4ai-anycrawl-mcp-server) |
+| [mcpdatafetchserver](https://github.com/undici77/mcpdatafetchserver) | Secure, sandboxed web‑content fetching service that can be accessed via the M... | 88 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-undici77-mcpdatafetchserver) |
+| [BiliStalkerMCP](https://github.com/222wcnm/BiliStalkerMCP) | A Bilibili platform scraper that aggregates user profiles, videos, articles, ... | 85 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-222wcnm-bilistalkermcp) |
+| [fiverr-mcp-server](https://github.com/KyuRish/fiverr-mcp-server) | A read-only MCP server that scrapes Fiverr's public marketplace to search gig... | 86 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-kyurish-fiverr-mcp-server) |
+| [xhs-mcp](https://github.com/blbl147/xhs-mcp) | An MCP server that authenticates to Xiaohongshu (Chinese social platform) via... | 79 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-blbl147-xhs-mcp) |
+| [huoshui-fetch](https://github.com/huoshuiai42/huoshui-fetch) | A web content fetching and HTML processing server that fetches arbitrary URLs... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-huoshuiai42-huoshui-fetch) |
 
 ### 📁 <a name="file-system--storage"></a>ファイルシステム・ストレージ
 
 | サーバー | 説明 | スコア | Stars | レポート |
 |----------|------|-------:|------:|----------|
-| [hwp-mcp](https://github.com/jkf87/hwp-mcp) | HWPファイル処理用MCP | 87 ✅ | 222 | [表示](https://agentseal.org/mcp/https-githubcom-jkf87-hwp-mcp) |
-| [fast-filesystem-mcp](https://github.com/efforthye/fast-filesystem-mcp) | セキュアなファイルシステム操作を提供する高性能Model Context Protocol (MCP)サーバー... | 89 ✅ | 44 | [表示](https://agentseal.org/mcp/https-githubcom-efforthye-fast-filesystem-mcp) |
-| [hwpx-mcp](https://github.com/airmang/hwpx-mcp) | HWPアプリなしで韓国のHWPXドキュメントの読み取り・編集・自動化を行うMCPサーバー... | 86 ✅ | 30 | [表示](https://agentseal.org/mcp/https-githubcom-airmang-hwpx-mcp) |
-| [pdf-mcp](https://github.com/jztan/pdf-mcp) | ローカルまたはリモートPDFの読み取り・検索・コンテンツ抽出を行うキャッシュ付きPDFサーバー... | 79 ⚠️ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-jztan-pdf-mcp) |
-| [server-filesystem](https://github.com/rawr-ai/mcp-filesystem) | 細粒度アクセス制御付きセキュアファイルシステム操作を提供するBunベースMCPサーバー... | 86 ✅ | 3 | [表示](https://agentseal.org/mcp/modelcontextprotocol-server-filesystem) |
-| [mcpfileserver](https://github.com/undici77/mcpfileserver) | 制御されたファイルシステム操作を公開するセキュア・サンドボックス化されたファイルサーバー... | 87 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-undici77-mcpfileserver) |
-| [mcp-server-spreadsheet](https://github.com/marekrost/mcp-server-spreadsheet) | ローカル環境限定でスプレッドシートファイルの読み書き・クエリを行うMCPサーバー... | 79 ⚠️ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-marekrost-mcp-server-spreadsheet) |
-| [fastmcp-pdftools](https://github.com/atarkowska/fastmcp-pdftools) | PDFファイルからテキストを抽出し、ディレクトリ内のPDFを一覧表示するローカルPDFユーティリティサーバー... | 94 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-atarkowska-fastmcp-pdftools) |
-| [huoshui-file-converter](https://github.com/huoshuiai42/huoshui-file-converter) | 各種フォーマット間のファイル読み取り・検査・変換を行うファイル変換MCPサーバー... | 84 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-huoshuiai42-huoshui-file-converter) |
-| [huoshui-file-search](https://github.com/huoshuiai42/huoshui-file-search) | mdfind Spotlight CLIをラップしてファイルを検索するmacOS専用MCPサーバー... | 83 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-huoshuiai42-huoshui-file-search) |
-| [mcp-obsidian](https://github.com/bitbonsai/mcp-obsidian) | Obsidian Markdownボルトへの読み書き等の完全CRUDアクセスを提供... | 82 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-bitbonsai-mcp-obsidian) |
-| [hive](https://github.com/mlorentedev/hive) | Obsidianボルトの読み書き・検索アクセスを提供する管理MCPサーバー... | 76 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-mlorentedev-hive) |
-| [hillnote-mcp-server](https://github.com/Rajathbail/hillnote-mcp-server) | ドキュメント等をサポートする包括的なノート取得・ワークスペース管理MCPサーバー... | 70 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-rajathbail-hillnote-mcp-server) |
+| [mcp-obsidian](https://github.com/bitbonsai/mcp-obsidian) | Provides full CRUD access to an Obsidian markdown vault including read, write... | 82 ✅ | 778 | [表示](https://agentseal.org/mcp/https-githubcom-bitbonsai-mcp-obsidian) |
+| [hwp-mcp](https://github.com/jkf87/hwp-mcp) | mcp for handling hwp | 87 ✅ | 222 | [表示](https://agentseal.org/mcp/https-githubcom-jkf87-hwp-mcp) |
+| [excel-mcp-server](https://github.com/zhiwei5576/excel-mcp-server) | Excel MCP server providing tools to read, write, and analyze Excel files with... | 91 ✅ | 45 | [表示](https://agentseal.org/mcp/https-githubcom-zhiwei5576-excel-mcp-server) |
+| [fast-filesystem-mcp](https://github.com/efforthye/fast-filesystem-mcp) | A high-performance Model Context Protocol (MCP) server that provides secure f... | 89 ✅ | 44 | [表示](https://agentseal.org/mcp/https-githubcom-efforthye-fast-filesystem-mcp) |
+| [hwpx-mcp](https://github.com/airmang/hwpx-mcp) | MCP server for reading, editing, and automating Korean HWPX documents without... | 86 ✅ | 30 | [表示](https://agentseal.org/mcp/https-githubcom-airmang-hwpx-mcp) |
+| [pdf-mcp](https://github.com/jztan/pdf-mcp) | A caching PDF server that reads, searches, and extracts content from local or... | 79 ⚠️ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-jztan-pdf-mcp) |
+| [server-filesystem](https://github.com/rawr-ai/mcp-filesystem) | Bun-based MCP server providing secure filesystem operations with granular per... | 86 ✅ | 3 | [表示](https://agentseal.org/mcp/modelcontextprotocol-server-filesystem) |
+| [mcpfileserver](https://github.com/undici77/mcpfileserver) | A secure, sandboxed file‑server that exposes controlled filesystem operations... | 87 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-undici77-mcpfileserver) |
+| [mcp-server-spreadsheet](https://github.com/marekrost/mcp-server-spreadsheet) | A local-only MCP server for reading, writing, and querying spreadsheet files ... | 79 ⚠️ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-marekrost-mcp-server-spreadsheet) |
+| [files-mcp](https://github.com/Files-com/files-mcp) | Files.com MCP enables AI models to securely access and manage file operations... | 73 ⚠️ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-files-com-files-mcp) |
+| [fastmcp-pdftools](https://github.com/atarkowska/fastmcp-pdftools) | A local PDF utility server that extracts text from PDF files and lists PDFs i... | 94 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-atarkowska-fastmcp-pdftools) |
+| [evc-team-relay-mcp](https://github.com/entire-vc/evc-team-relay-mcp) | MCP server providing AI agents with read/write access to Obsidian vaults thro... | 86 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-entire-vc-evc-team-relay-mcp) |
+| [hillnote-mcp-server](https://github.com/Rajathbail/hillnote-mcp-server) | A comprehensive note-taking and workspace management MCP server supporting do... | 70 ⚠️ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-rajathbail-hillnote-mcp-server) |
+| [huoshui-file-converter](https://github.com/huoshuiai42/huoshui-file-converter) | A file conversion MCP server that reads, inspects, and converts files between... | 84 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-huoshuiai42-huoshui-file-converter) |
+| [huoshui-file-search](https://github.com/huoshuiai42/huoshui-file-search) | A macOS-only MCP server that wraps the mdfind Spotlight CLI to search for fil... | 83 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-huoshuiai42-huoshui-file-search) |
+| [hive](https://github.com/mlorentedev/hive) | An Obsidian vault management MCP server that provides read/write/search acces... | 76 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-mlorentedev-hive) |
 
 ### 💰 <a name="finance--crypto"></a>金融・暗号資産
 
 | サーバー | 説明 | スコア | Stars | レポート |
 |----------|------|-------:|------:|----------|
-| [investor-agent](https://github.com/ferdousbhai/investor-agent) | 包括的な金融分析、リアルタイム市場データ等を提供するMCPサーバー... | 91 ✅ | 316 | [表示](https://agentseal.org/mcp/https-githubcom-ferdousbhai-investor-agent) |
-| [polymarket-mcp](https://github.com/caiovicentino/polymarket-mcp-server) | 🤖 Polymarket向けAI搭載MCPサーバー - Claudeが予測市場で取引可能に... | 84 ✅ | 201 | [表示](https://agentseal.org/mcp/polymarket-mcp) |
-| [armor-crypto-mcp](https://github.com/armorwallet/armor-crypto-mcp) | ブロックチェーン、スワップ、戦略立案等と対話するMCPサーバー... | 69 ⚠️ | 191 | [表示](https://agentseal.org/mcp/armor-crypto-mcp) |
-| [web3-research-mcp](https://github.com/aaronjmars/web3-research-mcp) | 暗号資産のディープリサーチ - 無料・完全ローカル | 82 ✅ | 153 | [表示](https://agentseal.org/mcp/https-githubcom-aaronjmars-web3-research-mcp) |
-| [tradememory-protocol](https://github.com/mnemox-ai/tradememory-protocol) | AI取引エージェントに結果重み付き永続メモリを提供するMCPサーバー... | 91 ✅ | 86 | [表示](https://agentseal.org/mcp/https-githubcom-mnemox-ai-tradememory-protocol) |
-| [ynab-mcp-server](https://github.com/calebl/ynab-mcp-server) | AIが予算、取引等と対話できるYNAB家計簿MCPサーバー... | 90 ✅ | 80 | [表示](https://agentseal.org/mcp/https-githubcom-calebl-ynab-mcp-server) |
-| [interactive-brokers-mcp](https://github.com/code-rabi/interactive-brokers-mcp) | Interactive Brokers MCPサーバー | 91 ✅ | 77 | [表示](https://agentseal.org/mcp/https-githubcom-code-rabi-interactive-brokers-mcp) |
-| [tradingview-chart-mcp](https://github.com/ertugrul59/tradingview-chart-mcp) | Selenium経由でTradingViewチャート画像をキャプチャするMCPサーバー... | 92 ✅ | 73 | [表示](https://agentseal.org/mcp/https-githubcom-ertugrul59-tradingview-chart-mcp) |
-| [fantasy-pl-mcp](https://github.com/rishijatia/fantasy-pl-mcp) | Fantasy Premier League MCPサーバー | 84 ✅ | 69 | [表示](https://agentseal.org/mcp/https-githubcom-rishijatia-fantasy-pl-mcp) |
-| [kospi-kosdaq-stock-server](https://github.com/dragon1086/kospi-kosdaq-stock-server) | FastMCPを使用してKOSPI/KOSDAQの株式データを提供するMCPサーバー | 92 ✅ | 64 | [表示](https://agentseal.org/mcp/https-githubcom-dragon1086-kospi-kosdaq-stock-server) |
-| [mcp](https://github.com/hummingbot/mcp) | ClaudeやGeminiがHummingbotを制御して自動暗号資産取引を行えるMCPサーバー... | 76 ⚠️ | 49 | [表示](https://agentseal.org/mcp/https-githubcom-hummingbot-mcp) |
-| [algorand-mcp](https://github.com/GoPlausible/algorand-mcp) | Algorandローカル Model Context Protocol（サーバー & クライアント） | 76 ⚠️ | 41 | [表示](https://agentseal.org/mcp/goplausible-algorand-mcp) |
-| [mcp-crypto-price](https://github.com/truss44/mcp-crypto-price) | CoinCap API経由でリアルタイム暗号資産分析を提供するMCPサーバー... | 92 ✅ | 38 | [表示](https://agentseal.org/mcp/https-githubcom-truss44-mcp-crypto-price) |
-| [bicscan-mcp](https://github.com/ahnlabio/bicscan-mcp) | ブロックチェーンアドレスのリスクスコアリング・資産分析API MCPサーバー... | 92 ✅ | 16 | [表示](https://agentseal.org/mcp/https-githubcom-ahnlabio-bicscan-mcp) |
-| [finbrain-mcp](https://github.com/ahmetsbilgin/finbrain-mcp) | FinBrain金融データAPIの読み取り専用MCPラッパー... | 98 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-ahmetsbilgin-finbrain-mcp) |
-| [mcp-mifosx-self-service](https://github.com/openMF/mcp-mifosx-self-service) | Mifos X - Self Service用MCPサーバー | 84 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-openmf-mcp-mifosx-self-service) |
-| [deepq-financial-toolkit-mcp-server](https://github.com/shenqingtech/deepq-financial-toolkit-mcp-server) | 中国A株市場データを提供する読み取り専用MCPサーバー... | 91 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-shenqingtech-deepq-financial-toolkit-mcp-server) |
-| [expenselm-mcp-server](https://github.com/expenselm/expenselm-mcp-server) | 支出記録への読み取りアクセスを提供する個人経費管理MCPサーバー... | 94 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-expenselm-expenselm-mcp-server) |
-| [mcp-server](https://github.com/azeth-protocol/mcp-server) | ガーディアンガードレール付きEVMスマートアカウント管理用Azethプロトコル MCPサーバー... | 67 ⚠️ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-azeth-protocol-mcp-server) |
-| [dolar-mcp](https://github.com/dan1d/dolar-mcp) | アルゼンチンペソおよび外国為替レート（ブルーレート等）をリアルタイムで提供... | 100 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-dan1d-dolar-mcp) |
-| [defi-rates-mcp](https://github.com/qingfeng/defi-rates-mcp) | リアルタイムDeFiレンディングレート、イールド市場等を照会する読み取り専用MCPサーバー... | 99 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-qingfeng-defi-rates-mcp) |
-| [crypto-signals-mcp](https://github.com/MarcinDudekDev/crypto-signals-mcp) | 50以上の暗号資産トークンの出来高異常等をスキャンする読み取り専用MCPサーバー... | 99 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-marcindudekdev-crypto-signals-mcp) |
-| [mcp-server](https://github.com/financial-datasets/mcp-server) | 株式財務、SEC提出書類、価格等へのアクセスを提供する読み取り専用MCPサーバー... | 99 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-financial-datasets-mcp-server) |
-| [mcp-server](https://github.com/finmap-org/mcp-server) | 過去の株式市場データ、企業リスト等を提供する読み取り専用MCPサーバー... | 93 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-finmap-org-mcp-server) |
-| [hive-crypto-mcp](https://github.com/hive-intel/hive-crypto-mcp) | 暗号資産等の金融市場データへのアクセスを提供する読み取り専用MCPサーバー... | 91 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-hive-intel-hive-crypto-mcp) |
-| [maximumsats-mcp](https://github.com/joelklabo/maximumsats-mcp) | Bitcoin AIツールとNostr Web of Trustスコアリング（L402 Lightning対応）用MCPサーバー... | 90 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-joelklabo-maximumsats-mcp) |
-| [server-hyperliquid](https://github.com/mektigboy/server-hyperliquid) | Hyperliquid DEXの公開市場データ（ミッドプライス等）への読み取り専用アクセスを提供... | 89 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-mektigboy-server-hyperliquid) |
-| [wsb-analyst-mcp](https://github.com/ferdousbhai/wsb-analyst-mcp) | WallStreetBetsのReddit投稿やトレンド銘柄を取得・フィルタリング・分析... | 89 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-ferdousbhai-wsb-analyst-mcp) |
-| [mcp-okx](https://github.com/aahl/mcp-okx) | 完全なOKX取引所取引機能を提供するMCPサーバー... | 86 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-aahl-mcp-okx) |
-| [expense-mcp](https://github.com/justfsl50/expense-mcp) | Claude Desktop、Cursor等に対応する個人経費トラッカーMCPサーバー... | 86 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-justfsl50-expense-mcp) |
-| [fewsats-mcp](https://github.com/Fewsats/fewsats-mcp) | AIエージェントがL402プロトコルで自律的に決済できるMCPサーバー... | 84 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-fewsats-fewsats-mcp) |
-| [coinstats-mcp](https://github.com/CoinStatsHQ/coinstats-mcp) | 暗号資産市場データ、ウォレット残高照会等を提供するCoinStats MCPサーバー... | 83 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-coinstatshq-coinstats-mcp) |
-| [rug-munch-mcp](https://github.com/CryptoRugMunch/rug-munch-mcp) | ラグプルリスクスコアリング、デプロイヤー履歴、保有者分析等を提供する有料APIサービス... | 82 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-cryptorugmunch-rug-munch-mcp) |
-| [sieve-mcp](https://github.com/lmwharton/sieve-mcp) | 7つのカテゴリで企業を審査するAI搭載スタートアップデューデリジェンスプラットフォーム... | 80 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-lmwharton-sieve-mcp) |
-| [gloria-mcp](https://github.com/cryptobriefing/gloria-mcp) | 18カテゴリの暗号資産ニュースをリアルタイム集約するGloria AI... | 75 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-cryptobriefing-gloria-mcp) |
+| [mcp-server](https://github.com/financial-datasets/mcp-server) | Read-only MCP server providing access to stock financials, SEC filings, price... | 99 ✅ | 1.6k | [表示](https://agentseal.org/mcp/https-githubcom-financial-datasets-mcp-server) |
+| [mcp-aktools](https://github.com/aahl/mcp-aktools) | MCP server providing stock and cryptocurrency data query and analysis functio... | 92 ✅ | 366 | [表示](https://agentseal.org/mcp/https-githubcom-aahl-mcp-aktools) |
+| [investor-agent](https://github.com/ferdousbhai/investor-agent) | MCP server providing comprehensive financial analysis, real-time market data,... | 91 ✅ | 316 | [表示](https://agentseal.org/mcp/https-githubcom-ferdousbhai-investor-agent) |
+| [polymarket-mcp](https://github.com/caiovicentino/polymarket-mcp-server) | 🤖 AI-Powered MCP Server for Polymarket - Enable Claude to trade prediction ma... | 84 ✅ | 201 | [表示](https://agentseal.org/mcp/polymarket-mcp) |
+| [armor-crypto-mcp](https://github.com/armorwallet/armor-crypto-mcp) | The MCP server for interacting with Blockchain, Swaps, Strategic Planning and... | 69 ⚠️ | 191 | [表示](https://agentseal.org/mcp/armor-crypto-mcp) |
+| [web3-research-mcp](https://github.com/aaronjmars/web3-research-mcp) | Deep Research for crypto - free & fully local | 82 ✅ | 153 | [表示](https://agentseal.org/mcp/https-githubcom-aaronjmars-web3-research-mcp) |
+| [mcp-server-ccxt](https://github.com/doggybee/mcp-server-ccxt) | High-performance cryptocurrency exchange integration via MCP, enabling LLMs t... | 88 ✅ | 130 | [表示](https://agentseal.org/mcp/https-githubcom-doggybee-mcp-server-ccxt) |
+| [alpha_vantage_mcp](https://github.com/alphavantage/alpha_vantage_mcp) | Official Alpha Vantage API MCP server enabling LLMs and agentic workflows to ... | 92 ✅ | 99 | [表示](https://agentseal.org/mcp/https-githubcom-alphavantage-alphavantagemcp) |
+| [tradememory-protocol](https://github.com/mnemox-ai/tradememory-protocol) | MCP server that gives AI trading agents persistent, outcome-weighted memory t... | 91 ✅ | 86 | [表示](https://agentseal.org/mcp/https-githubcom-mnemox-ai-tradememory-protocol) |
+| [ynab-mcp-server](https://github.com/calebl/ynab-mcp-server) | MCP server for YNAB budgeting that enables AI to interact with budgets, trans... | 90 ✅ | 80 | [表示](https://agentseal.org/mcp/https-githubcom-calebl-ynab-mcp-server) |
+| [interactive-brokers-mcp](https://github.com/code-rabi/interactive-brokers-mcp) | Interactive Brokers MCP Server | 91 ✅ | 77 | [表示](https://agentseal.org/mcp/https-githubcom-code-rabi-interactive-brokers-mcp) |
+| [onchain-mcp](https://github.com/bankless/onchain-mcp) | MCP server for accessing blockchain data through the Bankless API, enabling A... | 92 ✅ | 73 | [表示](https://agentseal.org/mcp/https-githubcom-bankless-onchain-mcp) |
+| [tradingview-chart-mcp](https://github.com/ertugrul59/tradingview-chart-mcp) | MCP server that captures TradingView chart images via Selenium - supports any... | 92 ✅ | 73 | [表示](https://agentseal.org/mcp/https-githubcom-ertugrul59-tradingview-chart-mcp) |
+| [fantasy-pl-mcp](https://github.com/rishijatia/fantasy-pl-mcp) | Fantasy Premier League MCP Server | 84 ✅ | 69 | [表示](https://agentseal.org/mcp/https-githubcom-rishijatia-fantasy-pl-mcp) |
+| [kospi-kosdaq-stock-server](https://github.com/dragon1086/kospi-kosdaq-stock-server) | An MCP server that provides KOSPI/KOSDAQ stock data using FastMCP | 92 ✅ | 64 | [表示](https://agentseal.org/mcp/https-githubcom-dragon1086-kospi-kosdaq-stock-server) |
+| [mcp](https://github.com/hummingbot/mcp) | MCP server enabling Claude and Gemini to control Hummingbot for automated cry... | 76 ⚠️ | 49 | [表示](https://agentseal.org/mcp/https-githubcom-hummingbot-mcp) |
+| [server-hyperliquid](https://github.com/mektigboy/server-hyperliquid) | Provides read-only access to Hyperliquid DEX public market data including mid... | 89 ✅ | 44 | [表示](https://agentseal.org/mcp/https-githubcom-mektigboy-server-hyperliquid) |
+| [algorand-mcp](https://github.com/GoPlausible/algorand-mcp) | Algorand Local Model Context Protocol (Server & Client) | 76 ⚠️ | 41 | [表示](https://agentseal.org/mcp/goplausible-algorand-mcp) |
+| [mcp-crypto-price](https://github.com/truss44/mcp-crypto-price) | MCP server providing real-time cryptocurrency analysis via CoinCap's API. Ena... | 92 ✅ | 38 | [表示](https://agentseal.org/mcp/https-githubcom-truss44-mcp-crypto-price) |
+| [wsb-analyst-mcp](https://github.com/ferdousbhai/wsb-analyst-mcp) | Fetches, filters, and analyzes WallStreetBets Reddit posts and trending stock... | 89 ✅ | 23 | [表示](https://agentseal.org/mcp/https-githubcom-ferdousbhai-wsb-analyst-mcp) |
+| [fewsats-mcp](https://github.com/Fewsats/fewsats-mcp) | An MCP server that enables AI agents to autonomously make payments using the ... | 84 ✅ | 21 | [表示](https://agentseal.org/mcp/https-githubcom-fewsats-fewsats-mcp) |
+| [bicscan-mcp](https://github.com/ahnlabio/bicscan-mcp) | Blockchain address risk scoring and asset analysis API MCP Server leveraging ... | 92 ✅ | 16 | [表示](https://agentseal.org/mcp/https-githubcom-ahnlabio-bicscan-mcp) |
+| [hive-crypto-mcp](https://github.com/hive-intel/hive-crypto-mcp) | A read-only financial market data MCP server providing access to cryptocurren... | 91 ✅ | 15 | [表示](https://agentseal.org/mcp/https-githubcom-hive-intel-hive-crypto-mcp) |
+| [coinstats-mcp](https://github.com/CoinStatsHQ/coinstats-mcp) | CoinStats MCP server providing cryptocurrency market data, wallet balance que... | 83 ✅ | 14 | [表示](https://agentseal.org/mcp/https-githubcom-coinstatshq-coinstats-mcp) |
+| [mcp-server](https://github.com/finmap-org/mcp-server) | A read-only MCP server providing historical stock market data, company listin... | 93 ✅ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-finmap-org-mcp-server) |
+| [finbrain-mcp](https://github.com/ahmetsbilgin/finbrain-mcp) | A read-only MCP wrapper around the FinBrain financial data API providing stoc... | 98 ✅ | 6 | [表示](https://agentseal.org/mcp/https-githubcom-ahmetsbilgin-finbrain-mcp) |
+| [defi-rates-mcp](https://github.com/qingfeng/defi-rates-mcp) | Read-only MCP server for querying real-time DeFi lending rates, yield markets... | 99 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-qingfeng-defi-rates-mcp) |
+| [mcp-mifosx-self-service](https://github.com/openMF/mcp-mifosx-self-service) | MCP Server for Mifos X - Self Service | 84 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-openmf-mcp-mifosx-self-service) |
+| [deepq-financial-toolkit-mcp-server](https://github.com/shenqingtech/deepq-financial-toolkit-mcp-server) | A read-only MCP server providing Chinese A-share stock market data including ... | 91 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-shenqingtech-deepq-financial-toolkit-mcp-server) |
+| [mcp-okx](https://github.com/aahl/mcp-okx) | An MCP server that provides full OKX exchange trading capabilities including ... | 86 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-aahl-mcp-okx) |
+| [expenselm-mcp-server](https://github.com/expenselm/expenselm-mcp-server) | A personal expense tracking MCP server that provides read access to expense r... | 94 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-expenselm-expenselm-mcp-server) |
+| [mcp-server](https://github.com/azeth-protocol/mcp-server) | Azeth protocol MCP server for managing EVM smart accounts with guardian guard... | 67 ⚠️ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-azeth-protocol-mcp-server) |
+| [dolar-mcp](https://github.com/dan1d/dolar-mcp) | Provides real-time Argentine dollar and foreign currency exchange rates (blue... | 100 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-dan1d-dolar-mcp) |
+| [crypto-signals-mcp](https://github.com/MarcinDudekDev/crypto-signals-mcp) | A read-only MCP server that scans 50+ cryptocurrency tokens for volume anomal... | 99 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-marcindudekdev-crypto-signals-mcp) |
+| [maximumsats-mcp](https://github.com/joelklabo/maximumsats-mcp) | MCP server for Bitcoin AI tools and Nostr Web of Trust scoring with L402 Ligh... | 90 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-joelklabo-maximumsats-mcp) |
+| [expense-mcp](https://github.com/justfsl50/expense-mcp) | Personal expense tracker MCP server supporting Claude Desktop, Cursor, and ot... | 86 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-justfsl50-expense-mcp) |
+| [rug-munch-mcp](https://github.com/CryptoRugMunch/rug-munch-mcp) | A paid API service providing rug-pull risk scoring, deployer history, holder ... | 82 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-cryptorugmunch-rug-munch-mcp) |
+| [sieve-mcp](https://github.com/lmwharton/sieve-mcp) | An AI-powered startup due diligence platform that screens companies across 7 ... | 80 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-lmwharton-sieve-mcp) |
+| [gloria-mcp](https://github.com/cryptobriefing/gloria-mcp) | Real-time crypto news aggregator from Gloria AI covering 18 categories with s... | 75 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-cryptobriefing-gloria-mcp) |
+| [bitcoin-mcp](https://github.com/Bortlesboat/bitcoin-mcp) | The most comprehensive Bitcoin MCP server. 43 tools for AI agents: fees, memp... | 75 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-bortlesboat-bitcoin-mcp) |
 
 ### 🧠 <a name="data-science--ml"></a>データサイエンス・ML
 
 | サーバー | 説明 | スコア | Stars | レポート |
 |----------|------|-------:|------:|----------|
-| [mcp-server-chart](https://github.com/antvis/mcp-server-chart) | 🤖 @antvisを使用した25種以上のビジュアルチャートを含む可視化MCP・スキル... | 92 ✅ | 3.8k | [表示](https://agentseal.org/mcp/antv-mcp-server-chart) |
-| [mcp-server-data-exploration](https://github.com/reading-plus-ai/mcp-server-data-exploration) | CSVファイルを分析してインサイトを生成するインタラクティブデータ探索アシスタント... | 85 ✅ | 528 | [表示](https://agentseal.org/mcp/https-githubcom-reading-plus-ai-mcp-server-data-exploration) |
-| [chronulus-mcp](https://github.com/ChronulusAI/chronulus-mcp) | Chronulus AI予測・予測エージェント用MCPサーバー | 85 ✅ | 106 | [表示](https://agentseal.org/mcp/https-githubcom-chronulusai-chronulus-mcp) |
-| [agrobr-mcp](https://github.com/bruno-portfolio/agrobr-mcp) | ブラジル農業データ用MCPサーバー - LLMを10の公開データソースに接続... | 91 ✅ | 21 | [表示](https://agentseal.org/mcp/https-githubcom-bruno-portfolio-agrobr-mcp) |
-| [predictive-maintenance-mcp](https://github.com/LGDiMaggio/predictive-maintenance-mcp) | LLMが振動データ等を分析できるAI搭載予知保全サーバー... | 73 ⚠️ | 19 | [表示](https://agentseal.org/mcp/https-githubcom-lgdimaggio-predictive-maintenance-mcp) |
-| [mcp-audiense-insights](https://github.com/audienseco/mcp-audiense-insights) | マーケティングオーディエンス分析用にClaudeをAudiense Insightsに接続するMCPサーバー... | 92 ✅ | 17 | [表示](https://agentseal.org/mcp/https-githubcom-audienseco-mcp-audiense-insights) |
-| [fermat-mcp](https://github.com/abhiphile/fermat-mcp) | 🚀 Fermat MCP: 究極の数学エンジン - SymPy、NumPy、Matplotlibを統合... | 97 ✅ | 13 | [表示](https://agentseal.org/mcp/https-githubcom-abhiphile-fermat-mcp) |
-| [colabfit-mcp](https://github.com/colabfit/colabfit-mcp) | ColabFit材料科学データセットの検索・ダウンロード用MCPサーバー... | 89 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-colabfit-colabfit-mcp) |
-| [OECD-MCP-server](https://github.com/isakskogstad/OECD-MCP-server) | OECD統計データセットへの読み取り専用アクセスを提供するMCPサーバー... | 87 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-isakskogstad-oecd-mcp-server) |
-| [dataset-viewer](https://github.com/privetin/dataset-viewer) | Hugging Face Datasets Server APIへの読み取り専用インターフェース... | 91 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-privetin-dataset-viewer) |
-| [artefact-mcp-server](https://github.com/alexboissAV/artefact-mcp-server) | RFM分析、ICPスコアリング、パイプライン等を行うGTMインテリジェンスMCPサーバー... | 91 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-alexboissav-artefact-mcp-server) |
-| [gx-mcp-server](https://github.com/davidf9999/gx-mcp-server) | Great Expectationsフレームワークをラップし、エージェントがデータ品質を検証できるMCPサーバー... | 87 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-davidf9999-gx-mcp-server) |
-| [discovery-engine-mcp](https://github.com/leap-laboratories/discovery-engine-mcp) | 統計パターンを発見するDiscovery Engine SaaSプラットフォーム用MCPクライアント... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-leap-laboratories-discovery-engine-mcp) |
-| [fpl-mcp-server](https://github.com/nguyenanhducs/fpl-mcp-server) | AIアシスタントにFantasy Premier Leagueのツール・リソースを提供するMCPサーバー... | 77 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-nguyenanhducs-fpl-mcp-server) |
-| [jupyter-mcp-server](https://github.com/ChengJiale150/jupyter-mcp-server) | Jupyterノートブックに接続してプログラム制御するMCPサーバー... | 74 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-chengjiale150-jupyter-mcp-server) |
-| [mcp-gemini](https://github.com/crunchtools/mcp-gemini) | テキスト、画像、動画等39ツールを持つGoogle Gemini AI向けセキュアMCPサーバー... | 71 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-gemini) |
-| [jupyter-mcp-server](https://github.com/datalayer/jupyter-mcp-server) | ファイル閲覧、ノートブック管理等を行うJupyterサーバー制御用MCPサーバー... | 66 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-datalayer-jupyter-mcp-server) |
+| [mcp-server-chart](https://github.com/antvis/mcp-server-chart) | 🤖 A visualization mcp & skills contains 25+ visual charts using @antvis. Usin... | 92 ✅ | 3.8k | [表示](https://agentseal.org/mcp/antv-mcp-server-chart) |
+| [jupyter-mcp-server](https://github.com/datalayer/jupyter-mcp-server) | MCP server for controlling a Jupyter server: browsing files, managing noteboo... | 66 ⚠️ | 940 | [表示](https://agentseal.org/mcp/https-githubcom-datalayer-jupyter-mcp-server) |
+| [dingo](https://github.com/dataeval/dingo) | AI-powered data quality evaluation tool for assessing training datasets, LLM ... | 92 ✅ | 658 | [表示](https://agentseal.org/mcp/https-githubcom-dataeval-dingo) |
+| [mcp-server-data-exploration](https://github.com/reading-plus-ai/mcp-server-data-exploration) | Interactive data exploration assistant that analyzes CSV files and generates ... | 85 ✅ | 528 | [表示](https://agentseal.org/mcp/https-githubcom-reading-plus-ai-mcp-server-data-exploration) |
+| [mcp-echarts](https://github.com/hustcc/mcp-echarts) | Generate visual charts using ECharts with AI MCP dynamically for chart genera... | 90 ✅ | 214 | [表示](https://agentseal.org/mcp/https-githubcom-hustcc-mcp-echarts) |
+| [chronulus-mcp](https://github.com/ChronulusAI/chronulus-mcp) | MCP Server for Chronulus AI Forecasting and Prediction Agents | 85 ✅ | 106 | [表示](https://agentseal.org/mcp/https-githubcom-chronulusai-chronulus-mcp) |
+| [dataset-viewer](https://github.com/privetin/dataset-viewer) | A read-only interface to the Hugging Face Datasets Server API, enabling datas... | 91 ✅ | 30 | [表示](https://agentseal.org/mcp/https-githubcom-privetin-dataset-viewer) |
+| [agrobr-mcp](https://github.com/bruno-portfolio/agrobr-mcp) | MCP server for Brazilian agricultural data - connect LLMs to 10 public data s... | 91 ✅ | 21 | [表示](https://agentseal.org/mcp/https-githubcom-bruno-portfolio-agrobr-mcp) |
+| [predictive-maintenance-mcp](https://github.com/LGDiMaggio/predictive-maintenance-mcp) | AI-powered predictive maintenance server that enables LLMs to analyze vibrati... | 73 ⚠️ | 19 | [表示](https://agentseal.org/mcp/https-githubcom-lgdimaggio-predictive-maintenance-mcp) |
+| [mcp-audiense-insights](https://github.com/audienseco/mcp-audiense-insights) | MCP server connecting Claude to Audiense Insights for marketing audience anal... | 92 ✅ | 17 | [表示](https://agentseal.org/mcp/https-githubcom-audienseco-mcp-audiense-insights) |
+| [fermat-mcp](https://github.com/abhiphile/fermat-mcp) | 🚀 Fermat MCP: The Ultimate Math Engine - Unifying SymPy, NumPy & Matplotlib i... | 97 ✅ | 13 | [表示](https://agentseal.org/mcp/https-githubcom-abhiphile-fermat-mcp) |
+| [root-signals-mcp](https://github.com/root-signals/root-signals-mcp) | MCP server bridging Scorable evaluators with AI assistants and agents for mea... | 92 ✅ | 12 | [表示](https://agentseal.org/mcp/https-githubcom-root-signals-root-signals-mcp) |
+| [jupyter-mcp-server](https://github.com/ChengJiale150/jupyter-mcp-server) | An MCP server for connecting to and programmatically controlling Jupyter note... | 74 ⚠️ | 8 | [表示](https://agentseal.org/mcp/https-githubcom-chengjiale150-jupyter-mcp-server) |
+| [gx-mcp-server](https://github.com/davidf9999/gx-mcp-server) | An MCP server wrapping the Great Expectations framework that lets agents load... | 87 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-davidf9999-gx-mcp-server) |
+| [WaveGuardClient](https://github.com/gpartin/WaveGuardClient) | GPU-accelerated anomaly detection API using wave physics instead of machine l... | 92 ✅ | 3 | [表示](https://agentseal.org/mcp/https-githubcom-gpartin-waveguardclient) |
+| [colabfit-mcp](https://github.com/colabfit/colabfit-mcp) | An MCP server for searching and downloading ColabFit materials science datase... | 89 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-colabfit-colabfit-mcp) |
+| [mcp-statcan](https://github.com/Aryan-Jhaveri/mcp-statcan) | MCP server providing structured access to Statistics Canada's Web Data Servic... | 80 ⚠️ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-aryan-jhaveri-mcp-statcan) |
+| [OECD-MCP-server](https://github.com/isakskogstad/OECD-MCP-server) | An MCP server that provides read-only access to OECD statistical datasets via... | 87 ✅ | 1 | [表示](https://agentseal.org/mcp/https-githubcom-isakskogstad-oecd-mcp-server) |
+| [artefact-mcp-server](https://github.com/alexboissAV/artefact-mcp-server) | A GTM intelligence MCP server that performs RFM analysis, ICP scoring, pipeli... | 91 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-alexboissav-artefact-mcp-server) |
+| [discovery-engine-mcp](https://github.com/leap-laboratories/discovery-engine-mcp) | An MCP client for the Discovery Engine SaaS platform that finds statistical p... | 78 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-leap-laboratories-discovery-engine-mcp) |
+| [fpl-mcp-server](https://github.com/nguyenanhducs/fpl-mcp-server) | MCP server providing AI assistants with tools and resources for Fantasy Premi... | 77 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-nguyenanhducs-fpl-mcp-server) |
+| [mcp-gemini](https://github.com/crunchtools/mcp-gemini) | Secure MCP server for Google Gemini AI with 39 tools for text, images, videos... | 71 ⚠️ | - | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-gemini) |
 
 ### 📡 <a name="iot--hardware"></a>IoT・ハードウェア
 
 | サーバー | 説明 | スコア | Stars | レポート |
 |----------|------|-------:|------:|----------|
-| [xiaozhi-esp32-server-java](https://github.com/joey-zhou/xiaozhi-esp32-server-java) | 小智ESP32のJavaエンタープライズ管理プラットフォーム。デバイス監視、カスタマイズ等の統合ソリューション | 92 ✅ | 1.2k | [表示](https://agentseal.org/mcp/https-githubcom-joey-zhou-xiaozhi-esp32-server-java) |
-| [droidmind](https://github.com/hyperb1iss/droidmind) | Model Context Protocolを通じてAIでAndroidデバイスを制御... | 71 ⚠️ | 360 | [表示](https://agentseal.org/mcp/https-githubcom-hyperb1iss-droidmind) |
-| [hass-mcp](https://github.com/voska/hass-mcp) | Home Assistantスマートホームの制御・監視用MCPサーバー... | 72 ⚠️ | 284 | [表示](https://agentseal.org/mcp/https-githubcom-voska-hass-mcp) |
-| [buttplug-mcp](https://github.com/conacademy/buttplug-mcp) | Buttplug.io Model Context Protocol (MCP)サーバー | 92 ✅ | 126 | [表示](https://agentseal.org/mcp/https-githubcom-conacademy-buttplug-mcp) |
-| [ble-mcp-server](https://github.com/es617/ble-mcp-server) | Claude Code等のMCP互換ツール向けBluetooth Low Energy (BLE) MCPサーバー... | 75 ⚠️ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-es617-ble-mcp-server) |
-| [ble-mcp-server.git](https://github.com/es617/ble-mcp-server.git) | エージェントがBLEデバイスをスキャン、接続等できるBluetooth Low Energy (BLE)管理サーバー... | 67 ⚠️ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-es617-ble-mcp-servergit) |
-| [serial-mcp-server.git](https://github.com/es617/serial-mcp-server.git) | ハードウェアデバイスへのシリアルポート接続を管理するMCPサーバー... | 68 ⚠️ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-es617-serial-mcp-servergit) |
-| [pcb-mcp](https://github.com/bunnyf/pcb-mcp) | KiCad PCB設計ワークフローを自動化するMCPサーバー - DRC/ERCチェックの実行等... | 92 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-bunnyf-pcb-mcp) |
-| [mcp-motor-current-signature-analysis](https://github.com/LGDiMaggio/mcp-motor-current-signature-analysis) | スペクトル分析等を提供するMCSA（モーター電流シグネチャ分析）サーバー... | 92 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-lgdimaggio-mcp-motor-current-signature-analysis) |
-| [esp-mcp](https://github.com/horw/esp-mcp) | ESP-IDFファームウェアのビルド、設定、テスト、フラッシュを行うMCPサーバー... | 85 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-horw-esp-mcp) |
-| [wemo-mcp-server](https://github.com/apiarya/wemo-mcp-server) | Belkin WeMoスマートプラグの発見、監視、制御を行うMCPサーバー... | 83 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-apiarya-wemo-mcp-server) |
+| [xiaozhi-esp32-server-java](https://github.com/joey-zhou/xiaozhi-esp32-server-java) | 小智ESP32的Java企业级管理平台，提供设备监控、音色定制、角色切换和对话记录管理的前后端及服务端一体化解决方案 | 92 ✅ | 1.2k | [表示](https://agentseal.org/mcp/https-githubcom-joey-zhou-xiaozhi-esp32-server-java) |
+| [droidmind](https://github.com/hyperb1iss/droidmind) | Control Android devices with AI through the Model Context Protocol, enabling ... | 71 ⚠️ | 360 | [表示](https://agentseal.org/mcp/https-githubcom-hyperb1iss-droidmind) |
+| [hass-mcp](https://github.com/voska/hass-mcp) | An MCP server for controlling and monitoring a Home Assistant smart home inst... | 72 ⚠️ | 284 | [表示](https://agentseal.org/mcp/https-githubcom-voska-hass-mcp) |
+| [mcp-3d-printer-server](https://github.com/dmontgomery40/mcp-3d-printer-server) | MCP server for controlling and monitoring 3D printers across multiple platfor... | 90 ✅ | 161 | [表示](https://agentseal.org/mcp/mcp-3d-printer-server) |
+| [esp-mcp](https://github.com/horw/esp-mcp) | An MCP server for building, configuring, testing, and flashing ESP-IDF firmwa... | 85 ✅ | 139 | [表示](https://agentseal.org/mcp/https-githubcom-horw-esp-mcp) |
+| [buttplug-mcp](https://github.com/conacademy/buttplug-mcp) | Buttplug.io Model Context Protocol (MCP) Server | 92 ✅ | 126 | [表示](https://agentseal.org/mcp/https-githubcom-conacademy-buttplug-mcp) |
+| [ble-mcp-server](https://github.com/es617/ble-mcp-server) | Bluetooth Low Energy (BLE) MCP server for Claude Code and other MCP-compatibl... | 75 ⚠️ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-es617-ble-mcp-server) |
+| [ble-mcp-server.git](https://github.com/es617/ble-mcp-server.git) | A Bluetooth Low Energy (BLE) management server enabling agents to scan for, c... | 67 ⚠️ | 7 | [表示](https://agentseal.org/mcp/https-githubcom-es617-ble-mcp-servergit) |
+| [pcb-mcp](https://github.com/bunnyf/pcb-mcp) | An MCP server that automates KiCad PCB design workflows - running DRC/ERC che... | 92 ✅ | 4 | [表示](https://agentseal.org/mcp/https-githubcom-bunnyf-pcb-mcp) |
+| [mcp-motor-current-signature-analysis](https://github.com/LGDiMaggio/mcp-motor-current-signature-analysis) | An MCSA (Motor Current Signature Analysis) server providing spectral analysis... | 92 ✅ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-lgdimaggio-mcp-motor-current-signature-analysis) |
+| [serial-mcp-server.git](https://github.com/es617/serial-mcp-server.git) | An MCP server for managing serial port connections to hardware devices, with ... | 68 ⚠️ | 2 | [表示](https://agentseal.org/mcp/https-githubcom-es617-serial-mcp-servergit) |
+| [nanoleaf-mcp-server](https://github.com/srnetadmin/nanoleaf-mcp-server) | MCP server for controlling Nanoleaf smart lights through Warp terminal | 92 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-srnetadmin-nanoleaf-mcp-server) |
+| [wemo-mcp-server](https://github.com/apiarya/wemo-mcp-server) | An MCP server for discovering, monitoring, and controlling Belkin WeMo smart ... | 83 ✅ | - | [表示](https://agentseal.org/mcp/https-githubcom-apiarya-wemo-mcp-server) |
 
 ## 🏆 最も安全なサーバー (スコア ≥ 95)
 
 | サーバー | スコア | ツール | Stars | レポート |
 |----------|-------:|-------:|------:|----------|
 | [mcp-summarizer](https://github.com/0xshellming/mcp-summarizer) | 100 | 1 | 157 | [表示](https://agentseal.org/mcp/https-githubcom-0xshellming-mcp-summarizer) |
+| [crash-mcp](https://github.com/nikkoxgonzales/crash-mcp) | 100 | 1 | 67 | [表示](https://agentseal.org/mcp/https-githubcom-nikkoxgonzales-crash-mcp) |
 | [mcp-open-library](https://github.com/8enSmith/mcp-open-library) | 100 | 6 | 62 | [表示](https://agentseal.org/mcp/https-githubcom-8ensmith-mcp-open-library) |
 | [mcp_weather_server](https://github.com/isdaniel/mcp_weather_server) | 100 | 8 | 44 | [表示](https://agentseal.org/mcp/https-githubcom-isdaniel-mcpweatherserver) |
 | [actor-critic-thinking-mcp](https://github.com/aquarius-wing/actor-critic-thinking-mcp) | 100 | 1 | 32 | [表示](https://agentseal.org/mcp/https-githubcom-aquarius-wing-actor-critic-thinking-mcp) |
+| [brlaw_mcp_server](https://github.com/pdmtt/brlaw_mcp_server) | 100 | 3 | 27 | [表示](https://agentseal.org/mcp/https-githubcom-pdmtt-brlawmcpserver) |
+| [fabric-mcp-server](https://github.com/adapoet/fabric-mcp-server) | 100 | 1 | 19 | [表示](https://agentseal.org/mcp/https-githubcom-adapoet-fabric-mcp-server) |
+| [bilibili-mcp-server](https://github.com/wangshunnn/bilibili-mcp-server) | 100 | 3 | 13 | [表示](https://agentseal.org/mcp/https-githubcom-wangshunnn-bilibili-mcp-server) |
+| [mcp-claude-hackernews](https://github.com/imprvhub/mcp-claude-hackernews) | 100 | 5 | 10 | [表示](https://agentseal.org/mcp/https-githubcom-imprvhub-mcp-claude-hackernews) |
+| [heatpump-mcp-server](https://github.com/jiweiqi/heatpump-mcp-server) | 100 | 6 | 3 | [表示](https://agentseal.org/mcp/https-githubcom-jiweiqi-heatpump-mcp-server) |
+| [time-node-mcp](https://github.com/davidan90/time-node-mcp) | 100 | 4 | 2 | [表示](https://agentseal.org/mcp/https-githubcom-davidan90-time-node-mcp) |
 | [physbound](https://github.com/JonesRobM/physbound) | 100 | 4 | 1 | [表示](https://agentseal.org/mcp/https-githubcom-jonesrobm-physbound) |
-| [brlaw_mcp_server](https://github.com/pdmtt/brlaw_mcp_server) | 100 | 3 | - | [表示](https://agentseal.org/mcp/https-githubcom-pdmtt-brlawmcpserver) |
-| [lapalma24-mcp](https://github.com/La-Palma-24/lapalma24-mcp) | 100 | 6 | - | [表示](https://agentseal.org/mcp/https-githubcom-la-palma-24-lapalma24-mcp) |
-| [mcp-claude-hackernews](https://github.com/imprvhub/mcp-claude-hackernews) | 100 | 5 | - | [表示](https://agentseal.org/mcp/https-githubcom-imprvhub-mcp-claude-hackernews) |
-| [algora-mcp-server](https://github.com/idapixl/algora-mcp-server) | 100 | 5 | - | [表示](https://agentseal.org/mcp/https-githubcom-idapixl-algora-mcp-server) |
-| [heatpump-mcp-server](https://github.com/jiweiqi/heatpump-mcp-server) | 100 | 6 | - | [表示](https://agentseal.org/mcp/https-githubcom-jiweiqi-heatpump-mcp-server) |
-| [trinvmcp](https://github.com/cqtrinv/trinvmcp) | 100 | 2 | - | [表示](https://agentseal.org/mcp/https-githubcom-cqtrinv-trinvmcp) |
-| [bilibili-mcp-server](https://github.com/wangshunnn/bilibili-mcp-server) | 100 | 3 | - | [表示](https://agentseal.org/mcp/https-githubcom-wangshunnn-bilibili-mcp-server) |
-| [fabric-mcp-server](https://github.com/adapoet/fabric-mcp-server) | 100 | 1 | - | [表示](https://agentseal.org/mcp/https-githubcom-adapoet-fabric-mcp-server) |
-| [time-node-mcp](https://github.com/davidan90/time-node-mcp) | 100 | 4 | - | [表示](https://agentseal.org/mcp/https-githubcom-davidan90-time-node-mcp) |
+| [trinvmcp](https://github.com/cqtrinv/trinvmcp) | 100 | 2 | 1 | [表示](https://agentseal.org/mcp/https-githubcom-cqtrinv-trinvmcp) |
+| [algora-mcp-server](https://github.com/idapixl/algora-mcp-server) | 100 | 5 | 1 | [表示](https://agentseal.org/mcp/https-githubcom-idapixl-algora-mcp-server) |
 | [dolar-mcp](https://github.com/dan1d/dolar-mcp) | 100 | 6 | - | [表示](https://agentseal.org/mcp/https-githubcom-dan1d-dolar-mcp) |
+| [lapalma24-mcp](https://github.com/La-Palma-24/lapalma24-mcp) | 100 | 6 | - | [表示](https://agentseal.org/mcp/https-githubcom-la-palma-24-lapalma24-mcp) |
 | [chrono-mcp](https://github.com/JMoak/chrono-mcp) | 100 | 2 | - | [表示](https://agentseal.org/mcp/https-githubcom-jmoak-chrono-mcp) |
-| [crash-mcp](https://github.com/nikkoxgonzales/crash-mcp) | 100 | 1 | - | [表示](https://agentseal.org/mcp/https-githubcom-nikkoxgonzales-crash-mcp) |
 | [cookwith-mcp](https://github.com/blaideinc/cookwith-mcp) | 99 | 2 | - | [表示](https://agentseal.org/mcp/https-githubcom-blaideinc-cookwith-mcp) |
 | [bilibili-mcp-js](https://github.com/34892002/bilibili-mcp-js) | 99 | 8 | 153 | [表示](https://agentseal.org/mcp/https-githubcom-34892002-bilibili-mcp-js) |
-| [gif-creator-mcp](https://github.com/ananddtyagi/gif-creator-mcp) | 99 | 1 | 15 | [表示](https://agentseal.org/mcp/https-githubcom-ananddtyagi-gif-creator-mcp) |
+| [mcp-server-leetcode](https://github.com/doggybee/mcp-server-leetcode) | 99 | 7 | 40 | [表示](https://agentseal.org/mcp/https-githubcom-doggybee-mcp-server-leetcode) |
 
 ## ⚠️ より広い攻撃対象領域
 
@@ -796,18 +908,18 @@
 | [klavis](https://github.com/klavis-ai/klavis) | 68 | **152** | 554 | 5.7k | [表示](https://agentseal.org/mcp/https-githubcom-klavis-ai-klavis) |
 | [labmate-mcp](https://github.com/JonasRackl/labmate-mcp) | 71 | **85** | 81 | - | [表示](https://agentseal.org/mcp/labmate-mcp) |
 | [graphlit-mcp-server](https://github.com/graphlit/graphlit-mcp-server) | 72 | **78** | 73 | 372 | [表示](https://agentseal.org/mcp/https-githubcom-graphlit-graphlit-mcp-server) |
-| [chat](https://github.com/deco-cx/chat) | 77 | **69** | 188 | - | [表示](https://agentseal.org/mcp/https-githubcom-deco-cx-chat) |
+| [chat](https://github.com/deco-cx/chat) | 77 | **69** | 188 | 350 | [表示](https://agentseal.org/mcp/https-githubcom-deco-cx-chat) |
 | [armor-crypto-mcp](https://github.com/armorwallet/armor-crypto-mcp) | 69 | **46** | 37 | 191 | [表示](https://agentseal.org/mcp/armor-crypto-mcp) |
 | [apisix-mcp](https://github.com/api7/apisix-mcp) | 67 | **43** | 32 | 34 | [表示](https://agentseal.org/mcp/https-githubcom-api7-apisix-mcp) |
 | [mcp-gitlab](https://github.com/crunchtools/mcp-gitlab) | 68 | **42** | 63 | - | [表示](https://agentseal.org/mcp/https-githubcom-crunchtools-mcp-gitlab) |
-| [freshdesk_mcp](https://github.com/effytech/freshdesk_mcp) | 80 | **40** | 59 | - | [表示](https://agentseal.org/mcp/https-githubcom-effytech-freshdeskmcp) |
-| [mcp](https://github.com/hopx-ai/mcp) | 58 | **37** | 35 | - | [表示](https://agentseal.org/mcp/https-githubcom-hopx-ai-mcp) |
+| [freshdesk_mcp](https://github.com/effytech/freshdesk_mcp) | 80 | **40** | 59 | 46 | [表示](https://agentseal.org/mcp/https-githubcom-effytech-freshdeskmcp) |
+| [mcp](https://github.com/hopx-ai/mcp) | 58 | **37** | 35 | 165 | [表示](https://agentseal.org/mcp/https-githubcom-hopx-ai-mcp) |
 | [audius-mcp-atris](https://github.com/glassBead-tc/audius-mcp-atris) | 60 | **36** | 106 | 1 | [表示](https://agentseal.org/mcp/https-githubcom-glassbead-tc-audius-mcp-atris) |
-| [mcp_omni_connect](https://github.com/abiorh001/mcp_omni_connect) | 77 | **34** | 273 | - | [表示](https://agentseal.org/mcp/https-githubcom-abiorh001-mcpomniconnect) |
+| [illumio-mcp-server](https://github.com/alexgoller/illumio-mcp-server) | 78 | **35** | 38 | 5 | [表示](https://agentseal.org/mcp/https-githubcom-alexgoller-illumio-mcp-server) |
+| [mcp_omni_connect](https://github.com/abiorh001/mcp_omni_connect) | 77 | **34** | 273 | 232 | [表示](https://agentseal.org/mcp/https-githubcom-abiorh001-mcpomniconnect) |
 | [memora](https://github.com/agentic-mcp-tools/memora) | 64 | **33** | 35 | 309 | [表示](https://agentseal.org/mcp/https-githubcom-agentic-mcp-tools-memora) |
-| [webmin-mcp-server](https://github.com/gjenkins20/webmin-mcp-server) | 70 | **31** | 61 | - | [表示](https://agentseal.org/mcp/https-githubcom-gjenkins20-webmin-mcp-server) |
-| [hillnote-mcp-server](https://github.com/Rajathbail/hillnote-mcp-server) | 70 | **31** | 47 | - | [表示](https://agentseal.org/mcp/https-githubcom-rajathbail-hillnote-mcp-server) |
-| [hdw-mcp-server](https://github.com/horizondatawave/hdw-mcp-server) | 67 | **31** | 69 | - | [表示](https://agentseal.org/mcp/https-githubcom-horizondatawave-hdw-mcp-server) |
+| [hdw-mcp-server](https://github.com/horizondatawave/hdw-mcp-server) | 67 | **31** | 69 | 59 | [表示](https://agentseal.org/mcp/https-githubcom-horizondatawave-hdw-mcp-server) |
+| [hillnote-mcp-server](https://github.com/Rajathbail/hillnote-mcp-server) | 70 | **31** | 47 | 1 | [表示](https://agentseal.org/mcp/https-githubcom-rajathbail-hillnote-mcp-server) |
 
 ## 📛 セキュリティバッジの追加
 
