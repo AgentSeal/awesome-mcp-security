@@ -40,6 +40,12 @@ A lower score does NOT mean the server has bugs or is malicious. It means an AI 
 - **Risky (20-49):** Large attack surface. Requires strict sandboxing and human oversight.
 - **Dangerous (< 20):** Critical security concerns. Not recommended for automated use.
 
+Scores are a preflight signal. For runtime enforcement, tools such as
+[Armorer Guard](https://github.com/ArmorerLabs/Armorer-Guard) can wrap stdio
+MCP servers with a local proxy and inspect `tools/call` arguments for prompt
+injection, credential disclosure, exfiltration, and destructive action risk
+before the server executes the call.
+
 ## Legend
 
 | Symbol | Meaning |
