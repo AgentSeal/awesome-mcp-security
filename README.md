@@ -71,6 +71,7 @@ A lower score does NOT mean the server has bugs or is malicious. It means an AI 
 
 | Server | Description | Score | Stars | Report |
 |--------|-------------|------:|------:|--------|
+| [Darkmoon](https://github.com/ASCIT31/Dark-Moon) | Open source autonomous penetration testing platform (GPLv3). 50 specialist agents over MCP with proof of exploitation on every finding, runs locally. |
 | [markitdown](https://github.com/microsoft/markitdown) | Python tool for converting files and office documents to Markdown. | 88 ✅ | 90.7k | [View](https://agentseal.org/mcp/https-githubcom-microsoft-markitdown) |
 | [chrome-devtools-mcp](https://github.com/chromedevtools/chrome-devtools-mcp) | Chrome DevTools for coding agents | 73 ⚠️ | 28.8k | [View](https://agentseal.org/mcp/chrome-devtools-mcp) |
 | [Playwright](https://github.com/microsoft/playwright-mcp) | Automates browser interactions for Large Language Models (LLMs) using Playwri... | 62 ⚠️ | 28.7k | [View](https://agentseal.org/mcp/https-githubcom-microsoft-playwright-mcp) |
